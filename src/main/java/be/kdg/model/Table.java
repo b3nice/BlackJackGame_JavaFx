@@ -141,7 +141,6 @@ public class Table {
         deck.takeTopCard();
         System.out.println("[???] " + dealerCards);
 
-        splitOption();
     }
 
     //De dealer draait de kaarten pas aan het einde en speelt zijn kaarten nadat de player stand of verloren is. zie online blackjack////

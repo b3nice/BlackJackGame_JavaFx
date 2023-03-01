@@ -34,5 +34,13 @@ public class BlackJackModel {
         table.dealCards();
     }
 
+    public Card getFirstCardPlayer() {
+        return this.table.getFirstCardPlayer();
+    }
+
+    public Card getSecondCardPlayer() {
+        return this.table.getSecondCardPlayer();
+    }
+
 
 }

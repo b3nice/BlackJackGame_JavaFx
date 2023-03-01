@@ -6,6 +6,8 @@ import be.kdg.view.Start.BlackJackStartView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class BlackJackGamePresenter {
     private BlackJackModel model;
@@ -105,6 +107,18 @@ public class BlackJackGamePresenter {
                 else{
                     view.gethBoxBetAmounts().setVisible(false);
                     model.startGame();
+
+                    ImageView[] imageViewPlayerCards = new ImageView[5];
+                    for (int i = 0; i < 5; i++) {
+                        if (i  < 1){
+                            imageViewPlayerCards[0] = new ImageView(new Image(String.valueOf(model.getFirstCardPlayer())));
+                            imageViewPlayerCards[1] = new ImageView(new Image(String.valueOf(model.getSecondCardPlayer())));
+                        }else{
+                            imageViewPlayerCards[i] = new ImageView(new Image("/RedCardBack.PNG"));
+                        }
+                    }
+
+                    view.setImageViewPlayerCards(imageViewPlayerCards);
                 }
             }
         });

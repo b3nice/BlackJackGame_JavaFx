@@ -19,6 +19,9 @@ public class BlackJackGameView extends GridPane {
     HBox hBoxDealerCards;
     Label labelSumCardsDealer;
     ImageView[] imageViewDealerCards;
+    public ImageView[] getImageViewDealerCards() {
+        return imageViewDealerCards;
+    }
 
     HBox hBoxH_S_D_S;
     Button buttonHit;
@@ -50,8 +53,18 @@ public class BlackJackGameView extends GridPane {
     HBox hBoxPlayerSplitCards;
 
     ImageView[] imageViewPlayerCards;
+    public ImageView[] getImageViewPlayerCards() {
+        return imageViewPlayerCards;
+    }
+
+    public void setImageViewPlayerCards(ImageView[] imageViewPlayerCards) {
+        this.imageViewPlayerCards = imageViewPlayerCards;
+    }
 
     ImageView[] imageViewPlayerSplitCards;
+    public ImageView[] getImageViewPlayerSplitCards() {
+        return imageViewPlayerSplitCards;
+    }
 
     HBox hBoxBetAmounts;
 
