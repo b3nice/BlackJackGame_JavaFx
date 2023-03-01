@@ -7,7 +7,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 
 public class BlackJackGamePresenter {
     private BlackJackModel model;
@@ -20,12 +19,13 @@ public class BlackJackGamePresenter {
         updateView();
     }
 
-    private void addEventHandlers(){
+    private void addEventHandlers() {
         view.getButtonExit().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                BlackJackModel newModel = new BlackJackModel();
                 BlackJackStartView viewStart = new BlackJackStartView();
-                BlackJackStartPresenter presenterGame  = new BlackJackStartPresenter(viewStart,model);
+                BlackJackStartPresenter presenterGame = new BlackJackStartPresenter(viewStart, newModel);
                 view.getScene().setRoot(viewStart);
             }
         });
@@ -100,31 +100,27 @@ public class BlackJackGamePresenter {
         view.getButtonBet().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                if (model.getBet() == 0){
-                        Alert alert = new Alert(Alert.AlertType.WARNING, "You cannot bet nothing, please bet an amount.");
-                        alert.showAndWait();
-                }
-                else{
+                if (model.getBet() == 0) {
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "You cannot bet nothing, please bet an amount.");
+                    alert.showAndWait();
+                } else {
                     view.gethBoxBetAmounts().setVisible(false);
                     model.startGame();
 
-                    ImageView[] imageViewPlayerCards = new ImageView[5];
-                    for (int i = 0; i < 5; i++) {
-                        if (i  < 1){
-                            imageViewPlayerCards[0] = new ImageView(new Image(String.valueOf(model.getFirstCardPlayer())));
-                            imageViewPlayerCards[1] = new ImageView(new Image(String.valueOf(model.getSecondCardPlayer())));
-                        }else{
-                            imageViewPlayerCards[i] = new ImageView(new Image("/RedCardBack.PNG"));
-                        }
-                    }
+                    ImageViewSetter imageViewSetter = new ImageViewSetter(view.getImageViewPlayerCards());
+                    imageViewSetter.setImage(0, new Image(String.valueOf(model.getFirstCardPlayer())));
+                    imageViewSetter.setImage(1, new Image(String.valueOf(model.getSecondCardPlayer())));
+                    System.out.println(model.getSecondCardPlayer());
 
-                    view.setImageViewPlayerCards(imageViewPlayerCards);
+                    ImageViewSetter imageViewSetter1 = new ImageViewSetter(view.getImageViewDealerCards());
+                    imageViewSetter1.setImage(0, new Image("/RedCardBack.PNG"));
+                    imageViewSetter1.setImage(1, new Image(String.valueOf(model.getDealerCards().get(0))));
                 }
             }
         });
     }
 
-    private void updateView(){
+    private void updateView() {
         view.getLabelPlayerName().setText(model.getName());
     }
 }

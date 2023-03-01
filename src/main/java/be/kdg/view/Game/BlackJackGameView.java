@@ -135,13 +135,14 @@ public class BlackJackGameView extends GridPane {
         imageViewPlayerCards = new ImageView[5];
         imageViewPlayerSplitCards = new ImageView[3];
 
+
         for (int i = 0; i < 5; i++) {
-            imageViewDealerCards[i] = new ImageView(new Image("/BlueCardBack.PNG"));
-            imageViewPlayerCards[i] = new ImageView(new Image("/RedCardBack.PNG"));
+            imageViewDealerCards[i] = new ImageView((Image) null);
+            imageViewPlayerCards[i] = new ImageView((Image) null);
         }
 
         for (int i = 0; i < 3; i++) {
-            imageViewPlayerSplitCards[i] = new ImageView(new Image("/RedCardBack.PNG"));
+            imageViewPlayerSplitCards[i] = new ImageView((Image) null);
         }
 
         double factor = 12;
@@ -170,7 +171,7 @@ public class BlackJackGameView extends GridPane {
 
         hBoxAmountBet = new HBox();
         labelAmountBet = new Label("Amount Bet: ");
-        labelBet = new Label("");
+        labelBet = new Label("0");
 
         hBoxAmountBet.getChildren().addAll(labelAmountBet, labelBet);
 

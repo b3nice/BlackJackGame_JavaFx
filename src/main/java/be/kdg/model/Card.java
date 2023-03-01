@@ -21,7 +21,7 @@ public class Card {
     public Card(int number, Suit suit,String name) {
         this.number = number;
         this.suit = suit;
-        this.imagePath = "/PNG-cards-1.3/" + name + "_of_" + suit.toString().toLowerCase()+ "2.png";
+        this.imagePath = "/PNG-cards-1.3/" + name + "_of_" + suit.toString().toLowerCase()+ ".png";
 
     }
 

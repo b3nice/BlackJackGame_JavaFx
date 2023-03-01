@@ -1,5 +1,7 @@
 package be.kdg.model;
 
+import java.util.ArrayList;
+
 public class BlackJackModel {
     private Game game;
     private Table table;
@@ -42,5 +44,8 @@ public class BlackJackModel {
         return this.table.getSecondCardPlayer();
     }
 
+    public ArrayList<Card> getDealerCards() {
+        return this.table.getDealerCards();
+    }
 
 }

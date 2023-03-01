@@ -16,7 +16,7 @@ public class Deck {
         Suit Clubs = Suit.CLUBS;
         Suit Diamonds = Suit.DIAMONDS;
 
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 2; i <= 10; i++) {
             deckCards.add(new Card(i, Hearts));
             deckCards.add(new Card(i, Spades));
             deckCards.add(new Card(i, Clubs));
