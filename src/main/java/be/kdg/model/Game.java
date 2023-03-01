@@ -4,6 +4,13 @@ package be.kdg.model;
 
 public class Game {
 
+    private Player player;
+    private Table table;
+
+    public Game(Player player, Table table) {
+        this.player = player;
+        this.table = table;
+    }
 
     private String name;
 
@@ -14,7 +21,6 @@ public class Game {
     public void setName(String name) {
         this.name = name;
     }
-
 
 
     public void youLost(Player player, Game game, Table table){

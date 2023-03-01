@@ -1,11 +1,12 @@
 package be.kdg.model;
 
-public class Application {
-    private final Game game = new Game();
+public class BlackJackModel {
+    private Game game;
     private Player player;
+    private Table table = new Table(game, player);
 
-    public Application() {
-
+    public BlackJackModel() {
+        game = new Game(player = new Player(game.getName(), table);
     }
 
     public String getName() {
@@ -23,8 +24,6 @@ public class Application {
     }
 
     public void startGame(){
-        Table table;
-        player = new Player(game.getName(), table = new Table());
         player.setBalance(200);
         table.dealCards(player, table);
     }

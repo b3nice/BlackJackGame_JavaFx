@@ -1,17 +1,16 @@
 package be.kdg.view.Game;
 
-import be.kdg.model.Application;
+import be.kdg.model.BlackJackModel;
 import be.kdg.view.Start.BlackJackStartPresenter;
 import be.kdg.view.Start.BlackJackStartView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Label;
 
 public class BlackJackGamePresenter {
-    private Application model;
+    private BlackJackModel model;
     private BlackJackGameView view;
 
-    public BlackJackGamePresenter(BlackJackGameView view, Application model) {
+    public BlackJackGamePresenter(BlackJackGameView view, BlackJackModel model) {
         this.model = model;
         this.view = view;
         addEventHandlers();

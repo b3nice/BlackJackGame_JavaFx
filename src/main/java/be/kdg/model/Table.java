@@ -4,23 +4,101 @@ import java.util.ArrayList;
 
 public class Table {
 
-    private int dealerPoints;
+    private Player player;
+    private Game game;
 
+    public Table(Game game, Player player) {
+        this.game = game;
+        this.player = player;
+    }
+    private int statHolder = 0;
+    public int getStatHolder() {
+        return statHolder;
+    }
+    public void setStatHolder(int statHolder) {
+        this.statHolder = statHolder;
+    }
+
+    private Card firstCardPlayer;
+    public Card getFirstCardPlayer() {
+        return firstCardPlayer;
+    }
+    public void setFirstCardPlayer(Card firstCardPlayer) {
+        this.firstCardPlayer = firstCardPlayer;
+    }
+
+
+    private Card secondCardPlayer;
+    public Card getSecondCardPlayer() {
+        return secondCardPlayer;
+    }
+    public void setSecondCardPlayer(Card secondCardPlayer) {
+        this.secondCardPlayer = secondCardPlayer;
+    }
+
+
+    private int playerPoints;
+    public int getPlayerPoints() {
+        return playerPoints;
+    }
+    public void setPlayerPoints(int playerPoints) {
+        this.playerPoints = playerPoints;
+    }
+
+    private int playerPoints2;
+    public int getPlayerPoints2() {
+        return playerPoints2;
+    }
+    public void setPlayerPoints2(int playerPoints2) {
+        this.playerPoints2 = playerPoints2;
+    }
+
+    private int bet;
+    public int getBet() {
+        return bet;
+    }
+    public void setBet(int bet) {
+        this.bet = bet;
+    }
+
+    private int bet2 = 0;
+    public int getBet2() {
+        return bet2;
+    }
+    public void setBet2(int bet2) {
+        this.bet2 = bet2;
+    }
+
+    private ArrayList<Card> playerCards = new ArrayList<>();
+    public ArrayList<Card> getPlayerCards() {
+        return playerCards;
+    }
+    public void setPlayerCards(ArrayList<Card> playerCards) {
+        this.playerCards = playerCards;
+    }
+
+
+    private ArrayList<Card> playerCards2 = new ArrayList<>();
+    public ArrayList<Card> getPlayerCards2() {
+        return playerCards2;
+    }
+    public void setPlayerCards2(ArrayList<Card> playerCards2) {
+        this.playerCards2 = playerCards2;
+    }
+
+    private int dealerPoints;
     public int getDealerPoints() {
         return dealerPoints;
     }
-
     public void setDealerPoints(int dealerPoints) {
         this.dealerPoints = dealerPoints;
     }
 
 
     private ArrayList<Card> dealerCards = new ArrayList<>();
-
     public ArrayList<Card> getDealerCards() {
         return dealerCards;
     }
-
     public void setDealerCards(ArrayList<Card> dealerCards) {
         this.dealerCards = dealerCards;
     }
@@ -29,7 +107,7 @@ public class Table {
     Deck deck = new Deck();
     String SplitValidation = " ";
 
-    public void dealCards(Player player, Table table) {
+    public void dealCards() {
         dealerCards.clear();
         SplitValidation = " ";
 
@@ -38,12 +116,12 @@ public class Table {
 
         System.out.println(player.getName() + ":");
         System.out.println("[" + deck.getDeckCards().get(0) + "]");
-        player.setFirstCardPlayer(deck.getDeckCards().get(0));
+        setFirstCardPlayer(deck.getDeckCards().get(0));
         deck.takeTopCard();
 
         System.out.println(player.getName() + ":");
-        System.out.println("[" + player.getFirstCardPlayer() + "] [" + deck.getDeckCards().get(0) + "]");
-        player.setSecondCardPlayer(deck.getDeckCards().get(0));
+        System.out.println("[" + getFirstCardPlayer() + "] [" + deck.getDeckCards().get(0) + "]");
+        setSecondCardPlayer(deck.getDeckCards().get(0));
         deck.takeTopCard();
 
         System.out.println("Dealer" + ":");
@@ -51,47 +129,47 @@ public class Table {
         deck.takeTopCard();
         System.out.println("[???] " + dealerCards);
 
-        splitOption(player, table);
+        splitOption();
     }
 
     //De dealer draait de kaarten pas aan het einde en speelt zijn kaarten nadat de player stand of verloren is. zie online blackjack////
 
 
 
-    public void splitOption(Player player, Table table) {
-        if (player.getFirstCardPlayer().getNumber() == player.getSecondCardPlayer().getNumber()) {
+    public void splitOption() {
+        if (getFirstCardPlayer().getNumber() == getSecondCardPlayer().getNumber()) {
             System.out.println("Would you like to split? (y or n) ");
-            SplitValidation = keyboard.nextLine();
+            //SplitValidation = keyboard.nextLine();
             if (SplitValidation.equals("y")) {
 
                 System.out.println("hzhehehhzefhzhefhzf");
 
                 ArrayList<Card> playerFirstCard = new ArrayList<>();
-                playerFirstCard.add(player.getFirstCardPlayer());
-                player.setPlayerCards(playerFirstCard);
+                playerFirstCard.add(getFirstCardPlayer());
+                setPlayerCards(playerFirstCard);
 
                 ArrayList<Card> playerSecondCard = new ArrayList<>();
-                playerSecondCard.add(player.getSecondCardPlayer());
-                player.setPlayerCards2(playerSecondCard);
-                hitStandDoubleOrSplit(player, table);
+                playerSecondCard.add(getSecondCardPlayer());
+                setPlayerCards2(playerSecondCard);
+                hitStandDoubleOrSplit();
 
             } else {
                 ArrayList<Card> playerCard = new ArrayList<>();
-                playerCard.add(player.getFirstCardPlayer());
-                playerCard.add(player.getSecondCardPlayer());
+                playerCard.add(getFirstCardPlayer());
+                playerCard.add(getSecondCardPlayer());
 
-                player.setPlayerCards(playerCard);
+                setPlayerCards(playerCard);
 
-                hitStandDoubleOrSplit(player, table);
+                hitStandDoubleOrSplit();
             }
         } else {
             ArrayList<Card> playerCard = new ArrayList<>();
-            playerCard.add(player.getFirstCardPlayer());
-            playerCard.add(player.getSecondCardPlayer());
+            playerCard.add(getFirstCardPlayer());
+            playerCard.add(getSecondCardPlayer());
 
-            player.setPlayerCards(playerCard);
+            setPlayerCards(playerCard);
 
-            hitStandDoubleOrSplit(player, table);
+            hitStandDoubleOrSplit();
         }
     }
 
@@ -100,13 +178,13 @@ public class Table {
     int statusCopy = 1;
     int secondStatusCopy = 1;
 
-    public void hitStandDoubleOrSplit(Player player, Table table) {
-        Game game = new Game();
-        player.setPlayerPoints(calculateTotalPoints(player.getPlayerCards()));
-        player.setPlayerPoints2(calculateTotalPoints(player.getPlayerCards2()));
+    public void hitStandDoubleOrSplit() {
+        Game game = new Game(player);
+        setPlayerPoints(calculateTotalPoints(getPlayerCards()));
+        setPlayerPoints2(calculateTotalPoints(getPlayerCards2()));
         if (SplitValidation.equals("y")) {
-            splitGame(player, game, table);
-            player.setBet2(player.getBet());
+            splitGame();
+            setBet2(getBet());
         } else {
             do {
                 System.out.println("Do you want to Hit, Stand or Double: ");
@@ -114,115 +192,114 @@ public class Table {
                 int hand = 1;
                 switch (anwser) {
                     case "Hit" -> {
-                        player.hit(dealerCards, deck, player.getPlayerCards(), hand);
+                        hit(dealerCards, getPlayerCards(), hand);
                         status = 1;
                     }
                     case "Stand" -> {
-                        player.stand();
+                        stand();
                         status = 2;
                     }
                     case "Double" -> {
-                        player.doubleBet(dealerCards, player.getBet(), deck, player.getPlayerCards(), hand);
+                        doubleBet(dealerCards, getBet(), getPlayerCards(), hand);
                         status = 3;
                     }
                 }
 
             }
-            while (status == 1 && player.getPlayerPoints() < 21);
+            while (status == 1 && getPlayerPoints() < 21);
         }
-        conditionDeterminer(player, game, table);
+        conditionDeterminer();
     }
 
-    public void splitGame(Player player, Game game, Table table) {
+    public void splitGame() {
         int hand1 = 1;
         int hand2 = 2;
-        if (player.getStatHolder() != 2){
+        if (getStatHolder() != 2){
             do {
                 System.out.println("Do you want to Hit, Stand or Double for your first deck: ");
-                String anwser = keyboard.nextLine();
+                String anwser;
                 switch (anwser) {
                     case "Hit" -> {
-                        player.hit(dealerCards, deck, player.getPlayerCards(), hand1);
+                        hit(dealerCards,getPlayerCards(), hand1);
                         status = 1;
                         statusCopy = 1;
                     }
                     case "Stand" -> {
-                        player.stand();
+                        stand();
                         status = 2;
                         statusCopy = 2;
                     }
                     case "Double" -> {
-                        player.doubleBet(dealerCards, player.getBet(), deck, player.getPlayerCards(), hand1);
+                        doubleBet(dealerCards, getBet(), getPlayerCards(), hand1);
                         status = 3;
                         statusCopy = 3;
                     }
                 }
             }
-            while (player.getPlayerPoints() < 21 && status == 1);
+            while (getPlayerPoints() < 21 && status == 1);
             do {
-                System.out.println("Do you want to Hit, Stand or Double for your second deck: ");
-                String anwser2 = keyboard.nextLine();
+                String anwser2;
                 switch (anwser2) {
                     case "Hit" -> {
-                        player.setPlayerPoints2(calculateTotalPoints(player.getPlayerCards2()));
-                        player.hit(dealerCards, deck, player.getPlayerCards2(), hand2);
+                        setPlayerPoints2(calculateTotalPoints(getPlayerCards2()));
+                        hit(dealerCards, getPlayerCards2(), hand2);
                         secondStatus = 1;
                         secondStatusCopy = 1;
                     }
                     case "Stand" -> {
-                        player.setPlayerPoints2(calculateTotalPoints(player.getPlayerCards2()));
-                        player.stand();
+                        setPlayerPoints2(calculateTotalPoints(getPlayerCards2()));
+                        stand();
                         secondStatus = 2;
                         secondStatusCopy = 2;
                     }
                     case "Double" -> {
-                        player.setPlayerPoints2(calculateTotalPoints(player.getPlayerCards2()));
-                        player.doubleBet(dealerCards, player.getBet(), deck, player.getPlayerCards2(), hand2);
+                        setPlayerPoints2(calculateTotalPoints(getPlayerCards2()));
+                        doubleBet(dealerCards, getBet(),getPlayerCards2(), hand2);
                         secondStatus = 3;
                         secondStatusCopy = 3;
                     }
                 }
             }
-            while (player.getPlayerPoints2() < 21 && secondStatus == 1);
+            while (getPlayerPoints2() < 21 && secondStatus == 1);
         }
     status =0;
     secondStatus =0;
-    conditionDeterminer(player, game, table);
+    conditionDeterminer();
 }
 
 
-    public void conditionDeterminer(Player player, Game game, Table table) {
-        player.setPlayerPoints(calculateTotalPoints(player.getPlayerCards()));
-        player.setPlayerPoints2(calculateTotalPoints(player.getPlayerCards2()));
+    public void conditionDeterminer() {
+        setPlayerPoints(calculateTotalPoints(getPlayerCards()));
+        setPlayerPoints2(calculateTotalPoints(getPlayerCards2()));
         setDealerPoints(calculateTotalPoints(getDealerCards()));
 
         if (SplitValidation.equals("y")) {
-                if (player.getStatHolder() != 2) {
-                    player.setStatHolder(2);
-                    winOrLoss(player, game, player.getPlayerPoints(), table);
-                } else if (player.getStatHolder() == 2){
-                    player.setStatHolder(4);
-                    winOrLoss(player, game, player.getPlayerPoints2(), table);
+                if (getStatHolder() != 2) {
+                    setStatHolder(2);
+                    winOrLoss(getPlayerPoints());
+                } else if (getStatHolder() == 2){
+                    setStatHolder(4);
+                    winOrLoss(getPlayerPoints2());
                 }
                 else {
-                    dealCards(player, table);
+                    dealCards();
                 }
 
         } else {
-            if (statusCopy != 1 || player.getPlayerPoints() > 21 || dealerPoints > 21 || player.getPlayerPoints() == 21) {
-                    winOrLoss(player, game, player.getPlayerPoints(), table);
+            if (statusCopy != 1 || getPlayerPoints() > 21 || dealerPoints > 21 || getPlayerPoints() == 21) {
+                    winOrLoss(getPlayerPoints());
             } else {
-                hitStandDoubleOrSplit(player, table);
+                hitStandDoubleOrSplit();
             }
         }
 
     }
 
 
-    public void winOrLoss(Player player, Game game, int playerPoints, Table table) {
-        player.addDealerCards(dealerCards, deck);
-        player.setPlayerPoints(calculateTotalPoints(player.getPlayerCards()));
-        player.setPlayerPoints2(calculateTotalPoints(player.getPlayerCards2()));
+    public void winOrLoss(int playerPoints) {
+        addDealerCards(dealerCards);
+        setPlayerPoints(calculateTotalPoints(getPlayerCards()));
+        setPlayerPoints2(calculateTotalPoints(getPlayerCards2()));
         dealerPoints = calculateTotalPoints(dealerCards);
 
         if (playerPoints == 21 || playerPoints > dealerPoints && statusCopy == 2 && playerPoints < 21 || dealerPoints > 21 || statusCopy == 3 && playerPoints > dealerPoints) {
@@ -244,6 +321,109 @@ public class Table {
             points = card.getNumber() + points;
         }
         return points;
+    }
+    public void hit(ArrayList<Card> dealerCards, ArrayList<Card> playerHand, int hand) {
+
+        System.out.println("you hit");
+        System.out.println(getName() + ":");
+
+
+        playerHand.add(deck.getDeckCards().get(0));
+        deck.takeTopCard();
+
+        int playerPointss = table.calculateTotalPoints(playerHand);
+        table.setDealerPoints(table.calculateTotalPoints(dealerCards));
+
+        System.out.println(playerHand);
+        System.out.println(playerPointss);
+
+
+
+        System.out.println("Dealer" + ":");
+        System.out.println("[???] " + dealerCards);
+        System.out.println(table.getDealerPoints());
+
+        if (hand == 1){
+            setPlayerCards(playerHand);
+            setPlayerPoints(playerPointss);
+        }
+        else{
+            setPlayerCards2(playerHand);
+            setPlayerPoints2(playerPointss);
+        }
+
+    }
+    public void doubleBet(ArrayList<Card> dealerCards, int bet, ArrayList<Card> playerHand, int hand) {
+        System.out.println("you double");
+
+        playerHand.add(deck.getDeckCards().get(0));
+        deck.takeTopCard();
+        table.calculateTotalPoints(playerCards);
+
+        int playerPointss = table.calculateTotalPoints(playerHand);
+        table.setDealerPoints(table.calculateTotalPoints(dealerCards));
+
+        System.out.println(getName() + ":");
+        System.out.println(playerHand);
+        System.out.println(playerPointss);
+
+        System.out.println("Dealer" + ":");
+        System.out.println("[???] " + dealerCards);
+
+        setBet(bet*2);
+        System.out.println(getBet());
+
+        if (hand == 1){
+            setPlayerCards(playerHand);
+            setPlayerPoints(playerPointss);
+            setBet(bet*2);
+        }
+        else{
+            setPlayerCards2(playerHand);
+            setPlayerPoints2(playerPointss);
+            setBet2(bet*2);
+        }
+    }
+    public void stand() {
+        System.out.println("you stand");
+    }
+    public void addDealerCards(ArrayList<Card> dealerCards){
+        ArrayList<Card> playerHand;
+        if (statHolder == 2){
+            playerHand = getPlayerCards2();
+        }
+        else{
+            playerHand = getPlayerCards();
+        }
+
+        int limit = 100;
+        for (int i = 0; i < limit; i++) {
+            table.setDealerPoints(table.calculateTotalPoints(dealerCards));
+            setPlayerPoints(table.calculateTotalPoints(playerHand));
+
+            if (table.getDealerPoints() < 16) {
+                System.out.println(getName() + ":");
+                System.out.println(playerHand);
+                System.out.println(playerPoints);
+
+                dealerCards.add(deck.getDeckCards().get(0));
+                deck.takeTopCard();
+                table.setDealerCards(dealerCards);
+                table.setDealerPoints(table.calculateTotalPoints(dealerCards));
+
+                System.out.println("Dealer" + ":");
+                System.out.println(dealerCards);
+                table.setDealerPoints(table.calculateTotalPoints(dealerCards));
+                System.out.println(table.getDealerPoints());
+            }
+            else{
+                i = 1000;
+            }
+        }
+
+        System.out.println("playerhand ========== " + playerHand);
+        System.out.println("Dealerhand ========== " + dealerCards);
+
     }
 }
 
