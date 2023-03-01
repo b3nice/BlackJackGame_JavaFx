@@ -50,15 +50,22 @@ public class BlackJackGameView extends GridPane {
     HBox hBoxPlayerSplitCards;
 
     ImageView[] imageViewPlayerCards;
+
     ImageView[] imageViewPlayerSplitCards;
 
     HBox hBoxBetAmounts;
+
+    public HBox gethBoxBetAmounts() {
+        return hBoxBetAmounts;
+    }
+
     Button buttonBet5;
     Button buttonBet10;
     Button buttonBet20;
     Button buttonBet50;
     Button buttonBetClear;
     Button buttonExit;
+    Button buttonBet;
     Label labelPlayerName;
 
 
@@ -92,6 +99,9 @@ public class BlackJackGameView extends GridPane {
 
     public Button getButtonExit() {
         return buttonExit;
+    }
+    public Button getButtonBet() {
+        return buttonBet;
     }
 
     public BlackJackGameView(){
@@ -163,6 +173,7 @@ public class BlackJackGameView extends GridPane {
         buttonBet50 = new Button("50");
         buttonBetClear = new Button("Clear");
         buttonExit = new Button("Exit");
+        buttonBet = new Button("Bet");
         labelPlayerName = new Label("Player Name");
 
     }
@@ -205,7 +216,7 @@ public class BlackJackGameView extends GridPane {
 
 
         hBoxTopPane.getChildren().addAll(spacersTop[0], labelDealer, spacersTop[1], spacersTop[2], labelBalance);
-        hBoxBetAmounts.getChildren().addAll(buttonBet5, buttonBet10, buttonBet20, buttonBet50, buttonBetClear);
+        hBoxBetAmounts.getChildren().addAll(buttonBet5, buttonBet10, buttonBet20, buttonBet50, buttonBetClear, buttonBet);
         hBoxTopPane.setAlignment(Pos.CENTER);
 
         this.setGridLinesVisible(true);
@@ -266,6 +277,7 @@ public class BlackJackGameView extends GridPane {
         buttonBet50.setStyle("-fx-font-size: 20px;");
         buttonBetClear.setStyle("-fx-font-size: 20px;");
         buttonExit.setStyle("-fx-font-size: 20px;");
+        buttonBet.setStyle("-fx-font-size: 20px;");
         buttonHit.setStyle("-fx-font-size: 20px;");
         buttonStand.setStyle("-fx-font-size: 20px;");
         buttonDouble.setStyle("-fx-font-size: 20px;");

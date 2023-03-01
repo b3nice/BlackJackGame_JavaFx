@@ -6,11 +6,14 @@ public class Table {
 
     private final Player player;
     private final Game game;
+    private final Deck deck;
 
     public Table(Game game, Player player) {
         this.game = game;
         this.player = player;
+        this.deck = new Deck();
     }
+
     private int statHolder = 0;
     public int getStatHolder() {
         return statHolder;
@@ -61,7 +64,7 @@ public class Table {
         this.bet = bet;
     }
 
-    private int bet2 = 0;
+    private int bet2;
     public int getBet2() {
         return bet2;
     }
@@ -103,23 +106,32 @@ public class Table {
         this.dealerCards = dealerCards;
     }
 
+    private String anwser;
+    public String getAnwser() {
+        return anwser;
+    }
+    public void setAnwser(String anwser) {
+        this.anwser = anwser;
+    }
 
-    Deck deck = new Deck();
+    private String anwser2;
+    public String getAnwser2() {
+        return anwser2;
+    }
+    public void setAnwser2(String anwser2) {
+        this.anwser2 = anwser2;
+    }
+
     String SplitValidation = " ";
 
     public void dealCards() {
         dealerCards.clear();
         SplitValidation = " ";
 
-        System.out.println("How many chips would you like to bet: ");
-        System.out.println("You have " + player.getBalance() + " chips");
-
-        System.out.println(player.getName() + ":");
         System.out.println("[" + deck.getDeckCards().get(0) + "]");
         setFirstCardPlayer(deck.getDeckCards().get(0));
         deck.takeTopCard();
 
-        System.out.println(player.getName() + ":");
         System.out.println("[" + getFirstCardPlayer() + "] [" + deck.getDeckCards().get(0) + "]");
         setSecondCardPlayer(deck.getDeckCards().get(0));
         deck.takeTopCard();
@@ -141,8 +153,6 @@ public class Table {
             System.out.println("Would you like to split? (y or n) ");
             //SplitValidation = keyboard.nextLine();
             if (SplitValidation.equals("y")) {
-
-                System.out.println("hzhehehhzefhzhefhzf");
 
                 ArrayList<Card> playerFirstCard = new ArrayList<>();
                 playerFirstCard.add(getFirstCardPlayer());
@@ -178,6 +188,7 @@ public class Table {
     int statusCopy = 1;
     int secondStatusCopy = 1;
 
+
     public void hitStandDoubleOrSplit() {
         setPlayerPoints(calculateTotalPoints(getPlayerCards()));
         setPlayerPoints2(calculateTotalPoints(getPlayerCards2()));
@@ -187,7 +198,6 @@ public class Table {
         } else {
             do {
                 System.out.println("Do you want to Hit, Stand or Double: ");
-                String anwser = keyboard.nextLine();
                 int hand = 1;
                 switch (anwser) {
                     case "Hit" -> {
@@ -216,7 +226,6 @@ public class Table {
         if (getStatHolder() != 2){
             do {
                 System.out.println("Do you want to Hit, Stand or Double for your first deck: ");
-                String anwser;
                 switch (anwser) {
                     case "Hit" -> {
                         hit(dealerCards,getPlayerCards(), hand1);
@@ -237,7 +246,6 @@ public class Table {
             }
             while (getPlayerPoints() < 21 && status == 1);
             do {
-                String anwser2;
                 switch (anwser2) {
                     case "Hit" -> {
                         setPlayerPoints2(calculateTotalPoints(getPlayerCards2()));

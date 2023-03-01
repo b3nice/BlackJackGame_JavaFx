@@ -6,9 +6,11 @@ public class BlackJackModel {
     private Player player;
 
     public BlackJackModel() {
-
-        game = new Game(table = new Table(game,player = new Player(getName(), table)), player);
-
+        game = new Game();
+        player = new Player();
+        table = new Table(game, player);
+        game.setTable(table);
+        game.setPlayer(player);
     }
 
     public String getName() {
@@ -19,14 +21,17 @@ public class BlackJackModel {
         this.game.setName(name);
     }
 
-    private int bet;
-
     public void setBet(int bet) {
         this.table.setBet(bet);
     }
 
+    public int getBet() {
+        return this.table.getBet();
+    }
+
     public void startGame(){
-        game.startGame();
+        player.setBalance(200);
+        table.dealCards();
     }
 
 

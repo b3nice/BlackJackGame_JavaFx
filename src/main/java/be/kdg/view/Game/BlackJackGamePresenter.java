@@ -5,6 +5,7 @@ import be.kdg.view.Start.BlackJackStartPresenter;
 import be.kdg.view.Start.BlackJackStartView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 
 public class BlackJackGamePresenter {
     private BlackJackModel model;
@@ -18,7 +19,6 @@ public class BlackJackGamePresenter {
     }
 
     private void addEventHandlers(){
-        model.startGame();
         view.getButtonExit().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -93,6 +93,19 @@ public class BlackJackGamePresenter {
                 int value = 0;
                 view.getLabelBet().setText(String.valueOf(value));
                 model.setBet(value);
+            }
+        });
+        view.getButtonBet().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                if (model.getBet() == 0){
+                        Alert alert = new Alert(Alert.AlertType.WARNING, "You cannot bet nothing, please bet an amount.");
+                        alert.showAndWait();
+                }
+                else{
+                    view.gethBoxBetAmounts().setVisible(false);
+                    model.startGame();
+                }
             }
         });
     }

@@ -1,27 +1,21 @@
 package be.kdg.model;
 
-import java.util.ArrayList;
-
 public class Player {
+    public Player() {
+    }
 
-
-    private final String name;
-    private final Table table;
-
+    private String name;
     public String getName() {
         return name;
     }
-
-    public Player(String name, Table table) {
+    public void setName(String name) {
         this.name = name;
-        this.table = table;
     }
-    private int balance;
 
+    private int balance;
     public int getBalance() {
         return balance;
     }
-
     public void setBalance(int balance) {
         this.balance = balance;
     }

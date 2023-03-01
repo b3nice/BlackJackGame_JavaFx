@@ -28,7 +28,7 @@ public class BlackJackNamePresenter {
                 String nameInField = view.getTextFieldName().getText();
 
                 if (nameInField.isEmpty()) {
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Please enter a value in the textfield.");
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "Please enter your username in the textfield.");
                     alert.showAndWait();
                 } else {
                     model.setName(nameInField);

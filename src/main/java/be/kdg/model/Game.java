@@ -2,28 +2,21 @@ package be.kdg.model;
 
 
 public class Game {
-
-    private final Player player;
-    private Table table;
-
-    public Game(Table table, Player player) {
-        this.table = table;
+    private  Player player;
+    public void setPlayer(Player player) {
         this.player = player;
     }
-
-    private String name;
+    private Table table;
+    public void setTable(Table table) {
+        this.table = table;
+    }
 
     public String getName() {
-        return name;
+        return this.player.getName();
     }
 
     public void setName(String name) {
-        this.name = name;
-    }
-
-    public void startGame(){
-        player.setBalance(200);
-        table.dealCards();
+        this.player.setName(name);
     }
 
     public void youLost(){

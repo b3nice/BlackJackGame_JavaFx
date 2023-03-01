@@ -27,6 +27,6 @@ public class Card {
 
     @Override
     public String toString() {
-        return  number + " " + suit + " " + imagePath;
+        return imagePath;
     }
 }

@@ -10,23 +10,19 @@ public class Deck {
         return deckCards;
     }
 
-
     public Deck() {
-
         Suit Hearts = Suit.HEARTS;
         Suit Spades = Suit.SPADES;
         Suit Clubs = Suit.CLUBS;
         Suit Diamonds = Suit.DIAMONDS;
 
         for (int i = 1; i <= 10; i++) {
-
             deckCards.add(new Card(i, Hearts));
             deckCards.add(new Card(i, Spades));
             deckCards.add(new Card(i, Clubs));
             deckCards.add(new Card(i, Diamonds));
         }
         for (int i = 1; i <= 3; i++) {
-
             deckCards.add(new Card(i, Hearts, "queen"));
             deckCards.add(new Card(i, Spades, "king"));
             deckCards.add(new Card(i, Clubs, "jack"));
