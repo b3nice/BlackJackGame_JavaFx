@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Table {
 
-    private Player player;
-    private Game game;
+    private final Player player;
+    private final Game game;
 
     public Table(Game game, Player player) {
         this.game = game;
@@ -179,7 +179,6 @@ public class Table {
     int secondStatusCopy = 1;
 
     public void hitStandDoubleOrSplit() {
-        Game game = new Game(player);
         setPlayerPoints(calculateTotalPoints(getPlayerCards()));
         setPlayerPoints2(calculateTotalPoints(getPlayerCards2()));
         if (SplitValidation.equals("y")) {
@@ -303,13 +302,13 @@ public class Table {
         dealerPoints = calculateTotalPoints(dealerCards);
 
         if (playerPoints == 21 || playerPoints > dealerPoints && statusCopy == 2 && playerPoints < 21 || dealerPoints > 21 || statusCopy == 3 && playerPoints > dealerPoints) {
-            game.youWon(player, game, table);
+            game.youWon();
         } else if (dealerPoints == 21 || dealerPoints > playerPoints && statusCopy == 2 || playerPoints > 21 || statusCopy == 3 && dealerPoints > playerPoints) {
-            game.youLost(player, game, table);
+            game.youLost();
         } else if (dealerPoints == playerPoints) {
-            game.youDraw(player, game, table);
+            game.youDraw();
         } else {
-            hitStandDoubleOrSplit(player, table);
+            hitStandDoubleOrSplit();
         }
 
     }
@@ -325,14 +324,14 @@ public class Table {
     public void hit(ArrayList<Card> dealerCards, ArrayList<Card> playerHand, int hand) {
 
         System.out.println("you hit");
-        System.out.println(getName() + ":");
+        System.out.println(player.getName() + ":");
 
 
         playerHand.add(deck.getDeckCards().get(0));
         deck.takeTopCard();
 
-        int playerPointss = table.calculateTotalPoints(playerHand);
-        table.setDealerPoints(table.calculateTotalPoints(dealerCards));
+        int playerPointss = calculateTotalPoints(playerHand);
+        setDealerPoints(calculateTotalPoints(dealerCards));
 
         System.out.println(playerHand);
         System.out.println(playerPointss);
@@ -341,7 +340,7 @@ public class Table {
 
         System.out.println("Dealer" + ":");
         System.out.println("[???] " + dealerCards);
-        System.out.println(table.getDealerPoints());
+        System.out.println(getDealerPoints());
 
         if (hand == 1){
             setPlayerCards(playerHand);
@@ -358,12 +357,12 @@ public class Table {
 
         playerHand.add(deck.getDeckCards().get(0));
         deck.takeTopCard();
-        table.calculateTotalPoints(playerCards);
+        calculateTotalPoints(playerCards);
 
-        int playerPointss = table.calculateTotalPoints(playerHand);
-        table.setDealerPoints(table.calculateTotalPoints(dealerCards));
+        int playerPointss = calculateTotalPoints(playerHand);
+        setDealerPoints(calculateTotalPoints(dealerCards));
 
-        System.out.println(getName() + ":");
+        System.out.println(player.getName() + ":");
         System.out.println(playerHand);
         System.out.println(playerPointss);
 
@@ -398,23 +397,23 @@ public class Table {
 
         int limit = 100;
         for (int i = 0; i < limit; i++) {
-            table.setDealerPoints(table.calculateTotalPoints(dealerCards));
-            setPlayerPoints(table.calculateTotalPoints(playerHand));
+            setDealerPoints(calculateTotalPoints(dealerCards));
+            setPlayerPoints(calculateTotalPoints(playerHand));
 
-            if (table.getDealerPoints() < 16) {
-                System.out.println(getName() + ":");
+            if (getDealerPoints() < 16) {
+                System.out.println(player.getName() + ":");
                 System.out.println(playerHand);
                 System.out.println(playerPoints);
 
                 dealerCards.add(deck.getDeckCards().get(0));
                 deck.takeTopCard();
-                table.setDealerCards(dealerCards);
-                table.setDealerPoints(table.calculateTotalPoints(dealerCards));
+                setDealerCards(dealerCards);
+                setDealerPoints(calculateTotalPoints(dealerCards));
 
                 System.out.println("Dealer" + ":");
                 System.out.println(dealerCards);
-                table.setDealerPoints(table.calculateTotalPoints(dealerCards));
-                System.out.println(table.getDealerPoints());
+                setDealerPoints(calculateTotalPoints(dealerCards));
+                System.out.println(getDealerPoints());
             }
             else{
                 i = 1000;

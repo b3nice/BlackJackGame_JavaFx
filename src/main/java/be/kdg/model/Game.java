@@ -1,15 +1,14 @@
 package be.kdg.model;
 
 
-
 public class Game {
 
-    private Player player;
+    private final Player player;
     private Table table;
 
-    public Game(Player player, Table table) {
-        this.player = player;
+    public Game(Table table, Player player) {
         this.table = table;
+        this.player = player;
     }
 
     private String name;
@@ -22,35 +21,39 @@ public class Game {
         this.name = name;
     }
 
+    public void startGame(){
+        player.setBalance(200);
+        table.dealCards();
+    }
 
-    public void youLost(Player player, Game game, Table table){
+    public void youLost(){
         System.out.println("You lost good job");
-        player.setBalance(player.getBalance() - player.getBet());
-        if (player.getStatHolder() == 2)
+        player.setBalance(player.getBalance() - table.getBet());
+        if (table.getStatHolder() == 2)
         {
-            table.conditionDeterminer(player, game, table);
+            table.conditionDeterminer();
         }
-        table.dealCards(player, table);
+        table.dealCards();
     }
 
-    public void youWon(Player player, Game game, Table table){
+    public void youWon(){
         System.out.println("You won good job");
-        player.setBalance(player.getBalance() + player.getBet());
+        player.setBalance(player.getBalance() + table.getBet());
         System.out.println("This is your new balance" + player.getBalance());
-        if (player.getStatHolder() == 2)
+        if (table.getStatHolder() == 2)
         {
-            table.conditionDeterminer(player, game, table);
+            table.conditionDeterminer();
         }
-        table.dealCards(player, table);
+        table.dealCards();
     }
 
-    public void youDraw(Player player, Game game, Table table){
+    public void youDraw(){
         System.out.println("You draw good job");
-        if (player.getStatHolder() == 2)
+        if (table.getStatHolder() == 2)
         {
-            table.conditionDeterminer(player, game, table);
+            table.conditionDeterminer();
         }
-        table.dealCards(player, table);
+        table.dealCards();
     }
 }
 

@@ -2,11 +2,13 @@ package be.kdg.model;
 
 public class BlackJackModel {
     private Game game;
+    private Table table;
     private Player player;
-    private Table table = new Table(game, player);
 
     public BlackJackModel() {
-        game = new Game(player = new Player(game.getName(), table);
+
+        game = new Game(table = new Table(game,player = new Player(getName(), table)), player);
+
     }
 
     public String getName() {
@@ -20,12 +22,11 @@ public class BlackJackModel {
     private int bet;
 
     public void setBet(int bet) {
-        this.player.setBet(bet);
+        this.table.setBet(bet);
     }
 
     public void startGame(){
-        player.setBalance(200);
-        table.dealCards(player, table);
+        game.startGame();
     }
 
 
