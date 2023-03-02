@@ -12,22 +12,44 @@ import javafx.scene.text.Font;
 
 public class BlackJackGameView extends GridPane {
 
-    HBox hBoxTopPane;
     Label labelDealer;
+
+    HBox hBoxBalance;
     Label labelBalance;
+    Label labelBalanceNumber;
+
+    public Label getLabelBalanceNumber() {
+        return labelBalanceNumber;
+    }
 
     HBox hBoxDealerCards;
+
+    HBox hBoxSumCardsDealer;
     Label labelSumCardsDealer;
+    Label labelSumCardsDealerNumber;
+    public Label getLabelSumCardsDealerNumber() {
+        return labelSumCardsDealerNumber;
+    }
+
     ImageView[] imageViewDealerCards;
     public ImageView[] getImageViewDealerCards() {
         return imageViewDealerCards;
     }
 
     HBox hBoxH_S_D_S;
+
+    public HBox gethBoxH_S_D_S() {
+        return hBoxH_S_D_S;
+    }
+
     Button buttonHit;
     Button buttonStand;
     Button buttonDouble;
     Button buttonSplit;
+
+    public Button getButtonSplit() {
+        return buttonSplit;
+    }
 
     HBox hBoxAmountBet;
     Label labelAmountBet;
@@ -38,17 +60,14 @@ public class BlackJackGameView extends GridPane {
         return labelBet;
     }
 
-    public Label getLabelAmountBet() {
-        return labelAmountBet;
-    }
-
-    public void setLabelAmountBet(Label labelAmountBet) {
-        this.labelAmountBet = labelAmountBet;
-    }
-
     HBox hBoxPlayerCards;
 
+    HBox hBoxSumCardsPlayer;
     Label labelSumCardsPlayer;
+    Label labelSumCardsPlayerNumber;
+    public Label getLabelSumCardsPlayerNumber() {
+        return labelSumCardsPlayerNumber;
+    }
 
     HBox hBoxPlayerSplitCards;
 
@@ -123,13 +142,24 @@ public class BlackJackGameView extends GridPane {
     }
 
     private void initialiseNodes(){
-        hBoxTopPane = new HBox();
         labelDealer = new Label("Dealer");
+
+        hBoxBalance = new HBox();
         labelBalance = new Label("Balance: ");
+        labelBalanceNumber = new Label("200");
+        hBoxBalance.getChildren().addAll(labelBalance,labelBalanceNumber);
 
         hBoxDealerCards = new HBox();
+
+        hBoxSumCardsDealer = new HBox();
         labelSumCardsDealer = new Label("Sum Cards: ");
+        labelSumCardsDealerNumber = new Label("0");
+        hBoxSumCardsDealer.getChildren().addAll(labelSumCardsDealer, labelSumCardsDealerNumber);
+
+        hBoxSumCardsPlayer = new HBox();
         labelSumCardsPlayer = new Label("Sum Cards: ");
+        labelSumCardsPlayerNumber = new Label("0");
+        hBoxSumCardsPlayer.getChildren().addAll(labelSumCardsPlayer, labelSumCardsPlayerNumber);
 
         imageViewDealerCards = new ImageView[5];
         imageViewPlayerCards = new ImageView[5];
@@ -189,7 +219,7 @@ public class BlackJackGameView extends GridPane {
         buttonExit = new Button("Exit");
         buttonBet = new Button("Bet");
         labelPlayerName = new Label("Player Name");
-
+        hBoxBetAmounts.getChildren().addAll(buttonBet5, buttonBet10, buttonBet20, buttonBet50, buttonBetClear, buttonBet);
     }
 
     private void layoutNodes(){
@@ -229,18 +259,17 @@ public class BlackJackGameView extends GridPane {
 
 
 
-        hBoxTopPane.getChildren().addAll(spacersTop[0], labelDealer, spacersTop[1], spacersTop[2], labelBalance);
-        hBoxBetAmounts.getChildren().addAll(buttonBet5, buttonBet10, buttonBet20, buttonBet50, buttonBetClear, buttonBet);
-        hBoxTopPane.setAlignment(Pos.CENTER);
 
-        this.setGridLinesVisible(true);
+
+
+        //this.setGridLinesVisible(true);
 
         ColumnConstraints col1 = new ColumnConstraints();
-        col1.setPercentWidth(25);
+        col1.setPercentWidth(27.5);
         ColumnConstraints col2 = new ColumnConstraints();
-        col2.setPercentWidth(50);
+        col2.setPercentWidth(45);
         ColumnConstraints col3 = new ColumnConstraints();
-        col3.setPercentWidth(25);
+        col3.setPercentWidth(27.5);
         this.getColumnConstraints().addAll(col1, col2, col3);
 
         RowConstraints row1 = new RowConstraints();
@@ -258,12 +287,12 @@ public class BlackJackGameView extends GridPane {
         this.getRowConstraints().addAll(row1, row2, row3, row4, row5, row6);
 
         this.add(labelDealer,1,0);
-        this.add(labelBalance,2,0);
-        this.add(labelSumCardsDealer,0,1);
+        this.add(hBoxBalance,2,0);
+        this.add(hBoxSumCardsDealer,0,1);
         this.add(hBoxDealerCards, 1, 1);
         this.add(hBoxH_S_D_S, 1, 2);
         this.add(hBoxAmountBet, 1, 3);
-        this.add(labelSumCardsPlayer,0,4);
+        this.add(hBoxSumCardsPlayer,0,4);
         this.add(hBoxPlayerCards, 1, 4);
         this.add(hBoxPlayerSplitCards, 2, 4);
         this.add(hBoxBetAmounts,0,5);
@@ -271,19 +300,27 @@ public class BlackJackGameView extends GridPane {
         this.add(buttonExit,2,5);
 
 
-        labelBalance.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
-        labelSumCardsPlayer.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
-        labelSumCardsDealer.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
+        hBoxBalance.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
+        hBoxSumCardsPlayer.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
+        hBoxSumCardsDealer.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
         labelDealer.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
         labelPlayerName.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
         hBoxAmountBet.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
+        hBoxPlayerCards.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
+        hBoxDealerCards.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
+        hBoxH_S_D_S.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
+        hBoxBetAmounts.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
+
 
         labelDealer.setFont(new Font(20));
         labelAmountBet.setFont(new Font(20));
         labelPlayerName.setFont(new Font(20));
         labelBalance.setFont(new Font(20));
+        labelBalanceNumber.setFont(new Font(20));
         labelSumCardsDealer.setFont(new Font(20));
+        labelSumCardsDealerNumber.setFont(new Font(20));
         labelSumCardsPlayer.setFont(new Font(20));
+        labelSumCardsPlayerNumber.setFont(new Font(20));
         labelBet.setFont(new Font(20));
         buttonBet5.setStyle("-fx-font-size: 20px;");
         buttonBet10.setStyle("-fx-font-size: 20px;");
@@ -298,17 +335,16 @@ public class BlackJackGameView extends GridPane {
         buttonSplit.setStyle("-fx-font-size: 20px;");
 
 
-
-        GridPane.setHalignment(labelBalance,HPos.CENTER);
         GridPane.setHalignment(labelDealer,HPos.CENTER);
-        GridPane.setHalignment(labelSumCardsDealer,HPos.CENTER);
-        GridPane.setHalignment(labelSumCardsPlayer,HPos.CENTER);
         GridPane.setHalignment(labelPlayerName,HPos.CENTER);
         GridPane.setHalignment(buttonExit, HPos.RIGHT);
         GridPane.setValignment(buttonExit, VPos.BOTTOM);
 
 
         hBoxDealerCards.setAlignment(Pos.CENTER);
+        hBoxBalance.setAlignment(Pos.CENTER);
+        hBoxSumCardsPlayer.setAlignment(Pos.CENTER);
+        hBoxSumCardsDealer.setAlignment(Pos.CENTER);
         hBoxH_S_D_S.setAlignment(Pos.CENTER);
         hBoxAmountBet.setAlignment(Pos.CENTER);
         hBoxPlayerCards.setAlignment(Pos.CENTER);

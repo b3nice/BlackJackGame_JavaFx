@@ -15,6 +15,7 @@ public class BlackJackGamePresenter {
     public BlackJackGamePresenter(BlackJackGameView view, BlackJackModel model) {
         this.model = model;
         this.view = view;
+        view.gethBoxH_S_D_S().setDisable(true);
         addEventHandlers();
         updateView();
     }
@@ -104,7 +105,9 @@ public class BlackJackGamePresenter {
                     Alert alert = new Alert(Alert.AlertType.WARNING, "You cannot bet nothing, please bet an amount.");
                     alert.showAndWait();
                 } else {
-                    view.gethBoxBetAmounts().setVisible(false);
+                    view.gethBoxH_S_D_S().setDisable(false);
+                    view.gethBoxBetAmounts().setDisable(true);
+                    view.getButtonExit().setDisable(true);
                     model.startGame();
 
                     ImageViewSetter imageViewSetter = new ImageViewSetter(view.getImageViewPlayerCards());
@@ -115,6 +118,10 @@ public class BlackJackGamePresenter {
                     ImageViewSetter imageViewSetter1 = new ImageViewSetter(view.getImageViewDealerCards());
                     imageViewSetter1.setImage(0, new Image("/RedCardBack.PNG"));
                     imageViewSetter1.setImage(1, new Image(String.valueOf(model.getDealerCards().get(0))));
+                    if (model.getFirstCardPlayer().getNumber() != model.getSecondCardPlayer().getNumber()){
+                        view.getButtonSplit().setDisable(true);
+                    }
+                    updateView();
                 }
             }
         });
@@ -122,5 +129,8 @@ public class BlackJackGamePresenter {
 
     private void updateView() {
         view.getLabelPlayerName().setText(model.getName());
+        view.getLabelBalanceNumber().setText(String.valueOf(model.getBalance()));
+        view.getLabelSumCardsPlayerNumber().setText(String.valueOf(model.getPlayerPoints()));
+        view.getLabelSumCardsDealerNumber().setText(String.valueOf(model.getDealerPoints()));
     }
 }

@@ -13,6 +13,10 @@ public class Card {
         return number;
     }
 
+    public void setNumber(int number) {
+        this.number = number;
+    }
+
     public Card(int number, Suit suit) {
         this.number = number;
         this.suit = suit;

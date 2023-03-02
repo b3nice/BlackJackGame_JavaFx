@@ -6,6 +6,11 @@ import java.util.Collections;
 public class Deck {
 
     private ArrayList<Card> deckCards = new ArrayList<>();
+
+    public void setDeckCards(ArrayList<Card> deckCards) {
+        this.deckCards = deckCards;
+    }
+
     public ArrayList<Card> getDeckCards() {
         return deckCards;
     }
@@ -23,10 +28,10 @@ public class Deck {
             deckCards.add(new Card(i, Diamonds));
         }
         for (int i = 1; i <= 3; i++) {
-            deckCards.add(new Card(i, Hearts, "queen"));
-            deckCards.add(new Card(i, Spades, "king"));
-            deckCards.add(new Card(i, Clubs, "jack"));
-            deckCards.add(new Card(i, Diamonds, "ace"));
+            deckCards.add(new Card(10, Hearts, "queen"));
+            deckCards.add(new Card(10, Spades, "king"));
+            deckCards.add(new Card(10, Clubs, "jack"));
+            deckCards.add(new Card(11, Diamonds, "ace"));
         }
         shuffleDeckCards(deckCards);
         System.out.println(deckCards);

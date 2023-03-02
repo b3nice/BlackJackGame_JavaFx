@@ -10,6 +10,7 @@ public class BlackJackModel {
     public BlackJackModel() {
         game = new Game();
         player = new Player();
+        player.setBalance(200);
         table = new Table(game, player);
         game.setTable(table);
         game.setPlayer(player);
@@ -32,7 +33,6 @@ public class BlackJackModel {
     }
 
     public void startGame(){
-        player.setBalance(200);
         table.dealCards();
     }
 
@@ -47,5 +47,15 @@ public class BlackJackModel {
     public ArrayList<Card> getDealerCards() {
         return this.table.getDealerCards();
     }
+
+    public int getDealerPoints() {
+        return this.table.getDealerPoints();
+    }
+
+    public int getPlayerPoints() {
+        return this.table.getPlayerPoints();
+    }
+
+    public int getBalance(){return this.player.getBalance();}
 
 }
