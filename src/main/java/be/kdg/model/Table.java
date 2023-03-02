@@ -152,8 +152,6 @@ public class Table {
 
     public void splitOption() {
         if (firstCardPlayer.getNumber() == secondCardPlayer.getNumber()) {
-            System.out.println("Would you like to split? (y or n) ");
-            //SplitValidation = keyboard.nextLine();
             if (SplitValidation.equals("y")) {
 
                 ArrayList<Card> playerFirstCard = new ArrayList<>();
@@ -199,7 +197,8 @@ public class Table {
             setBet2(bet);
         } else {
             do {
-                System.out.println("Do you want to Hit, Stand or Double: ");
+                playerPoints = (calculateTotalPoints(playerCards));
+                playerPoints2 = (calculateTotalPoints(playerCards2));
                 int hand = 1;
                 switch (anwser) {
                     case "Hit" -> {
@@ -215,7 +214,7 @@ public class Table {
                         status = 3;
                     }
                 }
-
+                anwser = " ";
             }
             while (status == 1 && playerPoints < 21);
         }
@@ -225,6 +224,7 @@ public class Table {
     public void splitGame() {
         int hand1 = 1;
         int hand2 = 2;
+
         if (statHolder != 2){
             do {
                 System.out.println("Do you want to Hit, Stand or Double for your first deck: ");
@@ -274,6 +274,8 @@ public class Table {
     status =0;
     secondStatus =0;
     conditionDeterminer();
+    playerPoints = (calculateTotalPoints(playerCards));
+    playerPoints2 = (calculateTotalPoints(playerCards2));
 }
 
 

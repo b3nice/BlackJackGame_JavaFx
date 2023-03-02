@@ -43,6 +43,11 @@ public class BlackJackGameView extends GridPane {
     }
 
     Button buttonHit;
+
+    public Button getButtonHit() {
+        return buttonHit;
+    }
+
     Button buttonStand;
     Button buttonDouble;
     Button buttonSplit;

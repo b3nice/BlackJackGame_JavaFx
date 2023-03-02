@@ -20,6 +20,9 @@ public class BlackJackGamePresenter {
         updateView();
     }
 
+    int firstIndex = 2;
+    int secondIndex = 2;
+
     private void addEventHandlers() {
         view.getButtonExit().setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -124,6 +127,28 @@ public class BlackJackGamePresenter {
                     updateView();
                 }
             }
+        });
+
+        view.getButtonHit().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                model.setAnwser("Hit");
+                model.splitOption();
+                ImageViewSetter imageViewSetter = new ImageViewSetter(view.getImageViewPlayerCards());
+                imageViewSetter.setImage(firstIndex, new Image(String.valueOf(model.getPlayerCards().get(secondIndex))));
+                firstIndex++;
+                secondIndex++;
+                view.getLabelSumCardsPlayerNumber().setText(String.valueOf(model.getPlayerPoints()));
+                if (model.getPlayerPoints() > 21){
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have lost, your current balance is " + model.getBalance());
+                    alert.showAndWait();
+                } else if (model.getPlayerPoints() == 21) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have Won, your current balance is " + model.getBalance());
+                    alert.showAndWait();
+                }
+
+            }
+
         });
     }
 

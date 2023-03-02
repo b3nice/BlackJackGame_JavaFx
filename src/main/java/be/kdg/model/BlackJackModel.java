@@ -58,4 +58,15 @@ public class BlackJackModel {
 
     public int getBalance(){return this.player.getBalance();}
 
+    public void splitOption(){
+        table.splitOption();
+    }
+    public void setAnwser(String anwser) {
+        this.table.setAnwser(anwser);
+    }
+
+    public ArrayList<Card> getPlayerCards() {
+        return this.table.getPlayerCards();
+    }
+
 }
