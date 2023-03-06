@@ -148,6 +148,12 @@ public class Table {
         this.anwser2 = anwser2;
     }
 
+    private int winOrLoss;
+
+    public int getWinOrLoss() {
+        return winOrLoss;
+    }
+
     String SplitValidation = " ";
 
     public void dealCards() {
@@ -198,8 +204,6 @@ public class Table {
         } else {
             playerCards.add( 0,firstCardPlayer);
             playerCards.add( 1,secondCardPlayer);
-
-            hitStandDoubleOrSplit();
         }
     }
 
@@ -217,18 +221,20 @@ public class Table {
             case "Hit" -> {
                 hit(dealerCards, playerCards, hand);
                 status = 1;
+                statusCopy = 1;
             }
             case "Stand" -> {
                 stand();
                 status = 2;
+                statusCopy = 2;
             }
             case "Double" -> {
                 doubleBet(dealerCards, bet, playerCards, hand);
                 status = 3;
+                statusCopy = 3;
             }
         }
         anwser = " ";
-
     }
 
     public void splitGame() {
@@ -317,17 +323,19 @@ public class Table {
 
 
     public void winOrLoss() {
-        addDealerCards(dealerCards);
+        if (playerPoints < 21){
+            addDealerCards(dealerCards);
+        }
         playerPoints = (calculateTotalPoints(playerCards));
         playerPoints2 = (calculateTotalPoints(playerCards2));
         dealerPoints = calculateTotalPoints(dealerCards);
 
         if (playerPoints == 21 || playerPoints > dealerPoints && statusCopy == 2 && playerPoints < 21 || dealerPoints > 21 || statusCopy == 3 && playerPoints > dealerPoints) {
-            game.youWon();
+            winOrLoss = 1;
         } else if (dealerPoints == 21 || dealerPoints > playerPoints && statusCopy == 2 || playerPoints > 21 || statusCopy == 3 && dealerPoints > playerPoints) {
-            game.youLost();
+            winOrLoss = 2;
         } else if (dealerPoints == playerPoints) {
-            game.youDraw();
+            winOrLoss = 3;
         } else {
             hitStandDoubleOrSplit();
         }

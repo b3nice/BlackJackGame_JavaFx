@@ -34,7 +34,7 @@ public class BlackJackNamePresenter {
                     model.setName(nameInField);
 
                     BlackJackGameView viewGame = new BlackJackGameView();
-                    BlackJackGamePresenter presenterGame = new BlackJackGamePresenter(viewGame, model);
+                    BlackJackGamePresenter presenterGame = new BlackJackGamePresenter(viewGame, model, viewGame.getImageViewMakerAndEditor());
 
                     view.getScene().setRoot(viewGame);
                 }
@@ -43,6 +43,6 @@ public class BlackJackNamePresenter {
 
     }
     private void updateView(){
- 
+
     }
 }

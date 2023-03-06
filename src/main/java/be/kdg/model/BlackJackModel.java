@@ -16,7 +16,8 @@ public class BlackJackModel {
         game.setPlayer(player);
     }
     public void makeNewTable(){
-        table = new Table(game, player);
+        this.table = new Table(game, player);
+        game.setTable(table);
     }
 
     public String getName() {
@@ -70,6 +71,25 @@ public class BlackJackModel {
 
     public ArrayList<Card> getPlayerCards() {
         return this.table.getPlayerCards();
+    }
+
+    public int getWinOrLoss(){
+        return this.table.getWinOrLoss();
+    }
+    public void hitStandDoubleOrSplit(){
+        table.hitStandDoubleOrSplit();
+    }
+    public void conditionDeterminer(){
+        table.conditionDeterminer();
+    }
+    public void youLost(){
+        game.youLost();
+    }
+    public void youWon(){
+        game.youWon();
+    }
+    public void youDraw(){
+        game.youDraw();
     }
 
 }

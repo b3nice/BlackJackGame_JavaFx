@@ -5,12 +5,17 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
 public class BlackJackGameView extends GridPane {
+
+    private ImageViewMakerAndEditor imageViewMakerAndEditor;
+
+    public ImageViewMakerAndEditor getImageViewMakerAndEditor() {
+        return imageViewMakerAndEditor;
+    }
 
     Label labelDealer;
 
@@ -31,25 +36,27 @@ public class BlackJackGameView extends GridPane {
         return labelSumCardsDealerNumber;
     }
 
-    ImageView[] imageViewDealerCards;
-    public ImageView[] getImageViewDealerCards() {
-        return imageViewDealerCards;
-    }
 
     HBox hBoxH_S_D_S;
-
     public HBox gethBoxH_S_D_S() {
         return hBoxH_S_D_S;
     }
 
     Button buttonHit;
-
     public Button getButtonHit() {
         return buttonHit;
     }
 
     Button buttonStand;
+    public Button getButtonStand() {
+        return buttonStand;
+    }
+
     Button buttonDouble;
+    public Button getButtonDouble() {
+        return buttonDouble;
+    }
+
     Button buttonSplit;
 
     public Button getButtonSplit() {
@@ -76,19 +83,7 @@ public class BlackJackGameView extends GridPane {
 
     HBox hBoxPlayerSplitCards;
 
-    ImageView[] imageViewPlayerCards;
-    public ImageView[] getImageViewPlayerCards() {
-        return imageViewPlayerCards;
-    }
 
-    public void setImageViewPlayerCards(ImageView[] imageViewPlayerCards) {
-        this.imageViewPlayerCards = imageViewPlayerCards;
-    }
-
-    ImageView[] imageViewPlayerSplitCards;
-    public ImageView[] getImageViewPlayerSplitCards() {
-        return imageViewPlayerSplitCards;
-    }
 
     HBox hBoxBetAmounts;
 
@@ -147,6 +142,7 @@ public class BlackJackGameView extends GridPane {
     }
 
     private void initialiseNodes(){
+        imageViewMakerAndEditor = new ImageViewMakerAndEditor();
         labelDealer = new Label("Dealer");
 
         hBoxBalance = new HBox();
@@ -166,31 +162,17 @@ public class BlackJackGameView extends GridPane {
         labelSumCardsPlayerNumber = new Label("0");
         hBoxSumCardsPlayer.getChildren().addAll(labelSumCardsPlayer, labelSumCardsPlayerNumber);
 
-        imageViewDealerCards = new ImageView[5];
-        imageViewPlayerCards = new ImageView[5];
-        imageViewPlayerSplitCards = new ImageView[5];
-
-
-        for (int i = 0; i < 5; i++) {
-            imageViewDealerCards[i] = new ImageView((Image) null);
-            imageViewPlayerCards[i] = new ImageView((Image) null);
-        }
-
-        for (int i = 0; i < 5; i++) {
-            imageViewPlayerSplitCards[i] = new ImageView((Image) null);
-        }
-
         double factor = 12;
         double factor1 = 18;
-        for (ImageView imageView : imageViewDealerCards) {
+        for (ImageView imageView : imageViewMakerAndEditor.getImageViewDealerCards()) {
             imageView.fitWidthProperty().bind(this.widthProperty().divide(factor));
             imageView.fitHeightProperty().bind(this.widthProperty().divide(factor/2 * 1.556));
         }
-        for (ImageView imageView : imageViewPlayerCards) {
+        for (ImageView imageView : imageViewMakerAndEditor.getImageViewPlayerCards()) {
             imageView.fitWidthProperty().bind(this.widthProperty().divide(factor));
             imageView.fitHeightProperty().bind(this.widthProperty().divide(factor/2 * 1.556));
         }
-        for (ImageView imageView : imageViewPlayerSplitCards) {
+        for (ImageView imageView : imageViewMakerAndEditor.getImageViewPlayerSplitCards()) {
             imageView.fitWidthProperty().bind(this.widthProperty().divide(factor1));
             imageView.fitHeightProperty().bind(this.widthProperty().divide(factor1/2 * 1.556));
         }
@@ -230,7 +212,7 @@ public class BlackJackGameView extends GridPane {
     private void layoutNodes(){
 
         spacersTop = new Region[3];
-        spacersCenter = new Region[imageViewDealerCards.length + 3];
+        spacersCenter = new Region[imageViewMakerAndEditor.getImageViewDealerCards().length + 3];
 
         for (int i = 0; i < spacersTop.length; i++) {
             spacersTop[i] = new Region();
@@ -246,17 +228,17 @@ public class BlackJackGameView extends GridPane {
         int indexImageviewDealerCards = 0;
         int indexImageViewPlayerCards = 0;
         int indexImageViewPlayerSplitCards = 0;
-        for (ImageView imageView : imageViewDealerCards) {
+        for (ImageView imageView : imageViewMakerAndEditor.getImageViewDealerCards()) {
             ++indexImageviewDealerCards;
             hBoxDealerCards.getChildren().addAll(imageView,spacersCenter[indexImageviewDealerCards]);
         }
 
-        for (ImageView imageView : imageViewPlayerCards) {
+        for (ImageView imageView : imageViewMakerAndEditor.getImageViewPlayerCards()) {
             ++indexImageViewPlayerCards;
             hBoxPlayerCards.getChildren().addAll(imageView,spacersCenter[indexImageViewPlayerCards]);
         }
 
-        for (ImageView imageView : imageViewPlayerSplitCards) {
+        for (ImageView imageView : imageViewMakerAndEditor.getImageViewPlayerSplitCards()) {
             ++indexImageViewPlayerSplitCards;
             hBoxPlayerSplitCards.getChildren().addAll(imageView,spacersCenter[indexImageViewPlayerSplitCards]);
         }
