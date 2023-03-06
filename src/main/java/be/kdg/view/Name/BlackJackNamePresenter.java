@@ -43,6 +43,6 @@ public class BlackJackNamePresenter {
 
     }
     private void updateView(){
-
+ 
     }
 }

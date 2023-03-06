@@ -15,6 +15,9 @@ public class BlackJackModel {
         game.setTable(table);
         game.setPlayer(player);
     }
+    public void makeNewTable(){
+        table = new Table(game, player);
+    }
 
     public String getName() {
         return this.game.getName();

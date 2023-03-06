@@ -168,7 +168,7 @@ public class BlackJackGameView extends GridPane {
 
         imageViewDealerCards = new ImageView[5];
         imageViewPlayerCards = new ImageView[5];
-        imageViewPlayerSplitCards = new ImageView[3];
+        imageViewPlayerSplitCards = new ImageView[5];
 
 
         for (int i = 0; i < 5; i++) {
@@ -176,7 +176,7 @@ public class BlackJackGameView extends GridPane {
             imageViewPlayerCards[i] = new ImageView((Image) null);
         }
 
-        for (int i = 0; i < 3; i++) {
+        for (int i = 0; i < 5; i++) {
             imageViewPlayerSplitCards[i] = new ImageView((Image) null);
         }
 
@@ -243,22 +243,22 @@ public class BlackJackGameView extends GridPane {
             spacersCenter[i].setMaxWidth(Double.MAX_VALUE);
         }
 
-        int ii = 0;
-        int iii = 0;
-        int iiii = 0;
+        int indexImageviewDealerCards = 0;
+        int indexImageViewPlayerCards = 0;
+        int indexImageViewPlayerSplitCards = 0;
         for (ImageView imageView : imageViewDealerCards) {
-            ++ii;
-            hBoxDealerCards.getChildren().addAll(imageView,spacersCenter[ii]);
+            ++indexImageviewDealerCards;
+            hBoxDealerCards.getChildren().addAll(imageView,spacersCenter[indexImageviewDealerCards]);
         }
 
         for (ImageView imageView : imageViewPlayerCards) {
-            ++iii;
-            hBoxPlayerCards.getChildren().addAll(imageView,spacersCenter[iii]);
+            ++indexImageViewPlayerCards;
+            hBoxPlayerCards.getChildren().addAll(imageView,spacersCenter[indexImageViewPlayerCards]);
         }
 
         for (ImageView imageView : imageViewPlayerSplitCards) {
-            ++iiii;
-            hBoxPlayerSplitCards.getChildren().addAll(imageView,spacersCenter[iiii]);
+            ++indexImageViewPlayerSplitCards;
+            hBoxPlayerSplitCards.getChildren().addAll(imageView,spacersCenter[indexImageViewPlayerSplitCards]);
         }
 
 
