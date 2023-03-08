@@ -26,7 +26,6 @@ public class Game {
         {
             table.conditionDeterminer();
         }
-        table.dealCards();
     }
 
     public void youWon(){
@@ -37,7 +36,6 @@ public class Game {
         {
             table.conditionDeterminer();
         }
-        table.dealCards();
     }
 
     public void youDraw(){
@@ -46,7 +44,6 @@ public class Game {
         {
             table.conditionDeterminer();
         }
-        table.dealCards();
     }
 }
 

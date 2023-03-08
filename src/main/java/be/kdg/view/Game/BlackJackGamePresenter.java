@@ -7,36 +7,54 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
+import javafx.stage.Stage;
+
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class BlackJackGamePresenter {
-    private BlackJackModel model;
-    private BlackJackGameView view;
-    private ImageViewMakerAndEditor imageViewMakerAndEditor;
+    private final BlackJackModel model;
+    private final BlackJackGameView view;
+    private final ImageViewMakerAndEditor imageViewMakerAndEditor;
+    private final Stage primaryStage;
 
-    public BlackJackGamePresenter(BlackJackGameView view, BlackJackModel model, ImageViewMakerAndEditor imageViewMakerAndEditor) {
+    public BlackJackGamePresenter(BlackJackGameView view, BlackJackModel model, ImageViewMakerAndEditor imageViewMakerAndEditor,Stage primaryStage) {
         this.model = model;
         this.view = view;
         this.imageViewMakerAndEditor = imageViewMakerAndEditor;
+        this.primaryStage = primaryStage;
+        model.makeNewTable();
+        view.getLabelSumCardsPlayerNumber().setText(String.valueOf(model.getPlayerPoints()));
+        view.getLabelSumCardsDealerNumber().setText(String.valueOf(model.getDealerPoints()));
         view.gethBoxH_S_D_S().setDisable(true);
         addEventHandlers();
         updateView();
     }
 
-    public BlackJackGamePresenter(ImageViewMakerAndEditor imageViewMakerAndEditor) {
-        this.imageViewMakerAndEditor = imageViewMakerAndEditor;
-    }
 
     int firstIndex = 2;
     int secondIndex = 2;
 
     private void addEventHandlers() {
+        view.getLabelSumCardsPlayerNumber().setText(String.valueOf(model.getPlayerPoints()));
+        view.getLabelSumCardsDealerNumber().setText(String.valueOf(model.getDealerPoints()));
         view.getButtonExit().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                String fileName = "src/main/resources/player.txt";
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {
+                    bw.write(model.getPlayer().toString());
+                    bw.newLine();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
                 BlackJackModel newModel = new BlackJackModel();
                 BlackJackStartView viewStart = new BlackJackStartView();
-                BlackJackStartPresenter presenterGame = new BlackJackStartPresenter(viewStart, newModel);
+                BlackJackStartPresenter presenterGame = new BlackJackStartPresenter(viewStart, newModel, primaryStage);
                 view.getScene().setRoot(viewStart);
+
             }
         });
         view.getButtonBet5().setOnAction(new EventHandler<ActionEvent>() {
@@ -167,9 +185,34 @@ public class BlackJackGamePresenter {
             }
 
         });
+        view.getButtonDouble().setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                model.setAnwser("Double");
+                model.hitStandDoubleOrSplit();
+                imageViewMakerAndEditor.setImagePlayer(firstIndex, new Image(String.valueOf(model.getPlayerCards().get(secondIndex))));
+                firstIndex++;
+                secondIndex++;
+                view.getLabelSumCardsPlayerNumber().setText(String.valueOf(model.getPlayerPoints()));
+
+                model.conditionDeterminer();
+                showDealerCards();
+                checkStatusWinOrLoss();
+            }
+
+        });
+
+        primaryStage.setOnCloseRequest(event -> {
+            String fileName = "src/main/resources/player.txt";
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {
+                bw.write(model.getPlayer().toString());
+                bw.newLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
 
     }
-
 
     private void showDealerCards() {
         if (model.getPlayerPoints() < 21){
@@ -200,29 +243,23 @@ public class BlackJackGamePresenter {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have won, your current balance is " + model.getBalance());
         alert.showAndWait();
         refreshView();
-
-        model.makeNewTable();
     }
 
     private void youHaveLost() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have lost, your current balance is " + model.getBalance());
         alert.showAndWait();
         refreshView();
-
-        model.makeNewTable();
     }
 
     private void youHaveDrawn() {
         Alert alert = new Alert(Alert.AlertType.INFORMATION, "You have drawn, your current balance is " + model.getBalance());
         alert.showAndWait();
         refreshView();
-
-        model.makeNewTable();
     }
 
     private void refreshView() {
         BlackJackGameView viewGame = new BlackJackGameView();
-        BlackJackGamePresenter presenterGame = new BlackJackGamePresenter(viewGame, model, viewGame.getImageViewMakerAndEditor());
+        BlackJackGamePresenter presenterGame = new BlackJackGamePresenter(viewGame, model, viewGame.getImageViewMakerAndEditor(), primaryStage);
         model.makeNewTable();
         view.getScene().setRoot(viewGame);
     }

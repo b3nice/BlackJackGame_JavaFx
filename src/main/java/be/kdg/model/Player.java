@@ -1,10 +1,14 @@
 package be.kdg.model;
 
 public class Player {
-    public Player() {
+    private String name;
+    private int balance;
+
+    public Player(String name, int balance) {
+        this.name = name;
+        this.balance = balance;
     }
 
-    private String name;
     public String getName() {
         return name;
     }
@@ -12,12 +16,16 @@ public class Player {
         this.name = name;
     }
 
-    private int balance;
     public int getBalance() {
         return balance;
     }
     public void setBalance(int balance) {
         this.balance = balance;
+    }
+
+    @Override
+    public String toString() {
+        return name + "," + balance;
     }
 
 }

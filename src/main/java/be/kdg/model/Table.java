@@ -15,94 +15,76 @@ public class Table {
     }
 
     private int statHolder = 0;
-
     public int getStatHolder() {
         return statHolder;
     }
-
     public void setStatHolder(int statHolder) {
         this.statHolder = statHolder;
     }
 
     private Card firstCardPlayer;
-
     public Card getFirstCardPlayer() {
         return firstCardPlayer;
     }
-
     public void setFirstCardPlayer(Card firstCardPlayer) {
         this.firstCardPlayer = firstCardPlayer;
     }
 
 
     private Card secondCardPlayer;
-
     public Card getSecondCardPlayer() {
         return secondCardPlayer;
     }
-
     public void setSecondCardPlayer(Card secondCardPlayer) {
         this.secondCardPlayer = secondCardPlayer;
     }
 
 
     private int playerPoints;
-
     public int getPlayerPoints() {
         return playerPoints;
     }
-
     public void setPlayerPoints(int playerPoints) {
         this.playerPoints = playerPoints;
     }
 
     private int playerPoints2;
-
     public int getPlayerPoints2() {
         return playerPoints2;
     }
-
     public void setPlayerPoints2(int playerPoints2) {
         this.playerPoints2 = playerPoints2;
     }
 
     private int bet;
-
     public int getBet() {
         return bet;
     }
-
     public void setBet(int bet) {
         this.bet = bet;
     }
 
     private int bet2;
-
     public int getBet2() {
         return bet2;
     }
-
     public void setBet2(int bet2) {
         this.bet2 = bet2;
     }
 
     private ArrayList<Card> playerCards = new ArrayList<>();
-
     public ArrayList<Card> getPlayerCards() {
         return playerCards;
     }
-
     public void setPlayerCards(ArrayList<Card> playerCards) {
         this.playerCards = playerCards;
     }
 
 
     private ArrayList<Card> playerCards2 = new ArrayList<>();
-
     public ArrayList<Card> getPlayerCards2() {
         return playerCards2;
     }
-
     public void setPlayerCards2(ArrayList<Card> playerCards2) {
         this.playerCards2 = playerCards2;
     }

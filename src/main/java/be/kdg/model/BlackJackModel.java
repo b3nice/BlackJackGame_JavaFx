@@ -7,9 +7,13 @@ public class BlackJackModel {
     private Table table;
     private Player player;
 
+    public Player getPlayer() {
+        return player;
+    }
+
     public BlackJackModel() {
         game = new Game();
-        player = new Player();
+        player = new Player(" ", 200);
         player.setBalance(200);
         table = new Table(game, player);
         game.setTable(table);
@@ -68,6 +72,9 @@ public class BlackJackModel {
     public void setAnwser(String anwser) {
         this.table.setAnwser(anwser);
     }
+    public void setBalance(int balance) {
+        this.player.setBalance(balance);
+    }
 
     public ArrayList<Card> getPlayerCards() {
         return this.table.getPlayerCards();
@@ -91,5 +98,6 @@ public class BlackJackModel {
     public void youDraw(){
         game.youDraw();
     }
+
 
 }

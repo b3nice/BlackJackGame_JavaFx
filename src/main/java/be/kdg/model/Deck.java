@@ -34,7 +34,6 @@ public class Deck {
             deckCards.add(new Card(11, Diamonds, "ace"));
         }
         shuffleDeckCards(deckCards);
-        System.out.println(deckCards);
     }
 
     public void shuffleDeckCards(ArrayList<Card> deckCards){
