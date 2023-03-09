@@ -27,12 +27,20 @@ public class Deck {
             deckCards.add(new Card(i, Clubs));
             deckCards.add(new Card(i, Diamonds));
         }
-        for (int i = 1; i <= 3; i++) {
-            deckCards.add(new Card(10, Hearts, "queen"));
-            deckCards.add(new Card(10, Spades, "king"));
-            deckCards.add(new Card(10, Clubs, "jack"));
-            deckCards.add(new Card(11, Diamonds, "ace"));
+
+        ArrayList<String> nameCardQKJA = new ArrayList<>();
+        nameCardQKJA.add("queen");
+        nameCardQKJA.add("king");
+        nameCardQKJA.add("jack");
+        nameCardQKJA.add("ace");
+
+        for (String nameCard:nameCardQKJA) {
+            deckCards.add(new Card(10, Hearts, nameCard));
+            deckCards.add(new Card(10, Spades, nameCard));
+            deckCards.add(new Card(10, Clubs, nameCard));
+            deckCards.add(new Card(11, Diamonds, nameCard));
         }
+
         shuffleDeckCards(deckCards);
     }
 

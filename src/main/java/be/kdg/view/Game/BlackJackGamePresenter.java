@@ -190,6 +190,7 @@ public class BlackJackGamePresenter {
             public void handle(ActionEvent actionEvent) {
                 model.setSplitValidation("y");
                 checkSplitOption();
+                view.getButtonSplit().setDisable(true);
             }
 
         });
@@ -218,8 +219,6 @@ public class BlackJackGamePresenter {
         }
         if (model.getSplitValidation().equals("y")) {
             model.splitOption();
-        } else if (teller == 0) {
-            model.splitOption();
         }
     }
 
@@ -238,13 +237,14 @@ public class BlackJackGamePresenter {
             checkStatusWinOrLoss();
         } else if (model.getSplitValidation().equals("y")) {
             model.splitGame();
+            model.conditionDeterminer();
         }
 
     }
 
     public void showDealerCards() {
         if (model.getPlayerPoints() <= 21 && model.getDealerPoints() < model.getPlayerPoints()) {
-            if (model.getWinOrLoss() == 1 || model.getWinOrLoss() == 2 || model.getWinOrLoss() == 3) {
+            if (model.getWinOrLossValue() == 1 || model.getWinOrLossValue() == 2 || model.getWinOrLossValue() == 3) {
                 imageViewMakerAndEditor.setImageDealer(0, new Image(String.valueOf(model.getDealerCards().get(1))));
                 for (int i = 2; i < model.getDealerCards().size(); i++) {
                     imageViewMakerAndEditor.setImageDealer(i, new Image(String.valueOf(model.getDealerCards().get(i))));
@@ -255,13 +255,16 @@ public class BlackJackGamePresenter {
     }
 
     public void checkStatusWinOrLoss() {
-        if (model.getWinOrLoss() == 2) {
+        if (model.getWinOrLossValue() == 2) {
+            model.setStatHolder(2);
             model.youLost();
             youHaveLost();
-        } else if (model.getWinOrLoss() == 1) {
+        } else if (model.getWinOrLossValue() == 1) {
+            model.setStatHolder(2);
             model.youWon();
             youHaveWon();
-        } else if (model.getWinOrLoss() == 3) {
+        } else if (model.getWinOrLossValue() == 3) {
+            model.setStatHolder(2);
             model.youDraw();
             youHaveDrawn();
         }

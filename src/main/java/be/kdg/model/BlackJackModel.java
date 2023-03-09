@@ -15,12 +15,12 @@ public class BlackJackModel {
         game = new Game();
         player = new Player(" ", 200);
         player.setBalance(200);
-        table = new Table(game, player);
+        table = new Table(player);
         game.setTable(table);
         game.setPlayer(player);
     }
     public void makeNewTable(){
-        this.table = new Table(game, player);
+        this.table = new Table(player);
         game.setTable(table);
     }
 
@@ -83,8 +83,8 @@ public class BlackJackModel {
         return this.table.getPlayerCards();
     }
 
-    public int getWinOrLoss(){
-        return this.table.getWinOrLoss();
+    public int getWinOrLossValue(){
+        return this.table.getWinOrLossValue();
     }
     public void hitStandDoubleOrSplit(){
         table.hitStandDoubleOrSplit();
@@ -112,4 +112,7 @@ public class BlackJackModel {
         this.table.splitGame();
     }
 
+    public void setStatHolder(int statHolder) {
+        this.table.setStatHolder(statHolder);
+    }
 }

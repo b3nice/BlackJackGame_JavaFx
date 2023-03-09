@@ -3,11 +3,9 @@ package be.kdg.view.Name;
 import javafx.application.Platform;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyCode;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -16,11 +14,11 @@ public class BlackJackNameView extends GridPane {
 
     TextField textFieldName;
     Button buttonNext;
+    Tooltip tooltipName;
 
     public TextField getTextFieldName() {
         return textFieldName;
     }
-
     public void setTextFieldName(TextField textFieldName) {
         this.textFieldName = textFieldName;
     }
@@ -29,6 +27,9 @@ public class BlackJackNameView extends GridPane {
         return buttonNext;
     }
 
+    public Tooltip getTooltipName() {
+        return tooltipName;
+    }
 
     public BlackJackNameView(){
         this.initialiseNodes();
@@ -36,22 +37,23 @@ public class BlackJackNameView extends GridPane {
     }
 
     private void initialiseNodes(){
+        tooltipName = new Tooltip("Please enter a username!");
+        tooltipName.setStyle("-fx-text-fill: red;");
         textFieldName = new TextField();
         textFieldName.setPromptText("Enter your username here");
         buttonNext = new Button("Next");
 
-        textFieldName.setPrefWidth(200);
-        textFieldName.setMaxWidth(200);
 
-        this.setOnMouseClicked(event -> {
-            this.requestFocus();
-        });
 
         textFieldName.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
         buttonNext.setStyle("-fx-font-size: 20px;");
     }
 
     private void layoutNodes(){
+        this.setOnMouseClicked(event -> {
+            this.requestFocus();
+        });
+
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setPercentWidth(20);
         ColumnConstraints col2 = new ColumnConstraints();
@@ -76,6 +78,8 @@ public class BlackJackNameView extends GridPane {
         row5.setPercentHeight(20);
         this.getRowConstraints().addAll(row1, row2, row3, row4, row5);
 
+        textFieldName.setPrefWidth(200);
+        textFieldName.setMaxWidth(200);
 
         this.add(textFieldName,2,2);
         this.add(buttonNext,2,4);

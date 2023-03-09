@@ -38,6 +38,7 @@ public class BlackJackNamePresenter {
 
                 if (nameInField.isEmpty()) {
                     Alert alert = new Alert(Alert.AlertType.WARNING, "Please enter your username in the textfield.");
+                    view.getTextFieldName().setTooltip(view.getTooltipName());
                     alert.showAndWait();
                 } else {
                     model.setName(nameInField);
@@ -83,7 +84,6 @@ public class BlackJackNamePresenter {
                     String balance = valueArrayList.substring(spaceIndex + 1);
                     model.setBalance(Integer.parseInt(balance));
                 }
-                //line index verwijderen en dan opnieuw schrijven.
             }
         }
     }

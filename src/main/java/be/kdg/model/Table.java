@@ -5,139 +5,166 @@ import java.util.ArrayList;
 public class Table {
 
     private final Player player;
-    private final Game game;
     private final Deck deck;
 
-    public Table(Game game, Player player) {
-        this.game = game;
+    public Table(Player player) {
         this.player = player;
         this.deck = new Deck();
     }
 
     private int statHolder = 0;
+
     public int getStatHolder() {
         return statHolder;
     }
+
     public void setStatHolder(int statHolder) {
         this.statHolder = statHolder;
     }
 
     private Card firstCardPlayer;
+
     public Card getFirstCardPlayer() {
         return firstCardPlayer;
     }
+
     public void setFirstCardPlayer(Card firstCardPlayer) {
         this.firstCardPlayer = firstCardPlayer;
     }
 
 
     private Card secondCardPlayer;
+
     public Card getSecondCardPlayer() {
         return secondCardPlayer;
     }
+
     public void setSecondCardPlayer(Card secondCardPlayer) {
         this.secondCardPlayer = secondCardPlayer;
     }
 
 
     private int playerPoints;
+
     public int getPlayerPoints() {
         return playerPoints;
     }
+
     public void setPlayerPoints(int playerPoints) {
         this.playerPoints = playerPoints;
     }
 
     private int playerPoints2;
+
     public int getPlayerPoints2() {
         return playerPoints2;
     }
+
     public void setPlayerPoints2(int playerPoints2) {
         this.playerPoints2 = playerPoints2;
     }
 
     private int bet;
+
     public int getBet() {
         return bet;
     }
+
     public void setBet(int bet) {
         this.bet = bet;
     }
 
     private int bet2;
+
     public int getBet2() {
         return bet2;
     }
+
     public void setBet2(int bet2) {
         this.bet2 = bet2;
     }
 
     private ArrayList<Card> playerCards = new ArrayList<>();
+
     public ArrayList<Card> getPlayerCards() {
         return playerCards;
     }
+
     public void setPlayerCards(ArrayList<Card> playerCards) {
         this.playerCards = playerCards;
     }
 
 
     private ArrayList<Card> playerCards2 = new ArrayList<>();
+
     public ArrayList<Card> getPlayerCards2() {
         return playerCards2;
     }
+
     public void setPlayerCards2(ArrayList<Card> playerCards2) {
         this.playerCards2 = playerCards2;
     }
 
     private int dealerPoints;
+
     public int getDealerPoints() {
         return dealerPoints;
     }
+
     public void setDealerPoints(int dealerPoints) {
         this.dealerPoints = dealerPoints;
     }
 
 
     private ArrayList<Card> dealerCards = new ArrayList<>();
+
     public ArrayList<Card> getDealerCards() {
         return dealerCards;
     }
+
     public void setDealerCards(ArrayList<Card> dealerCards) {
         this.dealerCards = dealerCards;
     }
 
     private String anwser;
+
     public String getAnwser() {
         return anwser;
     }
+
     public void setAnwser(String anwser) {
         this.anwser = anwser;
     }
 
     private String anwser2;
+
     public String getAnwser2() {
         return anwser2;
     }
+
     public void setAnwser2(String anwser2) {
         this.anwser2 = anwser2;
     }
 
-    private int winOrLoss;
-    public int getWinOrLoss() {
-        return winOrLoss;
+    private int winOrLossValue;
+
+    public int getWinOrLossValue() {
+        return winOrLossValue;
     }
 
-    private String SplitValidation;
+    private String splitValidation;
+
     public String getSplitValidation() {
-        return SplitValidation;
+        return splitValidation;
     }
+
     public void setSplitValidation(String splitValidation) {
-        SplitValidation = splitValidation;
+        this.splitValidation = splitValidation;
     }
 
     public void dealCards() {
         dealerCards.clear();
-        SplitValidation = "N";
+        splitValidation = "N";
 
         System.out.println("[" + deck.getDeckCards().get(0) + "]");
         setFirstCardPlayer(deck.getDeckCards().get(0));
@@ -162,7 +189,7 @@ public class Table {
 
     public void splitOption() {
         if (firstCardPlayer.getNumber() == secondCardPlayer.getNumber()) {
-            if (SplitValidation.equals("y")) {
+            if (splitValidation.equals("y")) {
                 setBet2(bet);
 
                 playerCards.add(0, firstCardPlayer);
@@ -172,8 +199,8 @@ public class Table {
                 playerCards.add(1, secondCardPlayer);
             }
         } else {
-            playerCards.add( 0,firstCardPlayer);
-            playerCards.add( 1,secondCardPlayer);
+            playerCards.add(0, firstCardPlayer);
+            playerCards.add(1, secondCardPlayer);
         }
     }
 
@@ -191,41 +218,35 @@ public class Table {
         anwser = " ";
     }
 
+
     public void splitGame() {
         int hand1 = 1;
         int hand2 = 2;
 
         if (statHolder != 2) {
-            do {
-                System.out.println("Do you want to Hit, Stand or Double for your first deck: ");
-                checkHitStandOrDouble(hand1);
-            }
-            while (playerPoints < 21 && status == 1);
-            do {
-                switch (anwser2) {
-                    case "Hit" -> {
-                        hit(hand2);
-                        secondStatus = 1;
-                        secondStatusCopy = 1;
-                    }
-                    case "Stand" -> {
-                        stand();
-                        secondStatus = 2;
-                        secondStatusCopy = 2;
-                    }
-                    case "Double" -> {
-                        doubleBet(bet,hand2);
-                        secondStatus = 3;
-                        secondStatusCopy = 3;
-                    }
+            System.out.println("Do you want to Hit, Stand or Double for your first deck: ");
+            checkHitStandOrDouble(hand1);
+        } else {
+            System.out.println("Do you want to Hit, Stand or Double for your second deck: ");
+            switch (anwser) {
+                case "Hit" -> {
+                    hit(hand2);
+                    secondStatus = 1;
+                    secondStatusCopy = 1;
+                }
+                case "Stand" -> {
+                    stand();
+                    secondStatus = 2;
+                    secondStatusCopy = 2;
+                }
+                case "Double" -> {
+                    doubleBet(bet, hand2);
+                    secondStatus = 3;
+                    secondStatusCopy = 3;
                 }
             }
-            while (playerPoints2 < 21 && secondStatus == 1);
         }
-        status = 0;
-        secondStatus = 0;
         updatePoints();
-        conditionDeterminer();
     }
 
     public void checkHitStandOrDouble(int hand1) {
@@ -241,7 +262,7 @@ public class Table {
                 statusCopy = 2;
             }
             case "Double" -> {
-                doubleBet(bet,hand1);
+                doubleBet(bet, hand1);
                 status = 3;
                 statusCopy = 3;
             }
@@ -252,37 +273,43 @@ public class Table {
     public void conditionDeterminer() {
         updatePoints();
 
-        if (SplitValidation.equals("y")) {
+        if (splitValidation.equals("y")) {
             if (statHolder != 2) {
                 statHolder = 2;
-                winOrLoss();
+                winOrLoss(playerPoints);
             } else {
                 statHolder = 4;
-                winOrLoss();
+                winOrLoss(playerPoints2);
             }
         } else {
             if (statusCopy != 1 || playerPoints > 21 || dealerPoints > 21 || playerPoints == 21) {
-                winOrLoss();
+                winOrLoss(playerPoints);
             } else {
                 hitStandDoubleOrSplit();
             }
         }
-
     }
 
 
-    public void winOrLoss() {
-        if (playerPoints <= 21){
-            addDealerCards();
-        }
+    public void winOrLoss(int playerPoints) {
         updatePoints();
+        if (splitValidation.equals("y")){
+            if (playerPoints <= 21 && playerPoints2 <= 21) {
+                addDealerCards();
+            }
+        }
+        else {
+            if (playerPoints <= 21) {
+                addDealerCards();
+            }
+        }
 
         if (playerPoints == 21 || playerPoints > dealerPoints && statusCopy == 2 && playerPoints < 21 || dealerPoints > 21 || statusCopy == 3 && playerPoints > dealerPoints) {
-            winOrLoss = 1;
+            winOrLossValue = 1;
         } else if (dealerPoints == 21 || dealerPoints > playerPoints && statusCopy == 2 || playerPoints > 21 || statusCopy == 3 && dealerPoints > playerPoints) {
-            winOrLoss = 2;
+            winOrLossValue = 2;
         } else if (dealerPoints == playerPoints) {
-            winOrLoss = 3;
+            winOrLossValue = 3;
         } else {
             hitStandDoubleOrSplit();
         }
@@ -331,7 +358,7 @@ public class Table {
         System.out.println(dealerPoints);
     }
 
-    public void doubleBet(int bet,int hand) {
+    public void doubleBet(int bet, int hand) {
         updatePoints();
         System.out.println("you double");
         System.out.println(player.getName() + ":");
@@ -358,13 +385,14 @@ public class Table {
         updatePoints();
     }
 
-    public void addCardPlayerHand(){
+    public void addCardPlayerHand() {
         aceChecker(deck.getDeckCards().get(0));
         playerCards.add(deck.getDeckCards().get(0));
 
         deck.takeTopCard();
     }
-    public void addCardPlayerHand2(){
+
+    public void addCardPlayerHand2() {
         aceChecker(deck.getDeckCards().get(0));
         playerCards2.add(deck.getDeckCards().get(0));
 
@@ -388,7 +416,7 @@ public class Table {
         for (int i = 0; i < limit; i++) {
             updatePoints();
 
-            if (dealerPoints < 21 && dealerPoints <= playerPoints ||dealerPoints < 21 && dealerPoints <= playerPoints2) {
+            if (dealerPoints < 21 && dealerPoints <= playerPoints || dealerPoints < 21 && dealerPoints <= playerPoints2) {
                 System.out.println(player.getName() + ":");
                 System.out.println(playerHand);
                 System.out.println(playerPoints);
@@ -421,7 +449,7 @@ public class Table {
         }
     }
 
-    public void updatePoints(){
+    public void updatePoints() {
         playerPoints = calculateTotalPoints(playerCards);
         playerPoints2 = calculateTotalPoints(playerCards2);
         dealerPoints = calculateTotalPoints(dealerCards);
