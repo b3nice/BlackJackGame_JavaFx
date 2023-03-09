@@ -57,4 +57,7 @@ public class ImageViewMakerAndEditor {
     public Image getImageDealer(int index) {
         return imageViewDealerCards[index].getImage();
     }
+
 }
+
+

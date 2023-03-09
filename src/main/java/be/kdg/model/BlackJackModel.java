@@ -72,6 +72,9 @@ public class BlackJackModel {
     public void setAnwser(String anwser) {
         this.table.setAnwser(anwser);
     }
+    public void setAnwser2(String anwser) {
+        this.table.setAnwser2(anwser);
+    }
     public void setBalance(int balance) {
         this.player.setBalance(balance);
     }
@@ -98,6 +101,15 @@ public class BlackJackModel {
     public void youDraw(){
         game.youDraw();
     }
-
+    public String getSplitValidation() {
+        return this.table.getSplitValidation();
+    }
+    public void setSplitValidation(String splitValidation) {
+        this.table.setSplitValidation(splitValidation);
+    }
+    public void splitGame()
+    {
+        this.table.splitGame();
+    }
 
 }

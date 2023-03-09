@@ -1,0 +1,1 @@
+Player{name='qzd', balance=200}
