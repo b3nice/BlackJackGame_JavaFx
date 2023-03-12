@@ -5,7 +5,6 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Tooltip;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
@@ -14,7 +13,6 @@ public class BlackJackNameView extends GridPane {
 
     TextField textFieldName;
     Button buttonNext;
-    Tooltip tooltipName;
 
     public TextField getTextFieldName() {
         return textFieldName;
@@ -27,9 +25,6 @@ public class BlackJackNameView extends GridPane {
         return buttonNext;
     }
 
-    public Tooltip getTooltipName() {
-        return tooltipName;
-    }
 
     public BlackJackNameView(){
         this.initialiseNodes();
@@ -37,8 +32,6 @@ public class BlackJackNameView extends GridPane {
     }
 
     private void initialiseNodes(){
-        tooltipName = new Tooltip("Please enter a username!");
-        tooltipName.setStyle("-fx-text-fill: red;");
         textFieldName = new TextField();
         textFieldName.setPromptText("Enter your username here");
         buttonNext = new Button("Next");

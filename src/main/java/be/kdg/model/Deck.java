@@ -32,15 +32,14 @@ public class Deck {
         nameCardQKJA.add("queen");
         nameCardQKJA.add("king");
         nameCardQKJA.add("jack");
-        nameCardQKJA.add("ace");
+        //nameCardQKJA.add("ace");
 
-        for (String nameCard:nameCardQKJA) {
-            deckCards.add(new Card(10, Hearts, nameCard));
-            deckCards.add(new Card(10, Spades, nameCard));
-            deckCards.add(new Card(10, Clubs, nameCard));
-            deckCards.add(new Card(11, Diamonds, nameCard));
+        for (String nameCard : nameCardQKJA) {
+            for (Suit suit : Suit.values()) {
+                int value = nameCard.equals("ace") ? 11 : 10;
+                deckCards.add(new Card(value, suit, nameCard));
+            }
         }
-
         shuffleDeckCards(deckCards);
     }
 

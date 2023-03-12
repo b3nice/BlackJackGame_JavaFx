@@ -24,7 +24,7 @@ public class Game {
         player.setBalance(player.getBalance() - table.getBet());
         if (table.getStatHolder() == 2)
         {
-            table.conditionDeterminer();
+            table.winOrLoss();
         }
     }
 
@@ -34,7 +34,7 @@ public class Game {
         System.out.println("This is your new balance" + player.getBalance());
         if (table.getStatHolder() == 2)
         {
-            table.conditionDeterminer();
+            table.winOrLoss();
         }
     }
 
@@ -42,7 +42,7 @@ public class Game {
         System.out.println("You draw good job");
         if (table.getStatHolder() == 2)
         {
-            table.conditionDeterminer();
+            table.winOrLoss();
         }
     }
 }

@@ -19,7 +19,8 @@ public class BlackJackModel {
         game.setTable(table);
         game.setPlayer(player);
     }
-    public void makeNewTable(){
+
+    public void makeNewTable() {
         this.table = new Table(player);
         game.setTable(table);
     }
@@ -40,7 +41,7 @@ public class BlackJackModel {
         return this.table.getBet();
     }
 
-    public void startGame(){
+    public void startGame() {
         table.dealCards();
     }
 
@@ -64,17 +65,18 @@ public class BlackJackModel {
         return this.table.getPlayerPoints();
     }
 
-    public int getBalance(){return this.player.getBalance();}
+    public int getBalance() {
+        return this.player.getBalance();
+    }
 
-    public void splitOption(){
+    public void splitOption() {
         table.splitOption();
     }
+
     public void setAnwser(String anwser) {
         this.table.setAnwser(anwser);
     }
-    public void setAnwser2(String anwser) {
-        this.table.setAnwser2(anwser);
-    }
+
     public void setBalance(int balance) {
         this.player.setBalance(balance);
     }
@@ -83,36 +85,55 @@ public class BlackJackModel {
         return this.table.getPlayerCards();
     }
 
-    public int getWinOrLossValue(){
+    public int getWinOrLossValue() {
         return this.table.getWinOrLossValue();
     }
-    public void hitStandDoubleOrSplit(){
+    public int getWinOrLossValue2() {
+        return this.table.getWinOrLossValue2();
+    }
+
+    public void hitStandDoubleOrSplit() {
         table.hitStandDoubleOrSplit();
     }
-    public void conditionDeterminer(){
-        table.conditionDeterminer();
+    public void winOrLoss() {
+        table.winOrLoss();
     }
-    public void youLost(){
+    public void youLost() {
         game.youLost();
     }
-    public void youWon(){
+
+    public void youWon() {
         game.youWon();
     }
-    public void youDraw(){
+
+    public void youDraw() {
         game.youDraw();
     }
+
     public String getSplitValidation() {
         return this.table.getSplitValidation();
     }
+
     public void setSplitValidation(String splitValidation) {
         this.table.setSplitValidation(splitValidation);
     }
-    public void splitGame()
-    {
+
+    public void splitGame() {
         this.table.splitGame();
     }
 
     public void setStatHolder(int statHolder) {
         this.table.setStatHolder(statHolder);
     }
+    public ArrayList<Card> getPlayerCards2() {
+        return this.table.getPlayerCards2();
+    }
+    public int getStatHolder() {
+        return this.table.getStatHolder();
+    }
+
+    public int getPlayerPoints2() {
+        return this.table.getPlayerPoints2();
+    }
+
 }
