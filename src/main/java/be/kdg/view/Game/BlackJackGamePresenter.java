@@ -63,6 +63,7 @@ public class BlackJackGamePresenter {
                 view.getScene().setRoot(viewStart);
             }
         });
+
         view.getButtonBet5().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -78,6 +79,7 @@ public class BlackJackGamePresenter {
                 model.setBet(value);
             }
         });
+
         view.getButtonBet10().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
@@ -180,7 +182,6 @@ public class BlackJackGamePresenter {
                     checkStatusWinOrLoss();
                 }
             }
-
         });
         view.getButtonDouble().setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -204,7 +205,6 @@ public class BlackJackGamePresenter {
                 updateView();
                 view.getButtonSplit().setDisable(true);
             }
-
         });
         primaryStage.setOnCloseRequest(event -> {
             String fileName = "src/main/resources/player.txt";
