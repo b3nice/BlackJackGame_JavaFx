@@ -23,7 +23,7 @@ public class BlackJackGamePresenter {
     private int indexImage;
     private int indexImageSplit1;
     private int indexImageSplit2;
-    private int counterStand;
+    private int counterSwapCards;
 
     public BlackJackGamePresenter(BlackJackGameView view, BlackJackModel model, ImageViewMakerAndEditor imageViewMakerAndEditor, Stage primaryStage) {
         this.model = model;
@@ -33,7 +33,7 @@ public class BlackJackGamePresenter {
         indexImage = 2;
         indexImageSplit1 = 1;
         indexImageSplit2 = 1;
-        counterStand = 0;
+        counterSwapCards = 0;
         model.makeNewTable();
         view.getLabelSumCardsPlayerNumber().setText(String.valueOf(model.getPlayerPoints()));
         view.getLabelSumCardsDealerNumber().setText(String.valueOf(model.getDealerPoints()));
@@ -160,8 +160,14 @@ public class BlackJackGamePresenter {
         view.getButtonHit().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                model.setAnwser("Hit");
-                addCardView();
+                if (model.getSplitValidation().equals("y")) {
+                    model.setAnwser("Hit");
+                    addCardView();
+                    swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit());
+                } else {
+                    model.setAnwser("Hit");
+                    addCardView();
+                }
             }
 
         });
@@ -169,11 +175,14 @@ public class BlackJackGamePresenter {
             @Override
             public void handle(ActionEvent actionEvent) {
                 model.setAnwser("Stand");
-                if (model.getSplitValidation().equals("y")){
-                    model.winOrLoss();
-                    swapPlayerDecks();
-                }
-                else{
+                if (model.getSplitValidation().equals("y")) {
+                    if (getIsFirstHand()) {
+                        model.setStatus(2);
+                    } else {
+                        model.setSecondStatus(2);
+                    }
+                    swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit());
+                } else {
                     model.hitStandDoubleOrSplit();
 
                     model.winOrLoss();
@@ -187,8 +196,7 @@ public class BlackJackGamePresenter {
             @Override
             public void handle(ActionEvent actionEvent) {
                 model.setAnwser("Double");
-                if (model.getSplitValidation().equals("y")){
-                    swapPlayerDecks();
+                if (model.getSplitValidation().equals("y")) {
                 }
                 addCardView();
             }
@@ -216,6 +224,32 @@ public class BlackJackGamePresenter {
             }
         });
 
+    }
+
+    public void swapCardsByWinOrLossValue(int winOrLossValue) {
+        if (counterSwapCards <= 3){
+            if (getIsFirstHand()) {
+                if (winOrLossValue != -1 && model.getStatus() == 1) {
+                    counterSwapCards++;
+                    swapPlayerDecks();
+                    model.setStatHolder(1);
+                } else if (winOrLossValue != -1) {
+                    counterSwapCards++;
+                    swapPlayerDecks();
+                    model.setStatHolder(1);
+                }
+            } else {
+                if (winOrLossValue != -1 && model.getSecondStatus() == 1) {
+                    counterSwapCards++;
+                    swapPlayerDecks();
+                    model.setStatHolder(2);
+                } else if (winOrLossValue != -1) {
+                    counterSwapCards++;
+                    swapPlayerDecks();
+                    model.setStatHolder(2);
+                }
+            }
+        }
     }
 
     int counter = 0;
@@ -261,17 +295,16 @@ public class BlackJackGamePresenter {
 
     }
 
-    public void swapPlayerDecks(){
+    public void swapPlayerDecks() {
         view.getChildren().remove(view.gethBoxPlayerCards());
         view.getChildren().remove(view.gethBoxPlayerSplitCards());
-        view.add(view.gethBoxPlayerSplitCards(),1,4);
-        view.add(view.gethBoxPlayerCards(),2,4);
+        view.add(view.gethBoxPlayerSplitCards(), 1, 4);
+        view.add(view.gethBoxPlayerCards(), 2, 4);
 
-        if (getIsFirstHand()){
-            view.swapImageSizesBack();
-        }
-        else{
+        if (getIsFirstHand()) {
             view.swapImageSizes();
+        } else {
+            view.swapImageSizesBack();
         }
         updateView();
     }

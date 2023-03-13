@@ -24,6 +24,9 @@ public class BlackJackModel {
         this.table = new Table(player);
         game.setTable(table);
     }
+    public int calculateWinOrLossForSplit() {
+        return table.calculateWinOrLossForSplit();
+    }
 
     public String getName() {
         return this.game.getName();
@@ -139,6 +142,20 @@ public class BlackJackModel {
 
     public int getPlayerPoints2() {
         return this.player.getPlayerPoints2();
+    }
+
+    public int getStatus() {
+        return this.player.getStatus();
+    }
+    public void setStatus(int status) {
+        this.player.setStatus(status);
+    }
+
+    public int getSecondStatus() {
+        return this.player.getSecondStatus();
+    }
+    public void setSecondStatus(int secondStatus) {
+        this.player.setSecondStatus(secondStatus);
     }
 
 }

@@ -126,6 +126,22 @@ public class Player {
         this.splitValidation = splitValidation;
     }
 
+    private int status = 1;
+    public int getStatus() {
+        return status;
+    }
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    private int secondStatus = 1;
+    public int getSecondStatus() {
+        return secondStatus;
+    }
+    public void setSecondStatus(int secondStatus) {
+        this.secondStatus = secondStatus;
+    }
+
     @Override
     public String toString() {
         return name + "," + balance;

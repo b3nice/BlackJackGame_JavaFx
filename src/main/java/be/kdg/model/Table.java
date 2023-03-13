@@ -77,8 +77,6 @@ public class Table {
         }
     }
 
-    int status = 1;
-    int secondStatus = 1;
 
     public void hitStandDoubleOrSplit() {
         updatePoints();
@@ -102,18 +100,16 @@ public class Table {
             switch (player.getAnwser()) {
                 case "Hit" -> {
                     hit(hand2);
-                    secondStatus = 1;
+                    player.setSecondStatus(1);
                 }
                 case "Stand" -> {
-
                     updatePoints();
                     System.out.println("you stand");
-
-                    secondStatus = 2;
+                    player.setSecondStatus(2);
                 }
                 case "Double" -> {
                     doubleBet(hand2);
-                    secondStatus = 3;
+                    player.setSecondStatus(3);
                 }
             }
         }
@@ -124,16 +120,16 @@ public class Table {
         switch (player.getAnwser()) {
             case "Hit" -> {
                 hit(hand1);
-                status = 1;
+                player.setStatus(1);
             }
             case "Stand" -> {
                 updatePoints();
                 System.out.println("you stand");
-                status = 2;
+                player.setStatus(2);
             }
             case "Double" -> {
                 doubleBet(hand1);
-                status = 3;
+                player.setStatus(2);
             }
         }
     }
@@ -145,11 +141,11 @@ public class Table {
             if (player.getStatHolder() == 2) {
                 player.setStatHolder(1);
             } else {
-                player.setWinOrLossValue(calculateWinOrLoss(player.getPlayerPoints(), status));
-                player.setWinOrLossValue2(calculateWinOrLoss(player.getPlayerPoints2(), secondStatus));
+                player.setWinOrLossValue(calculateWinOrLoss(player.getPlayerPoints(), player.getStatus()));
+                player.setWinOrLossValue2(calculateWinOrLoss(player.getPlayerPoints2(), player.getSecondStatus()));
             }
-        } else if (status != 1 || player.getPlayerPoints() > 21 || dealerPoints > 21 || player.getPlayerPoints() == 21) {
-            player.setWinOrLossValue(calculateWinOrLoss(player.getPlayerPoints(), status));
+        } else if (player.getStatus() != 1 || player.getPlayerPoints() > 21 || dealerPoints > 21 || player.getPlayerPoints() == 21) {
+            player.setWinOrLossValue(calculateWinOrLoss(player.getPlayerPoints(), player.getStatus()));
         }
     }
 
@@ -169,6 +165,27 @@ public class Table {
             return -1;
         }
     }
+
+    public int calculateWinOrLossForSplit(){
+        if (player.getStatHolder() == 2){
+            if (player.getPlayerPoints() >= 21 || player.getStatus() == 2 || player.getStatus() == 3){
+
+                return 1;
+            }
+            else{
+                return -1;
+            }
+        }
+        else{
+            if (player.getPlayerPoints2() >= 21 || player.getSecondStatus() == 2 || player.getSecondStatus() == 3){
+                return 1;
+            }
+            else{
+                return -1;
+            }
+        }
+    }
+
 
     public int calculateTotalPoints(ArrayList<Card> cardsOfX) {
         int points = 0;
