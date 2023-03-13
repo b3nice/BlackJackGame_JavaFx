@@ -3,9 +3,9 @@ package be.kdg.model;
 import java.util.ArrayList;
 
 public class BlackJackModel {
-    private Game game;
+    private final Game game;
     private Table table;
-    private Player player;
+    private final Player player;
 
     public Player getPlayer() {
         return player;
@@ -42,14 +42,6 @@ public class BlackJackModel {
 
     public int getBet() {
         return this.player.getBet();
-    }
-
-    public void setBet2(int bet) {
-        this.player.setBet2(bet);
-    }
-
-    public int getBet2() {
-        return this.player.getBet2();
     }
 
 

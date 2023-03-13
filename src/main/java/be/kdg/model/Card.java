@@ -2,12 +2,9 @@ package be.kdg.model;
 
 public class Card {
     private int number;
-    private Suit suit;
-    private String imagePath;
+    private final Suit suit;
+    private final String imagePath;
 
-    public String getImagePath() {
-        return imagePath;
-    }
 
     public int getNumber() {
         return number;

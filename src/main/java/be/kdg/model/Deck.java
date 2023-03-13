@@ -5,11 +5,7 @@ import java.util.Collections;
 
 public class Deck {
 
-    private ArrayList<Card> deckCards = new ArrayList<>();
-
-    public void setDeckCards(ArrayList<Card> deckCards) {
-        this.deckCards = deckCards;
-    }
+    private final ArrayList<Card> deckCards = new ArrayList<>();
 
     public ArrayList<Card> getDeckCards() {
         return deckCards;
@@ -21,7 +17,7 @@ public class Deck {
         Suit Clubs = Suit.CLUBS;
         Suit Diamonds = Suit.DIAMONDS;
 
-        for (int i = 10; i <= 10; i++) {
+        for (int i = 2; i <= 10; i++) {
             deckCards.add(new Card(i, Hearts));
             deckCards.add(new Card(i, Spades));
             deckCards.add(new Card(i, Clubs));
@@ -32,7 +28,7 @@ public class Deck {
         nameCardQKJA.add("queen");
         nameCardQKJA.add("king");
         nameCardQKJA.add("jack");
-        //nameCardQKJA.add("ace");
+        nameCardQKJA.add("ace");
 
         for (String nameCard : nameCardQKJA) {
             for (Suit suit : Suit.values()) {
