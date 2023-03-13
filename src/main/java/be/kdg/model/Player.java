@@ -74,6 +74,9 @@ public class Player {
     }
 
     private int bet2;
+    public int getBet2() {
+        return bet2;
+    }
     public void setBet2(int bet2) {
         this.bet2 = bet2;
     }
@@ -140,6 +143,19 @@ public class Player {
     }
     public void setSecondStatus(int secondStatus) {
         this.secondStatus = secondStatus;
+    }
+
+    public void resetPlayer() {
+        this.playerPoints = 0;
+        this.playerPoints2 = 0;
+        this.playerCards.clear();
+        this.playerCards2.clear();
+        this.bet = 0;
+        this.bet2 = 0;
+        this.winOrLossValue = 0;
+        this.winOrLossValue2 = 0;
+        this.status = 1;
+        this.secondStatus = 1;
     }
 
     @Override

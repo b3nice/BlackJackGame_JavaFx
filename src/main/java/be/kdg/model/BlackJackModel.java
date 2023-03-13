@@ -44,6 +44,15 @@ public class BlackJackModel {
         return this.player.getBet();
     }
 
+    public void setBet2(int bet) {
+        this.player.setBet2(bet);
+    }
+
+    public int getBet2() {
+        return this.player.getBet2();
+    }
+
+
     public void startGame() {
         table.dealCards();
     }
@@ -156,6 +165,9 @@ public class BlackJackModel {
     }
     public void setSecondStatus(int secondStatus) {
         this.player.setSecondStatus(secondStatus);
+    }
+    public void resetPlayer(){
+        this.player.resetPlayer();
     }
 
 }

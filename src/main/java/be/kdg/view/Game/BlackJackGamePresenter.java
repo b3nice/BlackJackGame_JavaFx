@@ -24,6 +24,7 @@ public class BlackJackGamePresenter {
     private int indexImageSplit1;
     private int indexImageSplit2;
     private int counterSwapCards;
+    private int counterWinLossDraw;
 
     public BlackJackGamePresenter(BlackJackGameView view, BlackJackModel model, ImageViewMakerAndEditor imageViewMakerAndEditor, Stage primaryStage) {
         this.model = model;
@@ -34,6 +35,7 @@ public class BlackJackGamePresenter {
         indexImageSplit1 = 1;
         indexImageSplit2 = 1;
         counterSwapCards = 0;
+        counterWinLossDraw = 0;
         model.makeNewTable();
         view.getLabelSumCardsPlayerNumber().setText(String.valueOf(model.getPlayerPoints()));
         view.getLabelSumCardsDealerNumber().setText(String.valueOf(model.getDealerPoints()));
@@ -164,6 +166,7 @@ public class BlackJackGamePresenter {
                     model.setAnwser("Hit");
                     addCardView();
                     swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit());
+                    checkStatusWinOrLossSplit();
                 } else {
                     model.setAnwser("Hit");
                     addCardView();
@@ -182,13 +185,14 @@ public class BlackJackGamePresenter {
                         model.setSecondStatus(2);
                     }
                     swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit());
+                    checkStatusWinOrLossSplit();
                 } else {
                     model.hitStandDoubleOrSplit();
 
                     model.winOrLoss();
                     view.getLabelSumCardsPlayerNumber().setText(String.valueOf(model.getPlayerPoints()));
                     showDealerCards();
-                    checkStatusWinOrLoss();
+                    checkStatusWinOrLoss(model.getWinOrLossValue());
                 }
             }
         });
@@ -197,8 +201,20 @@ public class BlackJackGamePresenter {
             public void handle(ActionEvent actionEvent) {
                 model.setAnwser("Double");
                 if (model.getSplitValidation().equals("y")) {
+                    if (getIsFirstHand()) {
+                        addCardView();
+                        model.setStatus(3);
+                    } else {
+                        addCardView();
+                        model.setSecondStatus(3);
+                    }
+                    swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit());
+                    checkStatusWinOrLossSplit();
                 }
-                addCardView();
+                else{
+                    addCardView();
+                }
+
             }
         });
         view.getButtonSplit().setOnAction(new EventHandler<ActionEvent>() {
@@ -228,6 +244,7 @@ public class BlackJackGamePresenter {
 
     public void swapCardsByWinOrLossValue(int winOrLossValue) {
         if (counterSwapCards <= 3){
+            updateView();
             if (getIsFirstHand()) {
                 if (winOrLossValue != -1 && model.getStatus() == 1) {
                     counterSwapCards++;
@@ -250,6 +267,7 @@ public class BlackJackGamePresenter {
                 }
             }
         }
+        updateView();
     }
 
     int counter = 0;
@@ -264,6 +282,24 @@ public class BlackJackGamePresenter {
         }
         if (model.getSplitValidation().equals("y")) {
             model.splitOption();
+        }
+    }
+
+    public void checkStatusWinOrLossSplit() {
+        if(model.getWinOrLossValue() != 0 && model.getWinOrLossValue2() != 0){
+            updateView();
+            showDealerCards();
+            disableButtons();
+            checkStatusWinOrLoss(model.getWinOrLossValue());
+            PauseTransition pause = new PauseTransition(Duration.seconds(4));
+            pause.setOnFinished(event -> {
+                swapPlayerDecks();
+                model.setStatHolder(1);
+                updateView();
+                checkStatusWinOrLoss(model.getWinOrLossValue2());
+            });
+            pause.play();
+
         }
     }
 
@@ -290,21 +326,26 @@ public class BlackJackGamePresenter {
 
             model.winOrLoss();
             showDealerCards();
-            checkStatusWinOrLoss();
+            checkStatusWinOrLoss(model.getWinOrLossValue());
         }
 
     }
 
     public void swapPlayerDecks() {
-        view.getChildren().remove(view.gethBoxPlayerCards());
-        view.getChildren().remove(view.gethBoxPlayerSplitCards());
-        view.add(view.gethBoxPlayerSplitCards(), 1, 4);
-        view.add(view.gethBoxPlayerCards(), 2, 4);
-
         if (getIsFirstHand()) {
+            view.getChildren().remove(view.gethBoxPlayerCards());
+            view.getChildren().remove(view.gethBoxPlayerSplitCards());
+            view.add(view.gethBoxPlayerSplitCards(), 1, 4);
+            view.add(view.gethBoxPlayerCards(), 2, 4);
             view.swapImageSizes();
+            updateView();
         } else {
+            view.getChildren().remove(view.gethBoxPlayerCards());
+            view.getChildren().remove(view.gethBoxPlayerSplitCards());
+            view.add(view.gethBoxPlayerSplitCards(), 2, 4);
+            view.add(view.gethBoxPlayerCards(), 1, 4);
             view.swapImageSizesBack();
+            updateView();
         }
         updateView();
     }
@@ -325,16 +366,16 @@ public class BlackJackGamePresenter {
         pause.play();
     }
 
-    public void checkStatusWinOrLoss() {
-        if (model.getWinOrLossValue() == 1) {
+    public void checkStatusWinOrLoss(int winOrLossValue) {
+        if (winOrLossValue == 1) {
             model.setStatHolder(2);
             model.youWon();
             youHaveWon();
-        } else if (model.getWinOrLossValue() == 2) {
+        } else if (winOrLossValue == 2) {
             model.setStatHolder(2);
             model.youLost();
             youHaveLost();
-        } else if (model.getWinOrLossValue() == 3) {
+        } else if (winOrLossValue == 3) {
             model.setStatHolder(2);
             model.youDraw();
             youHaveDrawn();
@@ -342,34 +383,56 @@ public class BlackJackGamePresenter {
     }
 
     public void youHaveWon() {
-        PauseTransition pause = new PauseTransition(Duration.seconds(4));
         String textAlert = "You have won!!! :)). This is your new balance:" + model.getBalance();
         disableButtons();
         view.setLabelAlertGreen(view.getLabelAlert(), textAlert);
-        pause.setOnFinished(event -> {
-            refreshView();
-        });
-        pause.play();
+        if (model.getSplitValidation().equals("y")) {
+            counterWinLossDraw++;
+            if (counterWinLossDraw == 2) {
+                restartGame();
+            }
+        }
+        else{
+            restartGame();
+        }
 
     }
 
     public void youHaveLost() {
-        PauseTransition pause = new PauseTransition(Duration.seconds(4));
         String textAlert = "You have lost  >:(. This is your new balance:" + model.getBalance();
         disableButtons();
         view.setLabelAlertRed(view.getLabelAlert(), textAlert);
-        pause.setOnFinished(event -> {
-            refreshView();
-        });
-        pause.play();
+        if (model.getSplitValidation().equals("y")) {
+            counterWinLossDraw++;
+            if (counterWinLossDraw == 2) {
+                restartGame();
+            }
+        }
+        else{
+            restartGame();
+        }
     }
 
     public void youHaveDrawn() {
-        PauseTransition pause = new PauseTransition(Duration.seconds(4));
+
         String textAlert = "You have drawn, -_- .This is your new balance:" + model.getBalance();
         disableButtons();
         view.setLabelAlertRed(view.getLabelAlert(), textAlert);
+        if (model.getSplitValidation().equals("y")) {
+            counterWinLossDraw++;
+            if (counterWinLossDraw == 2) {
+                restartGame();
+            }
+        }
+        else{
+            restartGame();
+        }
+    }
+
+    public void restartGame() {
+        PauseTransition pause = new PauseTransition(Duration.seconds(4));
         pause.setOnFinished(event -> {
+            model.resetPlayer();
             refreshView();
         });
         pause.play();

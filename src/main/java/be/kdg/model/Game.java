@@ -22,6 +22,9 @@ public class Game {
     public void youLost(){
         System.out.println("You lost good job");
         player.setBalance(player.getBalance() - player.getBet());
+        if (player.getWinOrLossValue2() == 2){
+            player.setBalance(player.getBalance() - player.getBet2());
+        }
         if (player.getStatHolder() == 2)
         {
             table.winOrLoss();
@@ -31,6 +34,10 @@ public class Game {
     public void youWon(){
         System.out.println("You won good job");
         player.setBalance(player.getBalance() + player.getBet());
+        if (player.getWinOrLossValue2() == 1)
+        {
+            player.setBalance(player.getBalance() + player.getBet2());
+        }
         System.out.println("This is your new balance" + player.getBalance());
         if (player.getStatHolder() == 2)
         {
