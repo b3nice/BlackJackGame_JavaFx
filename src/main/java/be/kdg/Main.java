@@ -19,7 +19,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         primaryStage.setTitle("BlackJack21");
 
-        BlackJackStartView view = new BlackJackStartView();
+        BlackJackStartView view = new BlackJackStartView(primaryStage);
         BlackJackStartPresenter presenter = new BlackJackStartPresenter(view, primaryStage);
 
         Scene scene = new Scene(view);

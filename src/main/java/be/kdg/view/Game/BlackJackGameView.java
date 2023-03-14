@@ -3,6 +3,9 @@ package be.kdg.view.Game;
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
@@ -10,10 +13,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class BlackJackGameView extends GridPane {
+    Stage primaryStage;
 
     private ImageViewMakerAndEditor imageViewMakerAndEditor;
 
@@ -175,7 +181,8 @@ public class BlackJackGameView extends GridPane {
         return hBoxPlayerSplitCards;
     }
 
-    public BlackJackGameView() {
+    public BlackJackGameView(Stage primaryStage) {
+        this.primaryStage = primaryStage;
         this.initialiseNodes();
         this.layoutNodes();
     }
@@ -223,6 +230,7 @@ public class BlackJackGameView extends GridPane {
         buttonStand = new Button("Stand");
         buttonDouble = new Button("Double");
         buttonSplit = new Button("Split");
+
 
         hBoxH_S_D_S.getChildren().addAll(buttonHit, buttonStand, buttonDouble, buttonSplit);
 
@@ -277,7 +285,6 @@ public class BlackJackGameView extends GridPane {
     private void layoutNodes() {
         this.setOnMouseClicked(event -> this.requestFocus());
 
-
         spacersTop = new Region[3];
         spacersCenter = new Region[imageViewMakerAndEditor.getImageViewDealerCards().length + 3];
 
@@ -311,6 +318,8 @@ public class BlackJackGameView extends GridPane {
         }
 
 
+
+
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setPercentWidth(27.5);
         ColumnConstraints col2 = new ColumnConstraints();
@@ -336,6 +345,7 @@ public class BlackJackGameView extends GridPane {
         GridPane.setRowIndex(stackPane, 2);
         GridPane.setColumnIndex(stackPane, 0);
         GridPane.setRowSpan(stackPane, 2);
+
 
         this.add(labelDealer, 1, 0);
         this.add(hBoxBalance, 2, 0);
@@ -363,12 +373,18 @@ public class BlackJackGameView extends GridPane {
         labelSumCardsDealerNumber.getStyleClass().add("label");
         labelSumCardsPlayer.getStyleClass().add("label");
         labelSumCardsPlayerNumber.getStyleClass().add("label");
+        labelBet.getStyleClass().add("label");
         buttonBet5.getStyleClass().add("button");
         buttonBet10.getStyleClass().add("button");
         buttonBet20.getStyleClass().add("button");
         buttonBet50.getStyleClass().add("button");
         buttonBetClear.getStyleClass().add("button");
+        buttonBet.getStyleClass().add("button");
         buttonExit.getStyleClass().add("button");
+        buttonHit.getStyleClass().add("button");
+        buttonStand.getStyleClass().add("button");
+        buttonDouble.getStyleClass().add("button");
+        buttonSplit.getStyleClass().add("button");
 
 
         GridPane.setHalignment(labelDealer, HPos.CENTER);
@@ -389,7 +405,32 @@ public class BlackJackGameView extends GridPane {
         hBoxPlayerSplitCards.setAlignment(Pos.CENTER);
         hBoxBetAmounts.setAlignment(Pos.CENTER);
 
-        hBoxBalance.prefWidthProperty().bind(BlackJackGameView.this.widthProperty());
+
+        DoubleProperty fontSize = new SimpleDoubleProperty(10);
+        labelAlert.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()/1.3), fontSize.divide(1.3)));
+        labelDealer.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        labelAmountBet.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        labelBet.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        labelPlayerName.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        labelBalance.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        labelBalanceNumber.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        labelSumCardsDealer.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        labelSumCardsDealerNumber.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        labelSumCardsPlayer.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        labelSumCardsPlayerNumber.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        buttonBet5.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        buttonBet10.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        buttonBet20.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        buttonBet50.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        buttonBetClear.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        buttonBet.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        buttonExit.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        buttonHit.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        buttonStand.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        buttonDouble.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        buttonSplit.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        fontSize.bind(primaryStage.widthProperty().multiply(0.015));
+
     }
 
     public void fadeLabels() {

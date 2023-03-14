@@ -37,3 +37,8 @@
     -fx-background-position: center;
     -fx-background-size: cover;
 }
+
+.borderOutline {
+    -fx-border-color: black;
+    -fx-border-width: 1;
+}

@@ -4,8 +4,6 @@ import be.kdg.model.BlackJackModel;
 import be.kdg.view.Start.BlackJackStartPresenter;
 import be.kdg.view.Start.BlackJackStartView;
 import javafx.animation.PauseTransition;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
@@ -48,187 +46,153 @@ public class BlackJackGamePresenter {
     private void addEventHandlers() {
         view.getLabelSumCardsPlayerNumber().setText(String.valueOf(model.getPlayerPoints()));
         view.getLabelSumCardsDealerNumber().setText(String.valueOf(model.getDealerPoints()));
-        view.getButtonExit().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                String fileName = "src/main/resources/player.txt";
-                try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {
-                    bw.write(model.getPlayer().toString());
-                    bw.newLine();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                BlackJackModel newModel = new BlackJackModel();
-                BlackJackStartView viewStart = new BlackJackStartView();
-                BlackJackStartPresenter presenterGame = new BlackJackStartPresenter(viewStart, newModel, primaryStage);
-                view.getScene().setRoot(viewStart);
-            }
-        });
-
-        view.getButtonBet5().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                String labelText = view.getLabelBet().getText();
-                int value = 0;
-
-                if (!labelText.isEmpty()) {
-                    value = Integer.parseInt(labelText);
-                }
-                value = value + 5;
-
-                view.getLabelBet().setText(String.valueOf(value));
-                model.setBet(value);
-            }
-        });
-
-        view.getButtonBet10().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                String labelText = view.getLabelBet().getText();
-                int value = 0;
-
-                if (!labelText.isEmpty()) {
-                    value = Integer.parseInt(labelText);
-                }
-                value = value + 10;
-
-                view.getLabelBet().setText(String.valueOf(value));
-                model.setBet(value);
-            }
-        });
-        view.getButtonBet20().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                String labelText = view.getLabelBet().getText();
-                int value = 0;
-
-                if (!labelText.isEmpty()) {
-                    value = Integer.parseInt(labelText);
-                }
-                value = value + 20;
-
-                view.getLabelBet().setText(String.valueOf(value));
-                model.setBet(value);
-            }
-        });
-        view.getButtonBet50().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                String labelText = view.getLabelBet().getText();
-                int value = 0;
-
-                if (!labelText.isEmpty()) {
-                    value = Integer.parseInt(labelText);
-                }
-                value = value + 50;
-
-                view.getLabelBet().setText(String.valueOf(value));
-                model.setBet(value);
-            }
-        });
-        view.getButtonBetClear().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                int value = 0;
-                view.getLabelBet().setText(String.valueOf(value));
-                model.setBet(value);
-            }
-        });
-        view.getButtonBet().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                if (model.getBet() == 0) {
-                    String textAlert = "You cannot bet nothing, please bet an amount.";
-                    view.setLabelAlertRed(view.getLabelAlert(), textAlert);
-                } else {
-                    view.gethBoxH_S_D_S().setDisable(false);
-                    view.gethBoxBetAmounts().setDisable(true);
-                    view.getButtonExit().setDisable(true);
-
-                    model.startGame();
-
-                    imageViewMakerAndEditor.setImagePlayer(0, new Image(String.valueOf(model.getFirstCardPlayer())));
-                    imageViewMakerAndEditor.setImagePlayer(1, new Image(String.valueOf(model.getSecondCardPlayer())));
-
-                    imageViewMakerAndEditor.setImageDealer(0, new Image("/RedCardBack.PNG"));
-                    imageViewMakerAndEditor.setImageDealer(1, new Image(String.valueOf(model.getDealerCards().get(0))));
-
-                    checkSplitOption();
-                    updateView();
-                }
-            }
-        });
-        view.getButtonHit().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                if (model.getSplitValidation().equals("y")) {
-                    model.setAnwser("Hit");
-                    addCardView();
-                    swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit());
-                    checkStatusWinOrLossSplit();
-                } else {
-                    model.setAnwser("Hit");
-                    addCardView();
-                }
+        view.getButtonExit().setOnAction(actionEvent -> {
+            String fileName = "src/main/resources/player.txt";
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {
+                bw.write(model.getPlayer().toString());
+                bw.newLine();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
+            BlackJackModel newModel = new BlackJackModel();
+            BlackJackStartView viewStart = new BlackJackStartView(primaryStage);
+            BlackJackStartPresenter presenterGame = new BlackJackStartPresenter(viewStart, newModel, primaryStage);
+            view.getScene().setRoot(viewStart);
         });
-        view.getButtonStand().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                model.setAnwser("Stand");
-                if (model.getSplitValidation().equals("y")) {
-                    if (getIsFirstHand()) {
-                        model.setStatus(2);
-                    } else {
-                        model.setSecondStatus(2);
-                    }
-                    swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit());
-                    checkStatusWinOrLossSplit();
-                } else {
-                    model.hitStandDoubleOrSplit();
 
-                    model.winOrLoss();
-                    view.getLabelSumCardsPlayerNumber().setText(String.valueOf(model.getPlayerPoints()));
-                    showDealerCards();
-                    checkStatusWinOrLoss(model.getWinOrLossValue());
-                }
-            }
-        });
-        view.getButtonDouble().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                model.setAnwser("Double");
-                if (model.getSplitValidation().equals("y")) {
-                    if (getIsFirstHand()) {
-                        addCardView();
-                        model.setStatus(3);
-                    } else {
-                        addCardView();
-                        model.setSecondStatus(3);
-                    }
-                    swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit());
-                    checkStatusWinOrLossSplit();
-                }
-                else{
-                    addCardView();
-                }
+        view.getButtonBet5().setOnAction(actionEvent -> {
+            String labelText = view.getLabelBet().getText();
+            int value = 0;
 
+            if (!labelText.isEmpty()) {
+                value = Integer.parseInt(labelText);
             }
+            value = value + 5;
+
+            view.getLabelBet().setText(String.valueOf(value));
+            model.setBet(value);
         });
-        view.getButtonSplit().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                model.setSplitValidation("y");
+
+        view.getButtonBet10().setOnAction(actionEvent -> {
+            String labelText = view.getLabelBet().getText();
+            int value = 0;
+
+            if (!labelText.isEmpty()) {
+                value = Integer.parseInt(labelText);
+            }
+            value = value + 10;
+
+            view.getLabelBet().setText(String.valueOf(value));
+            model.setBet(value);
+        });
+        view.getButtonBet20().setOnAction(actionEvent -> {
+            String labelText = view.getLabelBet().getText();
+            int value = 0;
+
+            if (!labelText.isEmpty()) {
+                value = Integer.parseInt(labelText);
+            }
+            value = value + 20;
+
+            view.getLabelBet().setText(String.valueOf(value));
+            model.setBet(value);
+        });
+        view.getButtonBet50().setOnAction(actionEvent -> {
+            String labelText = view.getLabelBet().getText();
+            int value = 0;
+
+            if (!labelText.isEmpty()) {
+                value = Integer.parseInt(labelText);
+            }
+            value = value + 50;
+
+            view.getLabelBet().setText(String.valueOf(value));
+            model.setBet(value);
+        });
+        view.getButtonBetClear().setOnAction(actionEvent -> {
+            int value = 0;
+            view.getLabelBet().setText(String.valueOf(value));
+            model.setBet(value);
+        });
+        view.getButtonBet().setOnAction(actionEvent -> {
+            if (model.getBet() == 0) {
+                String textAlert = "You cannot bet nothing, please bet an amount.";
+                view.setLabelAlertRed(view.getLabelAlert(), textAlert);
+            } else {
+                view.gethBoxH_S_D_S().setDisable(false);
+                view.gethBoxBetAmounts().setDisable(true);
+                view.getButtonExit().setDisable(true);
+
+                model.startGame();
+
+                imageViewMakerAndEditor.setImagePlayer(0, new Image(String.valueOf(model.getFirstCardPlayer())));
+                imageViewMakerAndEditor.setImagePlayer(1, new Image(String.valueOf(model.getSecondCardPlayer())));
+
+                imageViewMakerAndEditor.setImageDealer(0, new Image("/RedCardBack.PNG"));
+                imageViewMakerAndEditor.setImageDealer(1, new Image(String.valueOf(model.getDealerCards().get(0))));
+
                 checkSplitOption();
-
-                imageViewMakerAndEditor.setImagePlayer(1, new WritableImage(1, 1));
-                imageViewMakerAndEditor.setImagePlayerSplit(0, new Image(String.valueOf(model.getPlayerCards2().get(0))));
-
                 updateView();
-                view.getButtonSplit().setDisable(true);
             }
+        });
+        view.getButtonHit().setOnAction(actionEvent -> {
+            if (model.getSplitValidation().equals("y")) {
+                model.setAnwser("Hit");
+                addCardView();
+                swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit());
+                checkStatusWinOrLossSplit();
+            } else {
+                model.setAnwser("Hit");
+                addCardView();
+            }
+        });
+        view.getButtonStand().setOnAction(actionEvent -> {
+            model.setAnwser("Stand");
+            if (model.getSplitValidation().equals("y")) {
+                if (getIsFirstHand()) {
+                    model.setStatus(2);
+                } else {
+                    model.setSecondStatus(2);
+                }
+                swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit());
+                checkStatusWinOrLossSplit();
+            } else {
+                model.hitStandDoubleOrSplit();
+
+                model.winOrLoss();
+                view.getLabelSumCardsPlayerNumber().setText(String.valueOf(model.getPlayerPoints()));
+                showDealerCards();
+                checkStatusWinOrLoss(model.getWinOrLossValue());
+            }
+        });
+        view.getButtonDouble().setOnAction(actionEvent -> {
+            model.setAnwser("Double");
+            if (model.getSplitValidation().equals("y")) {
+                if (getIsFirstHand()) {
+                    addCardView();
+                    model.setStatus(3);
+                } else {
+                    addCardView();
+                    model.setSecondStatus(3);
+                }
+                swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit());
+                checkStatusWinOrLossSplit();
+            }
+            else{
+                addCardView();
+            }
+
+        });
+        view.getButtonSplit().setOnAction(actionEvent -> {
+            model.setSplitValidation("y");
+            checkSplitOption();
+
+            imageViewMakerAndEditor.setImagePlayer(1, new WritableImage(1, 1));
+            imageViewMakerAndEditor.setImagePlayerSplit(0, new Image(String.valueOf(model.getPlayerCards2().get(0))));
+
+            updateView();
+            view.getButtonSplit().setDisable(true);
         });
         primaryStage.setOnCloseRequest(event -> {
             String fileName = "src/main/resources/player.txt";
@@ -439,7 +403,7 @@ public class BlackJackGamePresenter {
     }
 
     public void refreshView() {
-        BlackJackGameView viewGame = new BlackJackGameView();
+        BlackJackGameView viewGame = new BlackJackGameView(primaryStage);
         BlackJackGamePresenter presenterGame = new BlackJackGamePresenter(viewGame, model, viewGame.getImageViewMakerAndEditor(), primaryStage);
         model.makeNewTable();
         view.getScene().setRoot(viewGame);

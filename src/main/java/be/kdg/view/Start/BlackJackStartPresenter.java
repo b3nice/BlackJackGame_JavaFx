@@ -10,8 +10,8 @@ import javafx.stage.Stage;
 public class BlackJackStartPresenter {
 
     private BlackJackModel model = new BlackJackModel();
-    private BlackJackStartView view;
-    private Stage primaryStage;
+    private final BlackJackStartView view;
+    private final Stage primaryStage;
 
 
     public BlackJackStartPresenter(BlackJackStartView view, BlackJackModel model, Stage primaryStage) {
@@ -32,7 +32,7 @@ public class BlackJackStartPresenter {
         view.getButtonStartGame().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                BlackJackNameView viewName = new BlackJackNameView();
+                BlackJackNameView viewName = new BlackJackNameView(primaryStage);
                 BlackJackNamePresenter presenterGame  = new BlackJackNamePresenter(viewName, model, primaryStage);
                 view.getScene().setRoot(viewName);
             }

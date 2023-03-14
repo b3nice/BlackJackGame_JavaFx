@@ -15,9 +15,9 @@ import java.util.ArrayList;
 
 public class BlackJackNamePresenter {
 
-    private BlackJackModel model;
-    private BlackJackNameView view;
-    private Stage primaryStage;
+    private final BlackJackModel model;
+    private final BlackJackNameView view;
+    private final Stage primaryStage;
 
 
 
@@ -44,7 +44,7 @@ public class BlackJackNamePresenter {
 
                     checkPlayerBalance();
 
-                    BlackJackGameView viewGame = new BlackJackGameView();
+                    BlackJackGameView viewGame = new BlackJackGameView(primaryStage);
                     BlackJackGamePresenter presenterGame = new BlackJackGamePresenter(viewGame, model, viewGame.getImageViewMakerAndEditor(), primaryStage);
 
                     view.getScene().setRoot(viewGame);
