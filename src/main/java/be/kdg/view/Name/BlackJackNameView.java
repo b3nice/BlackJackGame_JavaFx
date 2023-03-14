@@ -17,9 +17,6 @@ public class BlackJackNameView extends GridPane {
     public TextField getTextFieldName() {
         return textFieldName;
     }
-    public void setTextFieldName(TextField textFieldName) {
-        this.textFieldName = textFieldName;
-    }
 
     public Button getButtonNext() {
         return buttonNext;
@@ -36,16 +33,14 @@ public class BlackJackNameView extends GridPane {
         textFieldName.setPromptText("Enter your username here");
         buttonNext = new Button("Next");
 
+        textFieldName.getStyleClass().add("textField");
+        buttonNext.getStyleClass().add("button");
 
-
-        textFieldName.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
-        buttonNext.setStyle("-fx-font-size: 20px;");
+        this.getStyleClass().add("backGround_name");
     }
 
     private void layoutNodes(){
-        this.setOnMouseClicked(event -> {
-            this.requestFocus();
-        });
+        this.setOnMouseClicked(event -> this.requestFocus());
 
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setPercentWidth(20);
@@ -71,21 +66,15 @@ public class BlackJackNameView extends GridPane {
         row5.setPercentHeight(20);
         this.getRowConstraints().addAll(row1, row2, row3, row4, row5);
 
-        textFieldName.setPrefWidth(200);
-        textFieldName.setMaxWidth(200);
-
         this.add(textFieldName,2,2);
         this.add(buttonNext,2,4);
+
+        this.setPadding(new Insets(50, 0, 50, 0));
 
         GridPane.setHalignment(textFieldName, HPos.CENTER);
         GridPane.setHalignment(buttonNext, HPos.CENTER);
 
         Platform.runLater(() -> buttonNext.requestFocus());
-        this.setPadding(new Insets(50, 0, 50, 0));
-
         this.setFocusTraversable(false);
-
-        this.setGridLinesVisible(true);
-
     }
 }

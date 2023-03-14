@@ -23,6 +23,8 @@ public class Main extends Application {
         BlackJackStartPresenter presenter = new BlackJackStartPresenter(view, primaryStage);
 
         Scene scene = new Scene(view);
+        scene.getStylesheets().add(getClass().getResource("/Styles.css").toExternalForm());
+
         primaryStage.setScene(scene);
 
         primaryStage.sizeToScene();

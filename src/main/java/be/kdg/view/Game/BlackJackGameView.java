@@ -10,7 +10,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 import javafx.util.Duration;
 
@@ -31,6 +30,7 @@ public class BlackJackGameView extends GridPane {
         fadeLabels();
         this.labelAlert = labelAlert;
     }
+
     public void setLabelAlertGreen(Label labelAlert, String text) {
         labelAlert.setText(text);
         labelAlert.setStyle("-fx-text-fill: green;");
@@ -41,6 +41,7 @@ public class BlackJackGameView extends GridPane {
     public Label getLabelAlert() {
         return labelAlert;
     }
+
     StackPane stackPane;
 
     Label labelDealer;
@@ -57,27 +58,32 @@ public class BlackJackGameView extends GridPane {
     HBox hBoxSumCardsDealer;
     Label labelSumCardsDealer;
     Label labelSumCardsDealerNumber;
+
     public Label getLabelSumCardsDealerNumber() {
         return labelSumCardsDealerNumber;
     }
 
 
     HBox hBoxH_S_D_S;
+
     public HBox gethBoxH_S_D_S() {
         return hBoxH_S_D_S;
     }
 
     Button buttonHit;
+
     public Button getButtonHit() {
         return buttonHit;
     }
 
     Button buttonStand;
+
     public Button getButtonStand() {
         return buttonStand;
     }
 
     Button buttonDouble;
+
     public Button getButtonDouble() {
         return buttonDouble;
     }
@@ -102,12 +108,12 @@ public class BlackJackGameView extends GridPane {
     HBox hBoxSumCardsPlayer;
     Label labelSumCardsPlayer;
     Label labelSumCardsPlayerNumber;
+
     public Label getLabelSumCardsPlayerNumber() {
         return labelSumCardsPlayerNumber;
     }
 
     HBox hBoxPlayerSplitCards;
-
 
 
     HBox hBoxBetAmounts;
@@ -124,7 +130,6 @@ public class BlackJackGameView extends GridPane {
     Button buttonExit;
     Button buttonBet;
     Label labelPlayerName;
-
 
 
     public Label getLabelPlayerName() {
@@ -157,6 +162,7 @@ public class BlackJackGameView extends GridPane {
     public Button getButtonExit() {
         return buttonExit;
     }
+
     public Button getButtonBet() {
         return buttonBet;
     }
@@ -169,12 +175,12 @@ public class BlackJackGameView extends GridPane {
         return hBoxPlayerSplitCards;
     }
 
-    public BlackJackGameView(){
+    public BlackJackGameView() {
         this.initialiseNodes();
         this.layoutNodes();
     }
 
-    private void initialiseNodes(){
+    private void initialiseNodes() {
         stackPane = new StackPane();
         labelAlert = new Label(":)");
         imageViewMakerAndEditor = new ImageViewMakerAndEditor();
@@ -183,7 +189,7 @@ public class BlackJackGameView extends GridPane {
         hBoxBalance = new HBox();
         labelBalance = new Label("Balance: ");
         labelBalanceNumber = new Label("200");
-        hBoxBalance.getChildren().addAll(labelBalance,labelBalanceNumber);
+        hBoxBalance.getChildren().addAll(labelBalance, labelBalanceNumber);
 
         hBoxDealerCards = new HBox();
 
@@ -201,15 +207,15 @@ public class BlackJackGameView extends GridPane {
         double factor1 = 18;
         for (ImageView imageView : imageViewMakerAndEditor.getImageViewDealerCards()) {
             imageView.fitWidthProperty().bind(this.widthProperty().divide(factor));
-            imageView.fitHeightProperty().bind(this.widthProperty().divide(factor/2 * 1.556));
+            imageView.fitHeightProperty().bind(this.widthProperty().divide(factor / 2 * 1.556));
         }
         for (ImageView imageView : imageViewMakerAndEditor.getImageViewPlayerCards()) {
             imageView.fitWidthProperty().bind(this.widthProperty().divide(factor));
-            imageView.fitHeightProperty().bind(this.widthProperty().divide(factor/2 * 1.556));
+            imageView.fitHeightProperty().bind(this.widthProperty().divide(factor / 2 * 1.556));
         }
         for (ImageView imageView : imageViewMakerAndEditor.getImageViewPlayerSplitCards()) {
             imageView.fitWidthProperty().bind(this.widthProperty().divide(factor1));
-            imageView.fitHeightProperty().bind(this.widthProperty().divide(factor1/2 * 1.556));
+            imageView.fitHeightProperty().bind(this.widthProperty().divide(factor1 / 2 * 1.556));
         }
 
         hBoxH_S_D_S = new HBox();
@@ -241,6 +247,7 @@ public class BlackJackGameView extends GridPane {
         buttonBet = new Button("Bet");
         labelPlayerName = new Label("Player Name");
         hBoxBetAmounts.getChildren().addAll(buttonBet5, buttonBet10, buttonBet20, buttonBet50, buttonBetClear, buttonBet);
+        this.setStyle("-fx-background-image: url('BlackJackTable.png'); -fx-background-repeat: no-repeat; -fx-background-position: center; -fx-background-size: cover;");
     }
 
     public void swapImageSizes() {
@@ -254,19 +261,22 @@ public class BlackJackGameView extends GridPane {
         double factor1 = 18;
         swapImageS(factor, factor1);
     }
+
     public void swapImageS(double factor, double factor1) {
         for (ImageView imageView : imageViewMakerAndEditor.getImageViewPlayerCards()) {
             imageView.fitWidthProperty().bind(this.widthProperty().divide(factor));
-            imageView.fitHeightProperty().bind(this.widthProperty().divide(factor/2 * 1.556));
+            imageView.fitHeightProperty().bind(this.widthProperty().divide(factor / 2 * 1.556));
         }
         for (ImageView imageView : imageViewMakerAndEditor.getImageViewPlayerSplitCards()) {
             imageView.fitWidthProperty().bind(this.widthProperty().divide(factor1));
-            imageView.fitHeightProperty().bind(this.widthProperty().divide(factor1/2 * 1.556));
+            imageView.fitHeightProperty().bind(this.widthProperty().divide(factor1 / 2 * 1.556));
         }
     }
 
 
-    private void layoutNodes(){
+    private void layoutNodes() {
+        this.setOnMouseClicked(event -> this.requestFocus());
+
 
         spacersTop = new Region[3];
         spacersCenter = new Region[imageViewMakerAndEditor.getImageViewDealerCards().length + 3];
@@ -287,21 +297,19 @@ public class BlackJackGameView extends GridPane {
         int indexImageViewPlayerSplitCards = 0;
         for (ImageView imageView : imageViewMakerAndEditor.getImageViewDealerCards()) {
             ++indexImageviewDealerCards;
-            hBoxDealerCards.getChildren().addAll(imageView,spacersCenter[indexImageviewDealerCards]);
+            hBoxDealerCards.getChildren().addAll(imageView, spacersCenter[indexImageviewDealerCards]);
         }
 
         for (ImageView imageView : imageViewMakerAndEditor.getImageViewPlayerCards()) {
             ++indexImageViewPlayerCards;
-            hBoxPlayerCards.getChildren().addAll(imageView,spacersCenter[indexImageViewPlayerCards]);
+            hBoxPlayerCards.getChildren().addAll(imageView, spacersCenter[indexImageViewPlayerCards]);
         }
 
         for (ImageView imageView : imageViewMakerAndEditor.getImageViewPlayerSplitCards()) {
             ++indexImageViewPlayerSplitCards;
-            hBoxPlayerSplitCards.getChildren().addAll(imageView,spacersCenter[indexImageViewPlayerSplitCards]);
+            hBoxPlayerSplitCards.getChildren().addAll(imageView, spacersCenter[indexImageViewPlayerSplitCards]);
         }
 
-
-        //this.setGridLinesVisible(true);
 
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setPercentWidth(27.5);
@@ -329,58 +337,42 @@ public class BlackJackGameView extends GridPane {
         GridPane.setColumnIndex(stackPane, 0);
         GridPane.setRowSpan(stackPane, 2);
 
-        this.add(labelDealer,1,0);
-        this.add(hBoxBalance,2,0);
-        this.add(hBoxSumCardsDealer,0,1);
+        this.add(labelDealer, 1, 0);
+        this.add(hBoxBalance, 2, 0);
+        this.add(hBoxSumCardsDealer, 0, 1);
         this.add(hBoxDealerCards, 1, 1);
         this.add(hBoxH_S_D_S, 1, 2);
         this.add(hBoxAmountBet, 1, 3);
-        this.add(hBoxSumCardsPlayer,0,4);
+        this.add(hBoxSumCardsPlayer, 0, 4);
         this.add(hBoxPlayerCards, 1, 4);
         this.add(hBoxPlayerSplitCards, 2, 4);
-        this.add(hBoxBetAmounts,0,5);
-        this.add(labelPlayerName,1,5);
-        this.add(buttonExit,2,5);
-        this.add(stackPane,0,2);
+        this.add(hBoxBetAmounts, 0, 5);
+        this.add(labelPlayerName, 1, 5);
+        this.add(buttonExit, 2, 5);
+        this.add(stackPane, 0, 2);
 
         stackPane.getChildren().add(labelAlert);
-        hBoxBalance.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
-        hBoxSumCardsPlayer.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
-        hBoxSumCardsDealer.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
-        labelDealer.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
-        labelPlayerName.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
-        hBoxAmountBet.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
-        hBoxPlayerCards.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
-        hBoxDealerCards.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
-        hBoxH_S_D_S.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
-        hBoxBetAmounts.setStyle("-fx-border-color: black; -fx-border-width: 2px; -fx-padding: 10px;");
+
+        labelAlert.getStyleClass().add("label_alert");
+        labelDealer.getStyleClass().add("label");
+        labelAmountBet.getStyleClass().add("label");
+        labelPlayerName.getStyleClass().add("label");
+        labelBalance.getStyleClass().add("label");
+        labelBalanceNumber.getStyleClass().add("label");
+        labelSumCardsDealer.getStyleClass().add("label");
+        labelSumCardsDealerNumber.getStyleClass().add("label");
+        labelSumCardsPlayer.getStyleClass().add("label");
+        labelSumCardsPlayerNumber.getStyleClass().add("label");
+        buttonBet5.getStyleClass().add("button");
+        buttonBet10.getStyleClass().add("button");
+        buttonBet20.getStyleClass().add("button");
+        buttonBet50.getStyleClass().add("button");
+        buttonBetClear.getStyleClass().add("button");
+        buttonExit.getStyleClass().add("button");
 
 
-        labelDealer.setFont(new Font(20));
-        labelAmountBet.setFont(new Font(20));
-        labelPlayerName.setFont(new Font(20));
-        labelBalance.setFont(new Font(20));
-        labelBalanceNumber.setFont(new Font(20));
-        labelSumCardsDealer.setFont(new Font(20));
-        labelSumCardsDealerNumber.setFont(new Font(20));
-        labelSumCardsPlayer.setFont(new Font(20));
-        labelSumCardsPlayerNumber.setFont(new Font(20));
-        labelBet.setFont(new Font(20));
-        buttonBet5.setStyle("-fx-font-size: 20px;");
-        buttonBet10.setStyle("-fx-font-size: 20px;");
-        buttonBet20.setStyle("-fx-font-size: 20px;");
-        buttonBet50.setStyle("-fx-font-size: 20px;");
-        buttonBetClear.setStyle("-fx-font-size: 20px;");
-        buttonExit.setStyle("-fx-font-size: 20px;");
-        buttonBet.setStyle("-fx-font-size: 20px;");
-        buttonHit.setStyle("-fx-font-size: 20px;");
-        buttonStand.setStyle("-fx-font-size: 20px;");
-        buttonDouble.setStyle("-fx-font-size: 20px;");
-        buttonSplit.setStyle("-fx-font-size: 20px;");
-
-
-        GridPane.setHalignment(labelDealer,HPos.CENTER);
-        GridPane.setHalignment(labelPlayerName,HPos.CENTER);
+        GridPane.setHalignment(labelDealer, HPos.CENTER);
+        GridPane.setHalignment(labelPlayerName, HPos.CENTER);
         GridPane.setHalignment(buttonExit, HPos.RIGHT);
         GridPane.setValignment(buttonExit, VPos.BOTTOM);
 
@@ -397,9 +389,10 @@ public class BlackJackGameView extends GridPane {
         hBoxPlayerSplitCards.setAlignment(Pos.CENTER);
         hBoxBetAmounts.setAlignment(Pos.CENTER);
 
+        hBoxBalance.prefWidthProperty().bind(BlackJackGameView.this.widthProperty());
     }
 
-    public void fadeLabels(){
+    public void fadeLabels() {
         PauseTransition pause = new PauseTransition(Duration.seconds(2));
 
         FadeTransition fade = new FadeTransition(Duration.seconds(1), labelAlert);
