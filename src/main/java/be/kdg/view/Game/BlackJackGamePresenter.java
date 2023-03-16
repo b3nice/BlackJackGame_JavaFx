@@ -4,6 +4,7 @@ import be.kdg.model.BlackJackModel;
 import be.kdg.view.Start.BlackJackStartPresenter;
 import be.kdg.view.Start.BlackJackStartView;
 import javafx.animation.PauseTransition;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
@@ -132,6 +133,7 @@ public class BlackJackGamePresenter {
                 imageViewMakerAndEditor.setImageDealer(0, new Image("/RedCardBack.PNG"));
                 imageViewMakerAndEditor.setImageDealer(1, new Image(String.valueOf(model.getDealerCards().get(0))));
 
+                view.getLabelSumCardsDealerNumber().setText(String.valueOf(model.getDealerPoints()));
                 checkSplitOption();
                 updateView();
             }
@@ -140,6 +142,7 @@ public class BlackJackGamePresenter {
             if (model.getSplitValidation().equals("y")) {
                 model.setAnwser("Hit");
                 addCardView();
+
                 swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit());
                 checkStatusWinOrLossSplit();
             } else {
@@ -155,6 +158,7 @@ public class BlackJackGamePresenter {
                 } else {
                     model.setSecondStatus(2);
                 }
+
                 swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit());
                 checkStatusWinOrLossSplit();
             } else {
@@ -172,12 +176,14 @@ public class BlackJackGamePresenter {
                 if (getIsFirstHand()) {
                     addCardView();
                     model.setStatus(3);
+                    swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit());
+                    checkStatusWinOrLossSplit();
                 } else {
                     addCardView();
                     model.setSecondStatus(3);
+                    swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit());
+                    checkStatusWinOrLossSplit();
                 }
-                swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit());
-                checkStatusWinOrLossSplit();
             }
             else{
                 addCardView();
@@ -237,7 +243,15 @@ public class BlackJackGamePresenter {
     int counter = 0;
 
     public void checkSplitOption() {
-        if (model.getFirstCardPlayer().getNumber() != model.getSecondCardPlayer().getNumber()) {
+        int number1 = model.getFirstCardPlayer().getNumber();
+        int number2 = model.getSecondCardPlayer().getNumber();
+        if (number1 == 1){
+            number1 = 11;
+        } else if (number2 == 1) {
+            number2 = 11;
+        }
+
+        if (number1 != number2) {
             view.getButtonSplit().setDisable(true);
         }
         if (counter == 0) {
@@ -263,7 +277,11 @@ public class BlackJackGamePresenter {
                 checkStatusWinOrLoss(model.getWinOrLossValue2());
             });
             pause.play();
-
+        }
+        else
+        {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Not all decks have been declared");
+            alert.showAndWait();
         }
     }
 
@@ -295,6 +313,22 @@ public class BlackJackGamePresenter {
 
     }
 
+    public void checkStatusWinOrLoss(int winOrLossValue) {
+        if (winOrLossValue == 1) {
+            model.setStatHolder(2);
+            model.youWon();
+            youHaveWon();
+        } else if (winOrLossValue == 2) {
+            model.setStatHolder(2);
+            model.youLost();
+            youHaveLost();
+        } else if (winOrLossValue == 3) {
+            model.setStatHolder(2);
+            model.youDraw();
+            youHaveDrawn();
+        }
+    }
+
     public void swapPlayerDecks() {
         if (getIsFirstHand()) {
             view.getChildren().remove(view.gethBoxPlayerCards());
@@ -316,7 +350,9 @@ public class BlackJackGamePresenter {
 
     public void showDealerCards() {
         if (model.getWinOrLossValue() != 0) {
-            imageViewMakerAndEditor.setImageDealer(0, new Image(String.valueOf(model.getDealerCards().get(1))));
+            if (model.getDealerCards().size() > 1){
+                imageViewMakerAndEditor.setImageDealer(0, new Image(String.valueOf(model.getDealerCards().get(1))));
+            }
             PauseTransition pause = new PauseTransition(Duration.seconds(1));
             pause.play();
             for (int i = 2; i < model.getDealerCards().size(); i++) {
@@ -330,21 +366,6 @@ public class BlackJackGamePresenter {
         pause.play();
     }
 
-    public void checkStatusWinOrLoss(int winOrLossValue) {
-        if (winOrLossValue == 1) {
-            model.setStatHolder(2);
-            model.youWon();
-            youHaveWon();
-        } else if (winOrLossValue == 2) {
-            model.setStatHolder(2);
-            model.youLost();
-            youHaveLost();
-        } else if (winOrLossValue == 3) {
-            model.setStatHolder(2);
-            model.youDraw();
-            youHaveDrawn();
-        }
-    }
 
     public void youHaveWon() {
         String textAlert = "You have won!!! :)). This is your new balance:" + model.getBalance();
@@ -394,7 +415,7 @@ public class BlackJackGamePresenter {
     }
 
     public void restartGame() {
-        PauseTransition pause = new PauseTransition(Duration.seconds(4));
+        PauseTransition pause = new PauseTransition(Duration.seconds(3));
         pause.setOnFinished(event -> {
             model.resetPlayer();
             refreshView();
@@ -426,7 +447,5 @@ public class BlackJackGamePresenter {
 
         int textValue = model.getStatHolder() == 2 ? model.getPlayerPoints() : model.getPlayerPoints2();
         view.getLabelSumCardsPlayerNumber().setText(String.valueOf(textValue));
-
-        view.getLabelSumCardsDealerNumber().setText(String.valueOf(model.getDealerPoints()));
     }
 }

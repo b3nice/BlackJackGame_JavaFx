@@ -91,6 +91,6 @@ public class BlackJackNameView extends GridPane {
 
         Platform.runLater(() -> buttonNext.requestFocus());
         this.setFocusTraversable(false);
-        this.setGridLinesVisible(true);
+        //this.setGridLinesVisible(true);
     }
 }

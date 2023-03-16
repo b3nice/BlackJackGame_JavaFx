@@ -22,10 +22,10 @@ public class Game {
     public void youLost(){
         System.out.println("You lost good job");
         player.setBalance(player.getBalance() - player.getBet());
-        if (player.getWinOrLossValue2() == 2){
+        if (player.getWinOrLossValue2() == 2 && player.getSplitValidation().equals("y")){
             player.setBalance(player.getBalance() - player.getBet2());
         }
-        if (player.getStatHolder() == 2)
+        if (player.getStatHolder() == 2 && player.getSplitValidation().equals("y"))
         {
             table.winOrLoss();
         }

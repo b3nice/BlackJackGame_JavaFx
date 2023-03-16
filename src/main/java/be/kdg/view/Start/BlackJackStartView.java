@@ -9,7 +9,10 @@ import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.ColumnConstraints;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.RowConstraints;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -35,6 +38,12 @@ public class BlackJackStartView extends GridPane {
 
         labelWelcome.getStyleClass().add("label");
         buttonStartGame.getStyleClass().add("button");
+
+        DoubleProperty fontSize = new SimpleDoubleProperty(10);
+        labelWelcome.setFont(new Font(50));
+        labelWelcome.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        buttonStartGame.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        fontSize.bind(primaryStage.widthProperty().multiply(0.015));
 
         this.getStyleClass().add("backGround_start");
     }
@@ -66,7 +75,7 @@ public class BlackJackStartView extends GridPane {
 
         this.setOnMouseClicked(event -> this.requestFocus());
 
-        labelWelcome.setFont(new Font(50));
+
         this.add(buttonStartGame,2,3);
         this.add(labelWelcome,2,1);
 
@@ -76,17 +85,12 @@ public class BlackJackStartView extends GridPane {
         GridPane.setHalignment(buttonStartGame, HPos.CENTER);
         GridPane.setValignment(buttonStartGame, VPos.TOP);
 
-        DoubleProperty fontSize = new SimpleDoubleProperty(10);
-        labelWelcome.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
-        buttonStartGame.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
-        fontSize.bind(primaryStage.widthProperty().multiply(0.015));
-
         BorderPane.setMargin(labelWelcome,new Insets(100,0,0,0));
 
         BorderPane.setAlignment(labelWelcome, Pos.BOTTOM_CENTER);
         BorderPane.setAlignment(buttonStartGame, Pos.CENTER);
 
-        this.setGridLinesVisible(true);
+        //this.setGridLinesVisible(true);
     }
 }
 

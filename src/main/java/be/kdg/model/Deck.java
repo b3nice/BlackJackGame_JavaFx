@@ -29,7 +29,29 @@ public class Deck {
         nameCardQKJA.add("king");
         nameCardQKJA.add("jack");
         nameCardQKJA.add("ace");
+        nameCardQKJA.add("ace");
+        nameCardQKJA.add("ace");
+        nameCardQKJA.add("ace");
+        nameCardQKJA.add("ace");
 
+        for (String nameCard : nameCardQKJA) {
+            for (Suit suit : Suit.values()) {
+                int value = nameCard.equals("ace") ? 11 : 10;
+                deckCards.add(new Card(value, suit, nameCard));
+            }
+        }
+        for (String nameCard : nameCardQKJA) {
+            for (Suit suit : Suit.values()) {
+                int value = nameCard.equals("ace") ? 11 : 10;
+                deckCards.add(new Card(value, suit, nameCard));
+            }
+        }
+        for (String nameCard : nameCardQKJA) {
+            for (Suit suit : Suit.values()) {
+                int value = nameCard.equals("ace") ? 11 : 10;
+                deckCards.add(new Card(value, suit, nameCard));
+            }
+        }
         for (String nameCard : nameCardQKJA) {
             for (Suit suit : Suit.values()) {
                 int value = nameCard.equals("ace") ? 11 : 10;
