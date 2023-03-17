@@ -210,8 +210,8 @@ public class BlackJackGameView extends GridPane {
         labelSumCardsPlayerNumber = new Label("0");
         hBoxSumCardsPlayer.getChildren().addAll(labelSumCardsPlayer, labelSumCardsPlayerNumber);
 
-        double factor = 12;
-        double factor1 = 18;
+        double factor = 15;
+        double factor1 = 20;
         for (ImageView imageView : imageViewMakerAndEditor.getImageViewDealerCards()) {
             imageView.fitWidthProperty().bind(this.widthProperty().divide(factor));
             imageView.fitHeightProperty().bind(this.widthProperty().divide(factor / 2 * 1.556));
@@ -259,14 +259,14 @@ public class BlackJackGameView extends GridPane {
     }
 
     public void swapImageSizes() {
-        double factor = 12;
-        double factor1 = 18;
+        double factor = 15;
+        double factor1 = 20;
         swapImageS(factor1, factor);
     }
 
     public void swapImageSizesBack() {
-        double factor = 12;
-        double factor1 = 18;
+        double factor = 15;
+        double factor1 = 20;
         swapImageS(factor, factor1);
     }
 

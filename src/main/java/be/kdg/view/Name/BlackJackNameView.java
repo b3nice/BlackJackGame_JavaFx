@@ -1,26 +1,35 @@
 package be.kdg.view.Name;
 
 import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class BlackJackNameView extends GridPane {
 
     Stage primaryStage;
-    TextField textFieldName;
+    TextField[] textFields;
     Button buttonNext;
+    ComboBox<String> comboBox;
+    VBox vBoxTextFields;
 
-    public TextField getTextFieldName() {
-        return textFieldName;
+    public ComboBox<String> getComboBox() {
+        return comboBox;
+    }
+
+    public TextField[] getTextFields() {
+        return textFields;
     }
 
     public Button getButtonNext() {
@@ -28,24 +37,68 @@ public class BlackJackNameView extends GridPane {
     }
 
 
-    public BlackJackNameView(Stage primaryStage){
+    public BlackJackNameView(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.initialiseNodes();
         this.layoutNodes();
     }
 
-    private void initialiseNodes(){
-        textFieldName = new TextField();
-        textFieldName.setPromptText("Enter your username here");
-        buttonNext = new Button("Next");
+    private void initialiseNodes() {
+        vBoxTextFields = new VBox();
 
-        textFieldName.getStyleClass().add("textField");
+        ObservableList<String> items = FXCollections.observableArrayList(
+                "1 Player",
+                "2 Players",
+                "3 Players",
+                "4 Players",
+                "5 Players"
+        );
+
+        comboBox = new ComboBox<String>(items);
+        comboBox.setValue("1 Player");
+
+        textFields = new TextField[5];
+        String promptText = "Enter your username here";
+
+        for (int i = 0; i < textFields.length; i++) {
+            textFields[i] = new TextField();
+            textFields[i].setPromptText(promptText);
+            textFields[i].getStyleClass().add("textField");
+            vBoxTextFields.getChildren().add(textFields[i]);
+            if (i != 0){
+                textFields[i].setVisible(false);
+            }
+
+        }
+
+        buttonNext = new Button("Next");
         buttonNext.getStyleClass().add("button");
+
+
+
+        comboBox.setMinSize(primaryStage.widthProperty().doubleValue() * 0.1, primaryStage.widthProperty().doubleValue() * 0.03);
+        for (TextField textField : textFields) {
+            textField.setFont(Font.font(primaryStage.widthProperty().doubleValue() * 0.015));
+            textField.setMinSize(primaryStage.widthProperty().doubleValue() * 0.25, primaryStage.widthProperty().doubleValue() * 0.04);
+        }
+
+        primaryStage.widthProperty().addListener((observable, oldValue, newValue) -> {
+            comboBox.setMinSize(newValue.doubleValue() * 0.1, newValue.doubleValue() * 0.03);
+            buttonNext.setFont(Font.font(newValue.doubleValue() * 0.03));
+            buttonNext.setMinSize(newValue.doubleValue() * 0.1, newValue.doubleValue() * 0.03);
+        });
+
+        for (TextField textField : textFields) {
+            primaryStage.widthProperty().addListener((observable, oldValue, newValue) -> {
+                textField.setFont(Font.font(newValue.doubleValue() * 0.015));
+                textField.setMinSize(newValue.doubleValue() * 0.25, newValue.doubleValue() * 0.04);
+            });
+        }
 
         this.getStyleClass().add("backGround_name");
     }
 
-    private void layoutNodes(){
+    private void layoutNodes() {
         this.setOnMouseClicked(event -> this.requestFocus());
 
 
@@ -59,7 +112,7 @@ public class BlackJackNameView extends GridPane {
         col4.setPercentWidth(15);
         ColumnConstraints col5 = new ColumnConstraints();
         col5.setPercentWidth(20);
-        this.getColumnConstraints().addAll(col1, col2, col3,col4,col5);
+        this.getColumnConstraints().addAll(col1, col2, col3, col4, col5);
 
         RowConstraints row1 = new RowConstraints();
         row1.setPercentHeight(20);
@@ -73,21 +126,25 @@ public class BlackJackNameView extends GridPane {
         row5.setPercentHeight(20);
         this.getRowConstraints().addAll(row1, row2, row3, row4, row5);
 
-        textFieldName.setMinWidth(300);
 
-        this.add(textFieldName,2,2);
-        this.add(buttonNext,2,4);
+        this.add(comboBox, 1, 1);
+        this.add(vBoxTextFields, 2, 2);
+        this.add(buttonNext, 2, 4);
+
+        for (TextField textField : textFields) {
+            GridPane.setHalignment(textField, HPos.CENTER);
+        }
+        vBoxTextFields.setAlignment(Pos.CENTER);
+
 
         this.prefWidthProperty().bind(primaryStage.widthProperty());
         this.prefHeightProperty().bind(primaryStage.heightProperty());
 
-        DoubleProperty fontSize = new SimpleDoubleProperty(10);
-        buttonNext.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
-        textFieldName.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()/1.5), fontSize.divide(1.5)));
-        fontSize.bind(primaryStage.widthProperty().multiply(0.015));
-
-        GridPane.setHalignment(textFieldName, HPos.CENTER);
+        GridPane.setHalignment(vBoxTextFields, HPos.CENTER);
         GridPane.setHalignment(buttonNext, HPos.CENTER);
+        GridPane.setHalignment(comboBox, HPos.RIGHT);
+        GridPane.setValignment(comboBox, VPos.BOTTOM);
+        GridPane.setMargin(comboBox, new javafx.geometry.Insets(0, 0, 13, 0));
 
         Platform.runLater(() -> buttonNext.requestFocus());
         this.setFocusTraversable(false);

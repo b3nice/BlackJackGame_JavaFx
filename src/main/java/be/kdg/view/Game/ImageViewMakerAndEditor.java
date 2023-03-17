@@ -30,16 +30,16 @@ public class ImageViewMakerAndEditor {
     }
 
     public ImageViewMakerAndEditor() {
-        imageViewDealerCards = new ImageView[5];
-        imageViewPlayerCards = new ImageView[5];
-        imageViewPlayerSplitCards = new ImageView[5];
+        imageViewDealerCards = new ImageView[6];
+        imageViewPlayerCards = new ImageView[6];
+        imageViewPlayerSplitCards = new ImageView[6];
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             imageViewDealerCards[i] = new ImageView((Image) null);
             imageViewPlayerCards[i] = new ImageView((Image) null);
         }
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             imageViewPlayerSplitCards[i] = new ImageView((Image) null);
         }
     }

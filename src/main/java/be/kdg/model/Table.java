@@ -145,7 +145,7 @@ public class Table {
         showCards();
         if (points > 21) {
             return 2;
-        } else if (points > dealerPoints && status == 2 || status == 3 && points > dealerPoints && points < 21 || dealerPoints > 21) {
+        } else if (points > dealerPoints && status == 2 || status == 3 && points > dealerPoints || dealerPoints > 21) {
             return 1;
         } else if (dealerPoints > points && status == 2 || status == 3 && dealerPoints > points) {
             return 2;
@@ -160,14 +160,14 @@ public class Table {
     public int calculateWinOrLossForSplit() {
         updatePoints();
         if (player.getStatHolder() == 2) {
-            if (player.getPlayerPoints() >= 21 || player.getStatus() == 2 || player.getStatus() == 3) {
+            if (player.getPlayerPoints() > 21 || player.getStatus() == 2 || player.getStatus() == 3) {
                 player.setWinOrLossValue(calculateWinOrLoss(player.getPlayerPoints(), player.getStatus()));
                 return 1;
             } else {
                 return -1;
             }
         } else {
-            if (player.getPlayerPoints2() >= 21 || player.getSecondStatus() == 2 || player.getSecondStatus() == 3) {
+            if (player.getPlayerPoints2() > 21 || player.getSecondStatus() == 2 || player.getSecondStatus() == 3) {
                 player.setWinOrLossValue2(calculateWinOrLoss(player.getPlayerPoints2(), player.getSecondStatus()));
                 return 1;
             } else {
@@ -182,15 +182,6 @@ public class Table {
         for (Card card : cardsOfX) {
             points = card.getNumber() + points;
         }
-        return points;
-    }
-
-    public int calculateTotalPoints(Card card1, Card card2) {
-        int points = 0;
-
-        points = card1.getNumber() + points;
-        points = card2.getNumber() + points;
-
         return points;
     }
 
@@ -281,16 +272,6 @@ public class Table {
                 }
             }
         }
-        System.out.println(player.getName() + ":");
-        System.out.println(player.getPlayerCards());
-        System.out.println(player.getPlayerPoints());
-
-        System.out.println("Dealer" + ":");
-        System.out.println(dealerCards);
-        System.out.println(dealerPoints);
-
-        System.out.println("playerhand ========== " + player.getPlayerCards());
-        System.out.println("Dealerhand ========== " + dealerCards);
     }
 
     public void aceChecker(Card card, int playerPoints) {

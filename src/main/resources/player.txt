@@ -262,3 +262,14 @@ sds,200
 qzd,3000
 qzd,3050
 se,350
+se,100
+qzd,2950
+qzd,2610
+xf,150
+qzd,2560
+drg,80
+qzd,2560
+qzd,2560
+qzd,2560
+sefsef,0
+sefsef,0

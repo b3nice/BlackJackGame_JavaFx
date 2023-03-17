@@ -34,7 +34,12 @@ public class BlackJackNamePresenter {
         view.getButtonNext().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                String nameInField = view.getTextFieldName().getText();
+
+                for (int i = 0; i < view.getTextFields().length; i++) {
+                    view.getTextFields()[i].setDisable(true);
+                }
+
+                String nameInField = view.getTextFields()[0].getText();
 
                 if (nameInField.isEmpty()) {
                     Alert alert = new Alert(Alert.AlertType.WARNING, "Please enter your username in the textfield.");
@@ -49,6 +54,12 @@ public class BlackJackNamePresenter {
 
                     view.getScene().setRoot(viewGame);
                 }
+            }
+        });
+        view.comboBox.setOnAction(e -> {
+            int selectedValue = Integer.parseInt(view.getComboBox().getValue().split(" ")[0]);
+            for (int i = 0; i < view.getTextFields().length; i++) {
+                view.getTextFields()[i].setVisible(i < selectedValue);
             }
         });
         
