@@ -5,10 +5,27 @@ import java.util.ArrayList;
 public class Player {
     private String name;
     private int balance;
+    private int playerNumber;
 
     public Player(String name, int balance) {
         this.name = name;
         this.balance = balance;
+        this.statHolder = 2;
+        playerCards = new ArrayList<>();
+        playerCards2 = new ArrayList<>();
+        this.playerPoints = 0;
+        this.playerPoints2 = 0;
+        this.splitValidation = "n";
+        this.bet = 0;
+        this.bet2 = 0;
+        this.winOrLossValue = 0;
+        this.winOrLossValue2 = 0;
+        this.anwser = "";
+        this.status = 1;
+        this.secondStatus = 1;
+
+
+
     }
 
     public String getName() {
@@ -25,7 +42,14 @@ public class Player {
         this.balance = balance;
     }
 
-    private int statHolder = 2;
+    public int getPlayerNumber() {
+        return playerNumber;
+    }
+    public void setPlayerNumber(int playerNumber) {
+        this.playerNumber = playerNumber;
+    }
+
+    private int statHolder;
     public int getStatHolder() {
         return statHolder;
     }
@@ -81,7 +105,7 @@ public class Player {
         this.bet2 = bet2;
     }
 
-    private ArrayList<Card> playerCards = new ArrayList<>();
+    private ArrayList<Card> playerCards;
     public ArrayList<Card> getPlayerCards() {
         return playerCards;
     }
@@ -89,7 +113,7 @@ public class Player {
         this.playerCards = playerCards;
     }
 
-    private ArrayList<Card> playerCards2 = new ArrayList<>();
+    private ArrayList<Card> playerCards2;
     public ArrayList<Card> getPlayerCards2() {
         return playerCards2;
     }
@@ -105,7 +129,7 @@ public class Player {
         return anwser;
     }
 
-    private int winOrLossValue = 0;
+    private int winOrLossValue;
     public int getWinOrLossValue() {
         return winOrLossValue;
     }
@@ -113,7 +137,7 @@ public class Player {
         this.winOrLossValue = winOrLossValue;
     }
 
-    private int winOrLossValue2 = 0;
+    private int winOrLossValue2;
     public int getWinOrLossValue2() {
         return winOrLossValue2;
     }
@@ -129,7 +153,7 @@ public class Player {
         this.splitValidation = splitValidation;
     }
 
-    private int status = 1;
+    private int status;
     public int getStatus() {
         return status;
     }
@@ -137,7 +161,7 @@ public class Player {
         this.status = status;
     }
 
-    private int secondStatus = 1;
+    private int secondStatus;
     public int getSecondStatus() {
         return secondStatus;
     }

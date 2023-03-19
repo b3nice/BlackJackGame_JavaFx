@@ -1,8 +1,8 @@
-package be.kdg.view.Name;
+package be.kdg.view.name;
 
 import be.kdg.model.BlackJackModel;
-import be.kdg.view.Game.BlackJackGamePresenter;
-import be.kdg.view.Game.BlackJackGameView;
+import be.kdg.view.game.BlackJackGamePresenter;
+import be.kdg.view.game.BlackJackGameView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
@@ -19,14 +19,10 @@ public class BlackJackNamePresenter {
     private final BlackJackNameView view;
     private final Stage primaryStage;
 
-
-
     public BlackJackNamePresenter(BlackJackNameView view, BlackJackModel model, Stage primaryStage) {
         this.view = view;
         this.model = model;
         this.primaryStage = primaryStage;
-        this.addEventHandlers();
-        this.updateView();
     }
 
     private void addEventHandlers(){
@@ -34,11 +30,6 @@ public class BlackJackNamePresenter {
         view.getButtonNext().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-
-                for (int i = 0; i < view.getTextFields().length; i++) {
-                    view.getTextFields()[i].setDisable(true);
-                }
-
                 String nameInField = view.getTextFields()[0].getText();
 
                 if (nameInField.isEmpty()) {
@@ -56,6 +47,7 @@ public class BlackJackNamePresenter {
                 }
             }
         });
+
         view.comboBox.setOnAction(e -> {
             int selectedValue = Integer.parseInt(view.getComboBox().getValue().split(" ")[0]);
             for (int i = 0; i < view.getTextFields().length; i++) {

@@ -1,4 +1,4 @@
-package be.kdg.view.Name;
+package be.kdg.view.name;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -100,7 +100,6 @@ public class BlackJackNameView extends GridPane {
 
     private void layoutNodes() {
         this.setOnMouseClicked(event -> this.requestFocus());
-
 
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setPercentWidth(20);

@@ -162,4 +162,8 @@ public class BlackJackModel {
         this.player.resetPlayer();
     }
 
+    public void setSecondCardPlayer(Card secondCardPlayer) {
+        this.player.setSecondCardPlayer(secondCardPlayer);
+    }
+
 }

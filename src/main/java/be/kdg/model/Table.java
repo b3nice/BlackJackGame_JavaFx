@@ -7,26 +7,28 @@ public class Table {
     private final Player player;
     private final Deck deck;
 
-    public Table(Player player) {
-        this.player = player;
-        this.deck = new Deck();
-    }
-
     private int dealerPoints;
-
     public int getDealerPoints() {
         return dealerPoints;
     }
 
-    private ArrayList<Card> dealerCards = new ArrayList<>();
-
+    private ArrayList<Card> dealerCards;
     public ArrayList<Card> getDealerCards() {
         return dealerCards;
     }
-
     public void setDealerCards(ArrayList<Card> dealerCards) {
         this.dealerCards = dealerCards;
     }
+
+
+    public Table(Player player) {
+        this.player = player;
+        this.deck = new Deck();
+        this.dealerPoints = 0;
+        dealerCards = new ArrayList<>();
+    }
+
+
 
 
     public void dealCards() {
@@ -302,10 +304,4 @@ public class Table {
         System.out.println(dealerCards);
         System.out.println(dealerPoints);
     }
-
 }
-
-
-
-
-

@@ -6,6 +6,7 @@ public class Game {
     public void setPlayer(Player player) {
         this.player = player;
     }
+
     private Table table;
     public void setTable(Table table) {
         this.table = table;
@@ -14,7 +15,6 @@ public class Game {
     public String getName() {
         return this.player.getName();
     }
-
     public void setName(String name) {
         this.player.setName(name);
     }

@@ -1,7 +1,7 @@
 package be.kdg;
 
-import be.kdg.view.Start.BlackJackStartPresenter;
-import be.kdg.view.Start.BlackJackStartView;
+import be.kdg.view.start.BlackJackStartPresenter;
+import be.kdg.view.start.BlackJackStartView;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
