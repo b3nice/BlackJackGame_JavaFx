@@ -1,4 +1,4 @@
-package be.kdg.view.Game;
+package be.kdg.view.game;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;

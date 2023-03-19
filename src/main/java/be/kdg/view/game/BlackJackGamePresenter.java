@@ -1,8 +1,8 @@
-package be.kdg.view.Game;
+package be.kdg.view.game;
 
 import be.kdg.model.BlackJackModel;
-import be.kdg.view.Start.BlackJackStartPresenter;
-import be.kdg.view.Start.BlackJackStartView;
+import be.kdg.view.start.BlackJackStartPresenter;
+import be.kdg.view.start.BlackJackStartView;
 import javafx.animation.PauseTransition;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;

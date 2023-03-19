@@ -1,4 +1,4 @@
-package be.kdg.view.Name;
+package be.kdg.view.name;
 
 import javafx.application.Platform;
 import javafx.collections.FXCollections;

@@ -1,8 +1,8 @@
-package be.kdg.view.Name;
+package be.kdg.view.name;
 
 import be.kdg.model.BlackJackModel;
-import be.kdg.view.Game.BlackJackGamePresenter;
-import be.kdg.view.Game.BlackJackGameView;
+import be.kdg.view.game.BlackJackGamePresenter;
+import be.kdg.view.game.BlackJackGameView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;

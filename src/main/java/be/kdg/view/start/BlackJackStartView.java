@@ -1,4 +1,4 @@
-package be.kdg.view.Start;
+package be.kdg.view.start;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;

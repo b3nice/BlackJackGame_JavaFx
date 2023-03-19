@@ -1,4 +1,4 @@
-package be.kdg.view.Game;
+package be.kdg.view.game;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
