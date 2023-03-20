@@ -1,6 +1,7 @@
 package be.kdg.view.name;
 
 import be.kdg.model.BlackJackModel;
+import be.kdg.model.Player;
 import be.kdg.view.game.BlackJackGamePresenter;
 import be.kdg.view.game.BlackJackGameView;
 import javafx.event.ActionEvent;
@@ -18,39 +19,47 @@ public class BlackJackNamePresenter {
     private final BlackJackModel model;
     private final BlackJackNameView view;
     private final Stage primaryStage;
+    private final ArrayList<Player> players;
 
-
-
-    public BlackJackNamePresenter(BlackJackNameView view, BlackJackModel model, Stage primaryStage) {
+    public BlackJackNamePresenter(BlackJackNameView view, Stage primaryStage) {
         this.view = view;
-        this.model = model;
+        players = new ArrayList<Player>();
+        model = new BlackJackModel();
         this.primaryStage = primaryStage;
         this.addEventHandlers();
         this.updateView();
     }
 
-    private void addEventHandlers(){
+    private void addEventHandlers() {
 
         view.getButtonNext().setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                ArrayList<String> nameInFields = new ArrayList<String>();
+                int counterNameValues = 0;
 
-                for (int i = 0; i < view.getTextFields().length; i++) {
-                    view.getTextFields()[i].setDisable(true);
+                for (int i = 0; selectedValueComboBox > i; i++) {
+                    nameInFields.add(view.getTextFields()[i].getText());
                 }
 
-                String nameInField = view.getTextFields()[0].getText();
-
-                if (nameInField.isEmpty()) {
+                for (String nameInArray : nameInFields) {
+                    if (!nameInArray.isEmpty()) {
+                        counterNameValues++;
+                    }
+                }
+                int playerIndex = 0;
+                if (counterNameValues != nameInFields.size()) {
                     Alert alert = new Alert(Alert.AlertType.WARNING, "Please enter your username in the textfield.");
                     alert.showAndWait();
                 } else {
-                    model.setName(nameInField);
+                    for (String nameInArray : nameInFields) {
+                        players.add(new Player(nameInArray, 200, playerIndex));
+                    }
 
                     checkPlayerBalance();
 
                     BlackJackGameView viewGame = new BlackJackGameView(primaryStage);
-                    BlackJackGamePresenter presenterGame = new BlackJackGamePresenter(viewGame, model, viewGame.getImageViewMakerAndEditor(), primaryStage);
+                    BlackJackGamePresenter presenterGame = new BlackJackGamePresenter(viewGame, viewGame.getImageViewMakerAndEditor(), primaryStage, players);
 
                     view.getScene().setRoot(viewGame);
                 }
@@ -62,10 +71,10 @@ public class BlackJackNamePresenter {
                 view.getTextFields()[i].setVisible(i < selectedValue);
             }
         });
-        
+
     }
-    
-    public void checkPlayerBalance(){
+
+    public void checkPlayerBalance() {
         String fileName = "src/main/resources/player.txt";
         int lineCount = 0;
         ArrayList<String> arrayListNames = new ArrayList<>();
@@ -82,23 +91,29 @@ public class BlackJackNamePresenter {
         }
 
         int indexInArrayList = 0;
-        if (lineCount >= 0){
+        if (lineCount >= 0) {
             for (int i = 0; i <= lineCount; i++) {
                 String valueArrayList = arrayListNames.get(indexInArrayList);
                 indexInArrayList++;
 
                 int spaceIndex = valueArrayList.indexOf(',');
-                String name = valueArrayList.substring(0, spaceIndex);
+                ArrayList<String> names = new ArrayList<>();
+                names.add(valueArrayList.substring(0, spaceIndex));
+                System.out.println(players.size());
 
-                if (name.equals(model.getName())){
-                    String balance = valueArrayList.substring(spaceIndex + 1);
-                    model.setBalance(Integer.parseInt(balance));
+                for (Player player : players) {
+                    for (String name : names) {
+                        if (name.equals(player.getName())) {
+                            String balance = valueArrayList.substring(spaceIndex + 1);
+                            player.setBalance(Integer.parseInt(balance));
+                        }
+                    }
                 }
             }
         }
     }
-    
-    private void updateView(){
+
+    private void updateView() {
 
     }
 }

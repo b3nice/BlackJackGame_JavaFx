@@ -5,10 +5,12 @@ import java.util.ArrayList;
 public class Player {
     private String name;
     private int balance;
+    private int playerNumber;
 
-    public Player(String name, int balance) {
+    public Player(String name, int balance, int playerNumber) {
         this.name = name;
         this.balance = balance;
+        this.playerNumber = playerNumber;
     }
 
     public String getName() {

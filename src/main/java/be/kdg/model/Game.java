@@ -2,24 +2,13 @@ package be.kdg.model;
 
 
 public class Game {
-    private  Player player;
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
+
     private Table table;
     public void setTable(Table table) {
         this.table = table;
     }
 
-    public String getName() {
-        return this.player.getName();
-    }
-
-    public void setName(String name) {
-        this.player.setName(name);
-    }
-
-    public void youLost(){
+    public void youLost(Player player){
         System.out.println("You lost good job");
         player.setBalance(player.getBalance() - player.getBet());
         if (player.getWinOrLossValue2() == 2 && player.getSplitValidation().equals("y")){
@@ -27,11 +16,11 @@ public class Game {
         }
         if (player.getStatHolder() == 2 && player.getSplitValidation().equals("y"))
         {
-            table.winOrLoss();
+            table.winOrLoss(player);
         }
     }
 
-    public void youWon(){
+    public void youWon(Player player){
         System.out.println("You won good job");
         player.setBalance(player.getBalance() + player.getBet());
         if (player.getWinOrLossValue2() == 1)
@@ -41,15 +30,15 @@ public class Game {
         System.out.println("This is your new balance" + player.getBalance());
         if (player.getStatHolder() == 2)
         {
-            table.winOrLoss();
+            table.winOrLoss(player);
         }
     }
 
-    public void youDraw(){
+    public void youDraw(Player player){
         System.out.println("You draw good job");
         if (player.getStatHolder() == 2)
         {
-            table.winOrLoss();
+            table.winOrLoss(player);
         }
     }
 }
