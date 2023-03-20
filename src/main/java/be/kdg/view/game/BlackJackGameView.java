@@ -69,6 +69,21 @@ public class BlackJackGameView extends GridPane {
         return labelSumCardsDealerNumber;
     }
 
+    Button buttonPrevPlayer;
+    public Button getButtonPrevPlayer() {
+        return buttonPrevPlayer;
+    }
+    public void setButtonPrevPlayer(Button buttonPrevPlayer) {
+        this.buttonPrevPlayer = buttonPrevPlayer;
+    }
+
+    Button buttonNextPlayer;
+    public Button getButtonNextPlayer() {
+        return buttonNextPlayer;
+    }
+    public void setButtonNextPlayer(Button buttonNextPlayer) {
+        this.buttonNextPlayer = buttonNextPlayer;
+    }
 
     HBox hBoxH_S_D_S;
 
@@ -244,6 +259,8 @@ public class BlackJackGameView extends GridPane {
         hBoxPlayerCards = new HBox();
         hBoxPlayerSplitCards = new HBox();
 
+        buttonPrevPlayer = new Button("Prev");
+        buttonNextPlayer = new Button("Next");
 
         hBoxBetAmounts = new HBox();
         buttonBet5 = new Button("5");
@@ -353,6 +370,8 @@ public class BlackJackGameView extends GridPane {
         this.add(hBoxDealerCards, 1, 1);
         this.add(hBoxH_S_D_S, 1, 2);
         this.add(hBoxAmountBet, 1, 3);
+        this.add(buttonPrevPlayer, 0, 3);
+        this.add(buttonNextPlayer, 2, 3);
         this.add(hBoxSumCardsPlayer, 0, 4);
         this.add(hBoxPlayerCards, 1, 4);
         this.add(hBoxPlayerSplitCards, 2, 4);
@@ -385,6 +404,8 @@ public class BlackJackGameView extends GridPane {
         buttonStand.getStyleClass().add("button");
         buttonDouble.getStyleClass().add("button");
         buttonSplit.getStyleClass().add("button");
+        buttonNextPlayer.getStyleClass().add("button");
+        buttonPrevPlayer.getStyleClass().add("button");
 
 
         GridPane.setHalignment(labelDealer, HPos.CENTER);
@@ -429,6 +450,8 @@ public class BlackJackGameView extends GridPane {
         buttonStand.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
         buttonDouble.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
         buttonSplit.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        buttonNextPlayer.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
+        buttonPrevPlayer.fontProperty().bind(Bindings.createObjectBinding(() -> Font.font(fontSize.get()), fontSize));
         fontSize.bind(primaryStage.widthProperty().multiply(0.015));
 
     }

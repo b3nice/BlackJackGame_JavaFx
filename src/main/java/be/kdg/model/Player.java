@@ -27,6 +27,13 @@ public class Player {
         this.balance = balance;
     }
 
+    public int getPlayerNumber() {
+        return playerNumber;
+    }
+    public void setPlayerNumber(int playerNumber) {
+        this.playerNumber = playerNumber;
+    }
+
     private int statHolder = 2;
     public int getStatHolder() {
         return statHolder;

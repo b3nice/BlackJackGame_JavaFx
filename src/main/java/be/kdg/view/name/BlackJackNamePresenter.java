@@ -19,6 +19,7 @@ public class BlackJackNamePresenter {
     private final BlackJackModel model;
     private final BlackJackNameView view;
     private final Stage primaryStage;
+    private final int selectedValueComboBox;
     private final ArrayList<Player> players;
 
     public BlackJackNamePresenter(BlackJackNameView view, Stage primaryStage) {
@@ -26,6 +27,7 @@ public class BlackJackNamePresenter {
         players = new ArrayList<Player>();
         model = new BlackJackModel();
         this.primaryStage = primaryStage;
+        this.selectedValueComboBox = 1;
         this.addEventHandlers();
         this.updateView();
     }
@@ -59,7 +61,7 @@ public class BlackJackNamePresenter {
                     checkPlayerBalance();
 
                     BlackJackGameView viewGame = new BlackJackGameView(primaryStage);
-                    BlackJackGamePresenter presenterGame = new BlackJackGamePresenter(viewGame, viewGame.getImageViewMakerAndEditor(), primaryStage, players);
+                    BlackJackGamePresenter presenterGame = new BlackJackGamePresenter(viewGame, model,viewGame.getImageViewMakerAndEditor(), primaryStage, players);
 
                     view.getScene().setRoot(viewGame);
                 }
@@ -98,6 +100,8 @@ public class BlackJackNamePresenter {
 
                 int spaceIndex = valueArrayList.indexOf(',');
                 ArrayList<String> names = new ArrayList<>();
+                System.out.println(names);
+                System.out.println(spaceIndex);
                 names.add(valueArrayList.substring(0, spaceIndex));
                 System.out.println(players.size());
 
