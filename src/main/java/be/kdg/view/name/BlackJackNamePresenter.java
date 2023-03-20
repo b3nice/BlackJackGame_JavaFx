@@ -76,7 +76,7 @@ public class BlackJackNamePresenter {
 
     }
 
-    public void checkPlayerBalance() {
+    public void checkPlayerBalance(){
         String fileName = "src/main/resources/player.txt";
         int lineCount = 0;
         ArrayList<String> arrayListNames = new ArrayList<>();
@@ -93,18 +93,13 @@ public class BlackJackNamePresenter {
         }
 
         int indexInArrayList = 0;
-        if (lineCount >= 0) {
+        if (lineCount >= 0){
             for (int i = 0; i <= lineCount; i++) {
                 String valueArrayList = arrayListNames.get(indexInArrayList);
                 indexInArrayList++;
-
                 int spaceIndex = valueArrayList.indexOf(',');
                 ArrayList<String> names = new ArrayList<>();
-                System.out.println(names);
-                System.out.println(spaceIndex);
                 names.add(valueArrayList.substring(0, spaceIndex));
-                System.out.println(players.size());
-
                 for (Player player : players) {
                     for (String name : names) {
                         if (name.equals(player.getName())) {
@@ -114,6 +109,9 @@ public class BlackJackNamePresenter {
                     }
                 }
             }
+        }
+        for (Player player:players) {
+            System.out.println(player.getName() + " " + player.getBalance());
         }
     }
 
