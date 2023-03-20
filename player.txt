@@ -1,1 +1,7 @@
-Player{name='qzd', balance=200}
+hussein,150
+hussein,140
+hussein,90
+qzd,220
+qzd,650
+qzd,650
+qzd,1000
