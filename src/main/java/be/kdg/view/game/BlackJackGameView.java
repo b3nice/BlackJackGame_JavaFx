@@ -48,8 +48,6 @@ public class BlackJackGameView extends GridPane {
         return labelAlert;
     }
 
-    StackPane stackPane;
-
     Label labelDealer;
     HBox hBoxBalance;
     Label labelBalance;
@@ -203,7 +201,6 @@ public class BlackJackGameView extends GridPane {
     }
 
     private void initialiseNodes() {
-        stackPane = new StackPane();
         labelAlert = new Label(":)");
         imageViewMakerAndEditor = new ImageViewMakerAndEditor();
         labelDealer = new Label("Dealer");
@@ -359,10 +356,6 @@ public class BlackJackGameView extends GridPane {
         row6.setPercentHeight(15);
         this.getRowConstraints().addAll(row1, row2, row3, row4, row5, row6);
 
-        GridPane.setRowIndex(stackPane, 2);
-        GridPane.setColumnIndex(stackPane, 0);
-        GridPane.setRowSpan(stackPane, 2);
-
 
         this.add(labelDealer, 1, 0);
         this.add(hBoxBalance, 2, 0);
@@ -378,9 +371,7 @@ public class BlackJackGameView extends GridPane {
         this.add(hBoxBetAmounts, 0, 5);
         this.add(labelPlayerName, 1, 5);
         this.add(buttonExit, 2, 5);
-        this.add(stackPane, 0, 2);
-
-        stackPane.getChildren().add(labelAlert);
+        this.add(labelAlert, 0, 2);
 
         labelAlert.getStyleClass().add("label_alert");
         labelDealer.getStyleClass().add("label");
@@ -410,12 +401,18 @@ public class BlackJackGameView extends GridPane {
 
         GridPane.setHalignment(labelDealer, HPos.CENTER);
         GridPane.setHalignment(labelPlayerName, HPos.CENTER);
+        GridPane.setHalignment(labelAlert, HPos.CENTER);
         GridPane.setHalignment(buttonExit, HPos.RIGHT);
         GridPane.setValignment(buttonExit, VPos.BOTTOM);
 
+        GridPane.setHalignment(buttonPrevPlayer, HPos.LEFT);
+        GridPane.setValignment(buttonPrevPlayer, VPos.CENTER);
+        GridPane.setHalignment(buttonNextPlayer, HPos.RIGHT);
+        GridPane.setValignment(buttonNextPlayer, VPos.CENTER);
+
+
         labelAlert.setTextAlignment(TextAlignment.CENTER);
         labelAlert.setAlignment(Pos.CENTER);
-        stackPane.setAlignment(Pos.CENTER);
         hBoxDealerCards.setAlignment(Pos.CENTER);
         hBoxBalance.setAlignment(Pos.CENTER);
         hBoxSumCardsPlayer.setAlignment(Pos.CENTER);

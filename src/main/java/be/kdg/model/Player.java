@@ -13,6 +13,14 @@ public class Player {
         this.playerNumber = playerNumber;
     }
 
+    private boolean betConfirm = false;
+    public boolean isBetConfirm() {
+        return betConfirm;
+    }
+    public void setBetConfirm(boolean betConfirm) {
+        this.betConfirm = betConfirm;
+    }
+
     public String getName() {
         return name;
     }
@@ -165,6 +173,7 @@ public class Player {
         this.winOrLossValue2 = 0;
         this.status = 1;
         this.secondStatus = 1;
+        this.betConfirm = false;
     }
 
     @Override

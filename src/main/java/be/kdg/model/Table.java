@@ -47,6 +47,10 @@ public class Table {
 
         player.setPlayerCards(cards2);
 
+        updatePoints(player);
+    }
+
+    public void dealDealerCards(Player player){
         aceChecker(deck.getDeckCards().get(0), dealerPoints);
         dealerCards.add(deck.getDeckCards().get(0));
         deck.takeTopCard();

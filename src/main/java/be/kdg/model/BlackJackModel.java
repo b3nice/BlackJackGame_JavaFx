@@ -27,6 +27,9 @@ public class BlackJackModel {
     public void startGame(Player player) {
         table.dealCards(player);
     }
+    public void dealDealerCards(Player player){
+        this.table.dealDealerCards(player);
+    }
 
     public ArrayList<Card> getDealerCards() {
         return this.table.getDealerCards();

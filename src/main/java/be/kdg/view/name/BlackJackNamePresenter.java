@@ -19,7 +19,7 @@ public class BlackJackNamePresenter {
     private final BlackJackModel model;
     private final BlackJackNameView view;
     private final Stage primaryStage;
-    private final int selectedValueComboBox;
+    private int selectedValueComboBox;
     private final ArrayList<Player> players;
 
     public BlackJackNamePresenter(BlackJackNameView view, Stage primaryStage) {
@@ -40,37 +40,37 @@ public class BlackJackNamePresenter {
                 ArrayList<String> nameInFields = new ArrayList<String>();
                 int counterNameValues = 0;
 
-                for (int i = 0; selectedValueComboBox > i; i++) {
+                for(int i = 0; selectedValueComboBox > i; i++){
                     nameInFields.add(view.getTextFields()[i].getText());
                 }
 
-                for (String nameInArray : nameInFields) {
-                    if (!nameInArray.isEmpty()) {
+                for (String nameInArray:nameInFields) {
+                    if (!nameInArray.isEmpty()){
                         counterNameValues++;
                     }
                 }
                 int playerIndex = 0;
-                if (counterNameValues != nameInFields.size()) {
+                if (counterNameValues != nameInFields.size()){
                     Alert alert = new Alert(Alert.AlertType.WARNING, "Please enter your username in the textfield.");
                     alert.showAndWait();
                 } else {
-                    for (String nameInArray : nameInFields) {
-                        players.add(new Player(nameInArray, 200, playerIndex));
+                    for (String nameInArray:nameInFields) {
+                        players.add(new Player(nameInArray, 200,playerIndex));
                     }
 
                     checkPlayerBalance();
 
                     BlackJackGameView viewGame = new BlackJackGameView(primaryStage);
-                    BlackJackGamePresenter presenterGame = new BlackJackGamePresenter(viewGame, model,viewGame.getImageViewMakerAndEditor(), primaryStage, players);
+                    BlackJackGamePresenter presenterGame = new BlackJackGamePresenter(viewGame,model,viewGame.getImageViewMakerAndEditor(), primaryStage, players);
 
                     view.getScene().setRoot(viewGame);
                 }
             }
         });
         view.comboBox.setOnAction(e -> {
-            int selectedValue = Integer.parseInt(view.getComboBox().getValue().split(" ")[0]);
+            selectedValueComboBox = Integer.parseInt(view.getComboBox().getValue().split(" ")[0]);
             for (int i = 0; i < view.getTextFields().length; i++) {
-                view.getTextFields()[i].setVisible(i < selectedValue);
+                view.getTextFields()[i].setVisible(i < selectedValueComboBox);
             }
         });
 
