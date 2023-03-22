@@ -288,16 +288,34 @@ public class BlackJackGamePresenter {
                 counter++;
             }
         }
-        System.out.println(counter);
-        System.out.println(players.size() + " +++++++");
         if (counter == players.size()) {
             showDealerCards();
-            for (Player player : players) {
-                showCurrentPlayer(player);
-                checkStatusWinOrLoss(player.getWinOrLossValue(), player);
-            }
-            conditionRestartGame();
+            disableButtons();
+            showAllPlayers(0);
         }
+    }
+
+    public void showAllPlayers(int playerIndex) {
+        if (playerIndex >= players.size()) {
+            PauseTransition pause1 = new PauseTransition(Duration.seconds(3));
+            pause1.play();
+            pause1.setOnFinished(event -> {
+                conditionRestartGame();
+            });
+        }
+        else{
+            PauseTransition pause = new PauseTransition(Duration.seconds(3));
+            pause.setOnFinished(event -> {
+                showCurrentPlayer(players.get(playerIndex));
+                updateView(players.get(playerIndex));
+                checkStatusWinOrLoss(players.get(playerIndex).getWinOrLossValue(), players.get(playerIndex));
+                showAllPlayers(playerIndex + 1);
+            });
+            pause.play();
+        }
+
+
+
     }
 
     public void disableOrEnableBetButtons() {
@@ -411,12 +429,21 @@ public class BlackJackGamePresenter {
                 updateView(player);
             }
 
-            PauseTransition pause = new PauseTransition(Duration.seconds(1));
-            pause.play();
-
             model.winOrLoss(player);
-            allPlayersHavePlayed();
-            playerIsFinished();
+            updateView(player);
+            if (player.getWinOrLossValue() != 0) {
+                PauseTransition pause = new PauseTransition(Duration.seconds(1));
+                pause.setOnFinished(event -> {
+                    allPlayersHavePlayed();
+                    playerIsFinished();
+                });
+                pause.play();
+            }
+            else{
+                allPlayersHavePlayed();
+                playerIsFinished();
+            }
+            disableOrEnableBetButtons();
         }
 
     }
@@ -475,17 +502,11 @@ public class BlackJackGamePresenter {
             if (model.getDealerCards().size() > 1) {
                 imageViewMakerAndEditor.setImageDealer(0, new Image(String.valueOf(model.getDealerCards().get(1))));
             }
-            PauseTransition pause = new PauseTransition(Duration.seconds(1));
-            pause.play();
             for (int i = 2; i < model.getDealerCards().size(); i++) {
                 imageViewMakerAndEditor.setImageDealer(i, new Image(String.valueOf(model.getDealerCards().get(i))));
-                PauseTransition pause2 = new PauseTransition(Duration.seconds(1));
-                pause2.play();
             }
         }
         view.getLabelSumCardsDealerNumber().setText(String.valueOf(model.getDealerPoints()));
-        PauseTransition pause = new PauseTransition(Duration.seconds(4));
-        pause.play();
     }
 
 
@@ -493,33 +514,18 @@ public class BlackJackGamePresenter {
         String textAlert = "You have won!!! :)). This is your new balance:" + player.getBalance();
         disableButtons();
         view.setLabelAlertGreen(view.getLabelAlert(), textAlert);
-        PauseTransition pause = new PauseTransition(Duration.seconds(5));
-        pause.setOnFinished(event -> {
-
-        });
-        pause.play();
     }
 
     public void youHaveLost(Player player) {
         String textAlert = "You have lost  >:(. This is your new balance:" + player.getBalance();
         disableButtons();
         view.setLabelAlertRed(view.getLabelAlert(), textAlert);
-        PauseTransition pause = new PauseTransition(Duration.seconds(5));
-        pause.setOnFinished(event -> {
-
-        });
-        pause.play();
     }
 
     public void youHaveDrawn(Player player) {
         String textAlert = "You have drawn, -_- .This is your new balance:" + player.getBalance();
         disableButtons();
         view.setLabelAlertRed(view.getLabelAlert(), textAlert);
-        PauseTransition pause = new PauseTransition(Duration.seconds(5));
-        pause.setOnFinished(event -> {
-
-        });
-        pause.play();
     }
 
     public void conditionRestartGame() {

@@ -17,7 +17,7 @@ public class Deck {
         Suit Clubs = Suit.CLUBS;
         Suit Diamonds = Suit.DIAMONDS;
 
-        for (int i = 2; i <= 10; i++) {
+        for (int i = 10; i <= 10; i++) {
             deckCards.add(new Card(i, Hearts));
             deckCards.add(new Card(i, Spades));
             deckCards.add(new Card(i, Clubs));
@@ -28,30 +28,8 @@ public class Deck {
         nameCardQKJA.add("queen");
         nameCardQKJA.add("king");
         nameCardQKJA.add("jack");
-        nameCardQKJA.add("ace");
-        nameCardQKJA.add("ace");
-        nameCardQKJA.add("ace");
-        nameCardQKJA.add("ace");
-        nameCardQKJA.add("ace");
+        //nameCardQKJA.add("ace");
 
-        for (String nameCard : nameCardQKJA) {
-            for (Suit suit : Suit.values()) {
-                int value = nameCard.equals("ace") ? 11 : 10;
-                deckCards.add(new Card(value, suit, nameCard));
-            }
-        }
-        for (String nameCard : nameCardQKJA) {
-            for (Suit suit : Suit.values()) {
-                int value = nameCard.equals("ace") ? 11 : 10;
-                deckCards.add(new Card(value, suit, nameCard));
-            }
-        }
-        for (String nameCard : nameCardQKJA) {
-            for (Suit suit : Suit.values()) {
-                int value = nameCard.equals("ace") ? 11 : 10;
-                deckCards.add(new Card(value, suit, nameCard));
-            }
-        }
         for (String nameCard : nameCardQKJA) {
             for (Suit suit : Suit.values()) {
                 int value = nameCard.equals("ace") ? 11 : 10;
