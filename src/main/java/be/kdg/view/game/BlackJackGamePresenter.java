@@ -6,6 +6,7 @@ import be.kdg.model.Player;
 import be.kdg.view.start.BlackJackStartPresenter;
 import be.kdg.view.start.BlackJackStartView;
 import javafx.animation.PauseTransition;
+import javafx.application.Platform;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
@@ -15,16 +16,14 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class BlackJackGamePresenter {
     private final BlackJackModel model;
     private final BlackJackGameView view;
     private final ImageViewMakerAndEditor imageViewMakerAndEditor;
     private final Stage primaryStage;
-    private int indexImageSplit1;
-    private int indexImageSplit2;
-    private int counterSwapCards;
-    private int counterWinLossDraw;
     private final ArrayList<Player> players;
     private int indexPlayerHolder;
     private Player player;
@@ -36,10 +35,6 @@ public class BlackJackGamePresenter {
         this.primaryStage = primaryStage;
         this.players = players;
         indexPlayerHolder = 0;
-        indexImageSplit1 = 1;
-        indexImageSplit2 = 1;
-        counterSwapCards = 0;
-        counterWinLossDraw = 0;
         model.makeNewTable();
         view.gethBoxH_S_D_S().setDisable(true);
         addEventHandlers();
@@ -49,55 +44,6 @@ public class BlackJackGamePresenter {
 
 
     private void addEventHandlers() {
-      /*  view.getButtonNextPlayer().setOnAction(actionEvent -> {
-            if (indexPlayerHolder < players.size() - 1) {
-                System.out.println(players.size());
-                indexPlayerHolder++;
-                player = players.get(indexPlayerHolder);
-
-                disableOrEnableBetButtons();
-
-                if (!player.getPlayerCards().isEmpty()) {
-                    int indexImage = 0;
-                    for (Card card : player.getPlayerCards()) {
-                        imageViewMakerAndEditor.setImagePlayer(indexImage, new Image(String.valueOf(player.getPlayerCards().get(indexImage))));
-                        indexImage++;
-                        updateView();
-                    }
-                }
-
-                updateView();
-            } else {
-                String textAlert = "There is no next player!!!";
-                view.setLabelAlertRed(view.getLabelAlert(), textAlert);
-            }
-        });
-
-
-        view.getButtonPrevPlayer().setOnAction(actionEvent -> {
-            if (indexPlayerHolder > 0) {
-                System.out.println(players.size());
-                indexPlayerHolder--;
-                player = players.get(indexPlayerHolder);
-
-                disableOrEnableBetButtons();
-
-                if (!player.getPlayerCards().isEmpty()) {
-                    int indexImage = 0;
-                    for (Card card : player.getPlayerCards()) {
-                        imageViewMakerAndEditor.setImagePlayer(indexImage, new Image(String.valueOf(player.getPlayerCards().get(indexImage))));
-                        indexImage++;
-                        updateView();
-                    }
-                }
-
-                updateView();
-            } else {
-                String textAlert = "There is no previous player!!!";
-                view.setLabelAlertRed(view.getLabelAlert(), textAlert);
-            }
-        });
-        */
         view.getButtonExit().setOnAction(actionEvent -> {
             for (Player player : players) {
                 String fileName = "src/main/resources/player.txt";
@@ -169,51 +115,51 @@ public class BlackJackGamePresenter {
         view.getButtonHit().setOnAction(actionEvent -> {
             if (player.getSplitValidation().equals("y")) {
                 player.setAnwser("Hit");
-                addCardView();
+                addCardView(player);
 
-                swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit(player));
-                checkStatusWinOrLossSplit();
+                swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit(player), player);
+                playerIsFinished();
             } else {
                 player.setAnwser("Hit");
-                addCardView();
+                addCardView(player);
             }
         });
         view.getButtonStand().setOnAction(actionEvent -> {
             player.setAnwser("Stand");
             if (player.getSplitValidation().equals("y")) {
-                if (getIsFirstHand()) {
+                if (getIsFirstHand(player)) {
                     player.setStatus(2);
                 } else {
                     player.setSecondStatus(2);
                 }
 
-                swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit(player));
-                checkStatusWinOrLossSplit();
+                model.winOrLoss(player);
+                swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit(player), player);
             } else {
                 model.hitStandDoubleOrSplit(player);
 
                 model.winOrLoss(player);
                 view.getLabelSumCardsPlayerNumber().setText(String.valueOf(player.getPlayerPoints()));
-                allPlayersHavePlayed();
-                playerIsFinished();
             }
+            allPlayersHavePlayed();
+            playerIsFinished();
+
         });
         view.getButtonDouble().setOnAction(actionEvent -> {
             player.setAnwser("Double");
             if (player.getSplitValidation().equals("y")) {
-                if (getIsFirstHand()) {
-                    addCardView();
+                if (getIsFirstHand(player)) {
+                    addCardView(player);
                     player.setStatus(3);
-                    swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit(player));
-                    checkStatusWinOrLossSplit();
+                    swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit(player), player);
                 } else {
-                    addCardView();
+                    addCardView(player);
                     player.setSecondStatus(3);
-                    swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit(player));
-                    checkStatusWinOrLossSplit();
+                    swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit(player), player);
                 }
+                playerIsFinished();
             } else {
-                addCardView();
+                addCardView(player);
             }
 
         });
@@ -276,7 +222,11 @@ public class BlackJackGamePresenter {
     }
 
     public void playerIsFinished() {
-        if (player.getWinOrLossValue() != 0) {
+        if (player.getSplitValidation().equals("y")) {
+            if (player.getWinOrLossValue() != 0 && player.getWinOrLossValue2() != 0) {
+                goPreviousPlayer();
+            }
+        } else if (player.getWinOrLossValue() != 0) {
             goPreviousPlayer();
         }
     }
@@ -284,38 +234,102 @@ public class BlackJackGamePresenter {
     public void allPlayersHavePlayed() {
         int counter = 0;
         for (Player player : players) {
-            if (player.getWinOrLossValue() != 0) {
+            if (player.getSplitValidation().equals("y")) {
+                if (player.getWinOrLossValue() != 0 && player.getWinOrLossValue2() != 0) {
+                    counter++;
+                }
+            } else if (player.getWinOrLossValue() != 0) {
                 counter++;
             }
         }
+
         if (counter == players.size()) {
             showDealerCards();
             disableButtons();
-            showAllPlayers(0);
+            for (Player player : players) {
+                showAllPlayers(player);
+            }
+            Timer timer1 = new Timer();
+            timer1.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(() -> {
+                        restartGame();
+                    });
+                }
+            }, 30000);
         }
     }
 
-    public void showAllPlayers(int playerIndex) {
-        if (playerIndex >= players.size()) {
-            PauseTransition pause1 = new PauseTransition(Duration.seconds(3));
-            pause1.play();
-            pause1.setOnFinished(event -> {
-                conditionRestartGame();
-            });
+    public void showAllPlayers(Player player) {
+        showCurrentPlayer(player);
+        updateView(player);
+        if (player.getSplitValidation().equals("y")) {
+            checkStatusWinOrLossSplit(player.getPlayerNumber());
+        } else {
+            checkStatusWinOrLoss(player.getWinOrLossValue(),player);
         }
-        else{
-            PauseTransition pause = new PauseTransition(Duration.seconds(3));
-            pause.setOnFinished(event -> {
-                showCurrentPlayer(players.get(playerIndex));
-                updateView(players.get(playerIndex));
-                checkStatusWinOrLoss(players.get(playerIndex).getWinOrLossValue(), players.get(playerIndex));
-                showAllPlayers(playerIndex + 1);
-            });
-            pause.play();
+    }
+
+    public void checkStatusWinOrLossSplit(int playerIndex) {
+        if (players.get(playerIndex).getWinOrLossValue() != 0 && players.get(playerIndex).getWinOrLossValue2() != 0) {
+            Timer timer = new Timer();
+            timer.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(() -> {
+                        checkStatusWinOrLoss(players.get(playerIndex).getWinOrLossValue(), players.get(playerIndex));
+                    });
+                }
+            }, 3000);
+
+
+            Timer timer1 = new Timer();
+            timer1.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    Platform.runLater(() -> {
+                        swapPlayerDecks(players.get(playerIndex));
+                        players.get(playerIndex).setStatHolder(1);
+                        updateView(players.get(playerIndex));
+                        checkStatusWinOrLoss(players.get(playerIndex).getWinOrLossValue2(), players.get(playerIndex));
+                    });
+                }
+            }, 6000);
+
         }
+    }
 
-
-
+    public void checkStatusWinOrLoss(int winOrLossValue, Player player) {
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                Platform.runLater(() -> {
+                    if (winOrLossValue == 1) {
+                        if (getIsFirstHand(player)) {
+                            model.youWonFirstHand(player);
+                        } else {
+                            model.youWonSecondHand(player);
+                        }
+                        player.setStatHolder(2);
+                        youHaveWon(player);
+                    } else if (winOrLossValue == 2) {
+                        if (getIsFirstHand(player)) {
+                            model.youLostFirstHand(player);
+                        } else {
+                            model.youLostSecondHand(player);
+                        }
+                        player.setStatHolder(2);
+                        youHaveLost(player);
+                    } else if (winOrLossValue == 3) {
+                        player.setStatHolder(2);
+                        model.youDraw(player);
+                        youHaveDrawn(player);
+                    }
+                });
+            }
+        }, 1000);
     }
 
     public void disableOrEnableBetButtons() {
@@ -333,32 +347,46 @@ public class BlackJackGamePresenter {
             view.gethBoxBetAmounts().setDisable(true);
             view.getButtonExit().setDisable(true);
         }
+        if (!player.getPlayerCards().isEmpty()) {
+            view.getButtonSplit().setDisable(player.getPlayerCards().get(0).getNumber() != player.getPlayerCards().get(1).getNumber());
+        }
     }
 
-    public void swapCardsByWinOrLossValue(int winOrLossValue) {
-        if (counterSwapCards <= 3) {
-            updateView(player);
-            if (getIsFirstHand()) {
-                if (winOrLossValue != -1 && player.getStatus() == 1) {
-                    counterSwapCards++;
-                    swapPlayerDecks();
-                    player.setStatHolder(1);
-                } else if (winOrLossValue != -1) {
-                    counterSwapCards++;
-                    swapPlayerDecks();
-                    player.setStatHolder(1);
-                }
-            } else {
-                if (winOrLossValue != -1 && player.getSecondStatus() == 1) {
-                    counterSwapCards++;
-                    swapPlayerDecks();
-                    player.setStatHolder(2);
-                } else if (winOrLossValue != -1) {
-                    counterSwapCards++;
-                    swapPlayerDecks();
-                    player.setStatHolder(2);
-                }
+    public void swapCardsByWinOrLossValue(int winOrLossValue, Player player) {
+        updateView(player);
+        if (getIsFirstHand(player)) {
+            if (winOrLossValue != -1 && player.getStatus() == 1) {
+                swapPlayerDecks(player);
+                player.setStatHolder(1);
+            } else if (winOrLossValue != -1) {
+                swapPlayerDecks(player);
+                player.setStatHolder(1);
             }
+        } else {
+            if (winOrLossValue != -1 && player.getSecondStatus() == 1) {
+                swapPlayerDecks(player);
+                player.setStatHolder(2);
+            } else if (winOrLossValue != -1) {
+                swapPlayerDecks(player);
+                player.setStatHolder(2);
+            }
+        }
+        updateView(player);
+    }
+
+    public void swapPlayerDecks(Player player) {
+        if (getIsFirstHand(player)) {
+            view.getChildren().remove(view.gethBoxPlayerCards());
+            view.getChildren().remove(view.gethBoxPlayerSplitCards());
+            view.add(view.gethBoxPlayerSplitCards(), 1, 4);
+            view.add(view.gethBoxPlayerCards(), 2, 4);
+            view.swapImageSizes();
+        } else {
+            view.getChildren().remove(view.gethBoxPlayerCards());
+            view.getChildren().remove(view.gethBoxPlayerSplitCards());
+            view.add(view.gethBoxPlayerSplitCards(), 2, 4);
+            view.add(view.gethBoxPlayerCards(), 1, 4);
+            view.swapImageSizesBack();
         }
         updateView(player);
     }
@@ -386,116 +414,75 @@ public class BlackJackGamePresenter {
         }
     }
 
-    public void checkStatusWinOrLossSplit() {
-        if (player.getWinOrLossValue() != 0 && player.getWinOrLossValue2() != 0) {
-            updateView(player);
-            showDealerCards();
-            disableButtons();
-            checkStatusWinOrLoss(player.getWinOrLossValue(), player);
-            System.out.println(player.getWinOrLossValue());
-            PauseTransition pause = new PauseTransition(Duration.seconds(4));
-            pause.setOnFinished(event -> {
-                swapPlayerDecks();
-                player.setStatHolder(1);
-                updateView(player);
-                checkStatusWinOrLoss(player.getWinOrLossValue2(), player);
-                System.out.println(player.getWinOrLossValue2());
-            });
-            pause.play();
-        }
-    }
 
-    public void addCardView() {
+    public void addCardView(Player player) {
         if (player.getSplitValidation().equals("y")) {
             updateView(player);
             model.splitGame(player);
 
-            if (getIsFirstHand()) {
-                imageViewMakerAndEditor.setImagePlayer(indexImageSplit1, new Image(String.valueOf(player.getPlayerCards().get(indexImageSplit1))));
-                indexImageSplit1++;
+            if (getIsFirstHand(player)) {
+                imageViewMakerAndEditor.setImagePlayer(player.getIndexImageSplit1(), new Image(String.valueOf(player.getPlayerCards().get(player.getIndexImageSplit1()))));
+                player.setIndexImageSplit1(player.getIndexImageSplit1() + 1);
             } else {
-                imageViewMakerAndEditor.setImagePlayerSplit(indexImageSplit2, new Image(String.valueOf(player.getPlayerCards2().get(indexImageSplit2))));
-                indexImageSplit2++;
+                imageViewMakerAndEditor.setImagePlayerSplit(player.getIndexImageSplit2(), new Image(String.valueOf(player.getPlayerCards2().get(player.getIndexImageSplit2()))));
+                player.setIndexImageSplit2(player.getIndexImageSplit2() + 1);
             }
-            updateView(player);
 
+            updateView(player);
+            model.winOrLoss(player);
         } else {
             model.hitStandDoubleOrSplit(player);
             int indexImage = 0;
 
             for (Card card : player.getPlayerCards()) {
-                imageViewMakerAndEditor.setImagePlayer(indexImage, new Image(String.valueOf(player.getPlayerCards().get(indexImage))));
+                imageViewMakerAndEditor.setImagePlayer(indexImage, new Image(String.valueOf(card)));
                 indexImage++;
                 updateView(player);
             }
 
             model.winOrLoss(player);
             updateView(player);
-            if (player.getWinOrLossValue() != 0) {
-                PauseTransition pause = new PauseTransition(Duration.seconds(1));
-                pause.setOnFinished(event -> {
-                    allPlayersHavePlayed();
-                    playerIsFinished();
-                });
-                pause.play();
-            }
-            else{
-                allPlayersHavePlayed();
-                playerIsFinished();
-            }
-            disableOrEnableBetButtons();
         }
-
+        allPlayersHavePlayed();
+        playerIsFinished();
     }
 
-    public void checkStatusWinOrLoss(int winOrLossValue, Player player) {
-        if (winOrLossValue == 1) {
-            player.setStatHolder(2);
-            model.youWon(player);
-            youHaveWon(player);
-        } else if (winOrLossValue == 2) {
-            player.setStatHolder(2);
-            model.youLost(player);
-            youHaveLost(player);
-        } else if (winOrLossValue == 3) {
-            player.setStatHolder(2);
-            model.youDraw(player);
-            youHaveDrawn(player);
-        }
-    }
 
     public void showCurrentPlayer(Player player) {
         int indexImage = 0;
-        for (int i = 0; i <= 5; i++) {
-            imageViewMakerAndEditor.setImagePlayer(indexImage, new WritableImage(1, 1));
-            indexImage++;
-        }
-        indexImage = 0;
-        for (Card card : player.getPlayerCards()) {
-            imageViewMakerAndEditor.setImagePlayer(indexImage, new Image(String.valueOf(card)));
-            indexImage++;
-            updateView(player);
+        if (player.getSplitValidation().equals("y")) {
+            for (int i = 0; i <= 5; i++) {
+                imageViewMakerAndEditor.setImagePlayer(indexImage, new WritableImage(1, 1));
+                imageViewMakerAndEditor.setImagePlayerSplit(indexImage, new WritableImage(1, 1));
+                indexImage++;
+            }
+            indexImage = 0;
+            for (Card card : player.getPlayerCards()) {
+                imageViewMakerAndEditor.setImagePlayer(indexImage, new Image(String.valueOf(card)));
+                indexImage++;
+                updateView(player);
+            }
+            indexImage = 0;
+            for (Card card : player.getPlayerCards2()) {
+                imageViewMakerAndEditor.setImagePlayerSplit(indexImage, new Image(String.valueOf(card)));
+                indexImage++;
+                updateView(player);
+            }
+        } else {
+            for (int i = 0; i <= 5; i++) {
+                imageViewMakerAndEditor.setImagePlayer(indexImage, new WritableImage(1, 1));
+                imageViewMakerAndEditor.setImagePlayerSplit(indexImage, new WritableImage(1, 1));
+                indexImage++;
+            }
+            indexImage = 0;
+            for (Card card : player.getPlayerCards()) {
+                imageViewMakerAndEditor.setImagePlayer(indexImage, new Image(String.valueOf(card)));
+                indexImage++;
+                updateView(player);
+            }
         }
     }
 
-    public void swapPlayerDecks() {
-        if (getIsFirstHand()) {
-            view.getChildren().remove(view.gethBoxPlayerCards());
-            view.getChildren().remove(view.gethBoxPlayerSplitCards());
-            view.add(view.gethBoxPlayerSplitCards(), 1, 4);
-            view.add(view.gethBoxPlayerCards(), 2, 4);
-            view.swapImageSizes();
-            updateView(player);
-        } else {
-            view.getChildren().remove(view.gethBoxPlayerCards());
-            view.getChildren().remove(view.gethBoxPlayerSplitCards());
-            view.add(view.gethBoxPlayerSplitCards(), 2, 4);
-            view.add(view.gethBoxPlayerCards(), 1, 4);
-            view.swapImageSizesBack();
-            updateView(player);
-        }
-        updateView(player);
-    }
 
     public void showDealerCards() {
         if (player.getWinOrLossValue() != 0) {
@@ -528,33 +515,18 @@ public class BlackJackGamePresenter {
         view.setLabelAlertRed(view.getLabelAlert(), textAlert);
     }
 
-    public void conditionRestartGame() {
-        if (player.getSplitValidation().equals("y")) {
-            counterWinLossDraw++;
-            if (counterWinLossDraw == 2) {
-                restartGame();
-            }
-        } else {
-            restartGame();
-        }
-    }
-
     public void restartGame() {
-        PauseTransition pause = new PauseTransition(Duration.seconds(3));
-        pause.setOnFinished(event -> {
-            for (Player player : players) {
-                player.resetPlayer();
-            }
-            refreshView();
-        });
-        pause.play();
+        for (Player player : players) {
+            player.resetPlayer();
+        }
+        refreshView();
     }
 
     public void refreshView() {
         BlackJackGameView viewGame = new BlackJackGameView(primaryStage);
         BlackJackGamePresenter presenterGame = new BlackJackGamePresenter(viewGame, model, viewGame.getImageViewMakerAndEditor(), primaryStage, players);
-        model.makeNewTable();
         view.getScene().setRoot(viewGame);
+        model.makeNewTable();
     }
 
     public void disableButtons() {
@@ -564,7 +536,7 @@ public class BlackJackGamePresenter {
         view.getButtonSplit().setDisable(true);
     }
 
-    public boolean getIsFirstHand() {
+    public boolean getIsFirstHand(Player player) {
         return player.getStatHolder() == 2;
     }
 
@@ -575,5 +547,11 @@ public class BlackJackGamePresenter {
 
         int textValue = player.getStatHolder() == 2 ? player.getPlayerPoints() : player.getPlayerPoints2();
         view.getLabelSumCardsPlayerNumber().setText(String.valueOf(textValue));
+    }
+
+    public void pause(double seconds, Runnable onFinished) {
+        PauseTransition pause = new PauseTransition(Duration.seconds(seconds));
+        pause.setOnFinished(event -> onFinished.run());
+        pause.play();
     }
 }

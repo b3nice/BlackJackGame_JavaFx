@@ -11,12 +11,10 @@ public class BlackJackModel {
         players = new ArrayList<Player>();
         game = new Game();
         table = new Table();
-        game.setTable(table);
     }
 
     public void makeNewTable() {
         this.table = new Table();
-        game.setTable(table);
     }
 
     public int calculateWinOrLossForSplit(Player player) {
@@ -51,14 +49,18 @@ public class BlackJackModel {
         table.winOrLoss(player);
     }
 
-    public void youLost(Player player) {
-        game.youLost(player);
+    public void youWonFirstHand(Player player) {
+        game.youWonFirstHand(player);
     }
-
-    public void youWon(Player player) {
-        game.youWon(player);
+    public void youWonSecondHand(Player player) {
+        game.youWonSecondHand(player);
     }
-
+    public void youLostFirstHand(Player player) {
+        game.youLostFirstHand(player);
+    }
+    public void youLostSecondHand(Player player) {
+        game.youLostSecondHand(player);
+    }
     public void youDraw(Player player) {
         game.youDraw(player);
     }

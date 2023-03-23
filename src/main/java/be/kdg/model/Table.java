@@ -50,7 +50,7 @@ public class Table {
         updatePoints(player);
     }
 
-    public void dealDealerCards(Player player){
+    public void dealDealerCards(Player player) {
         aceChecker(deck.getDeckCards().get(0), dealerPoints);
         dealerCards.add(deck.getDeckCards().get(0));
         deck.takeTopCard();
@@ -136,7 +136,17 @@ public class Table {
 
     public void winOrLoss(Player player) {
         updatePoints(player);
-        if (player.getStatus() != 1 || player.getPlayerPoints() > 21 || dealerPoints > 21 || player.getPlayerPoints() == 21) {
+        if (player.getSplitValidation().equals("y")) {
+            if (player.getStatHolder() == 2){
+                if (player.getStatus() != 1 || player.getPlayerPoints() > 21 || dealerPoints > 21 || player.getPlayerPoints() == 21){
+                    player.setWinOrLossValue(calculateWinOrLoss(player.getPlayerPoints(), player.getStatus(), player));
+                }
+            } else if (player.getStatHolder() == 1) {
+                if (player.getSecondStatus() != 1 || player.getPlayerPoints2() > 21 || dealerPoints > 21 || player.getPlayerPoints2() == 21){
+                    player.setWinOrLossValue2(calculateWinOrLoss(player.getPlayerPoints2(), player.getSecondStatus(), player));
+                }
+            }
+        } else if (player.getStatus() != 1 || player.getPlayerPoints() > 21 || dealerPoints > 21 || player.getPlayerPoints() == 21) {
             player.setWinOrLossValue(calculateWinOrLoss(player.getPlayerPoints(), player.getStatus(), player));
         }
     }

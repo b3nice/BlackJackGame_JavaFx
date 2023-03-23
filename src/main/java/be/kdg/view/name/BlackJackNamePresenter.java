@@ -56,6 +56,7 @@ public class BlackJackNamePresenter {
                 } else {
                     for (String nameInArray:nameInFields) {
                         players.add(new Player(nameInArray, 200,playerIndex));
+                        playerIndex++;
                     }
 
                     checkPlayerBalance();

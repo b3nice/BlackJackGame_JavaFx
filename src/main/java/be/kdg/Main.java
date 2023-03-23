@@ -23,19 +23,15 @@ public class Main extends Application {
         BlackJackStartPresenter presenter = new BlackJackStartPresenter(view, primaryStage);
 
         Scene scene = new Scene(view);
-        scene.getStylesheets().add(getClass().getResource("/Styles.css").toExternalForm());
+        scene.getStylesheets().add("/Styles.css");
 
         primaryStage.setScene(scene);
 
         primaryStage.sizeToScene();
 
         final double ASPECT_RATIO = 16.0 / 9.0;
-        primaryStage.widthProperty().addListener((observableValue, oldWidth, newWidth) -> {
-            primaryStage.setHeight(newWidth.doubleValue() / ASPECT_RATIO);
-        });
-        primaryStage.heightProperty().addListener((observableValue, oldHeight, newHeight) -> {
-            primaryStage.setWidth(newHeight.doubleValue() * ASPECT_RATIO);
-        });
+        primaryStage.widthProperty().addListener((observableValue, oldWidth, newWidth) -> primaryStage.setHeight(newWidth.doubleValue() / ASPECT_RATIO));
+        primaryStage.heightProperty().addListener((observableValue, oldHeight, newHeight) -> primaryStage.setWidth(newHeight.doubleValue() * ASPECT_RATIO));
 
         Image iconImage = new Image("/Club_cards.jpg");
         primaryStage.getIcons().add(iconImage);

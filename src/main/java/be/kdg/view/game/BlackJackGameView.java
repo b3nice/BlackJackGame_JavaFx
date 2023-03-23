@@ -28,7 +28,7 @@ public class BlackJackGameView extends GridPane {
     }
 
 
-    Label labelAlert;
+    private Label labelAlert;
 
     public void setLabelAlertRed(Label labelAlert, String text) {
         labelAlert.setText(text);
@@ -48,26 +48,26 @@ public class BlackJackGameView extends GridPane {
         return labelAlert;
     }
 
-    Label labelDealer;
-    HBox hBoxBalance;
-    Label labelBalance;
-    Label labelBalanceNumber;
+    private Label labelDealer;
+    private HBox hBoxBalance;
+    private Label labelBalance;
+    private Label labelBalanceNumber;
 
     public Label getLabelBalanceNumber() {
         return labelBalanceNumber;
     }
 
-    HBox hBoxDealerCards;
+    private HBox hBoxDealerCards;
 
-    HBox hBoxSumCardsDealer;
-    Label labelSumCardsDealer;
-    Label labelSumCardsDealerNumber;
+    private HBox hBoxSumCardsDealer;
+    private Label labelSumCardsDealer;
+    private Label labelSumCardsDealerNumber;
 
     public Label getLabelSumCardsDealerNumber() {
         return labelSumCardsDealerNumber;
     }
 
-    Button buttonPrevPlayer;
+    private Button buttonPrevPlayer;
     public Button getButtonPrevPlayer() {
         return buttonPrevPlayer;
     }
@@ -75,7 +75,7 @@ public class BlackJackGameView extends GridPane {
         this.buttonPrevPlayer = buttonPrevPlayer;
     }
 
-    Button buttonNextPlayer;
+    private Button buttonNextPlayer;
     public Button getButtonNextPlayer() {
         return buttonNextPlayer;
     }
@@ -83,72 +83,72 @@ public class BlackJackGameView extends GridPane {
         this.buttonNextPlayer = buttonNextPlayer;
     }
 
-    HBox hBoxH_S_D_S;
+    private HBox hBoxH_S_D_S;
 
     public HBox gethBoxH_S_D_S() {
         return hBoxH_S_D_S;
     }
 
-    Button buttonHit;
+    private Button buttonHit;
 
     public Button getButtonHit() {
         return buttonHit;
     }
 
-    Button buttonStand;
+    private Button buttonStand;
 
     public Button getButtonStand() {
         return buttonStand;
     }
 
-    Button buttonDouble;
+    private Button buttonDouble;
 
     public Button getButtonDouble() {
         return buttonDouble;
     }
 
-    Button buttonSplit;
+    private Button buttonSplit;
 
     public Button getButtonSplit() {
         return buttonSplit;
     }
 
-    HBox hBoxAmountBet;
-    Label labelAmountBet;
+    private HBox hBoxAmountBet;
+    private Label labelAmountBet;
 
-    Label labelBet;
+    private Label labelBet;
 
     public Label getLabelBet() {
         return labelBet;
     }
 
-    HBox hBoxPlayerCards;
+    private HBox hBoxPlayerCards;
 
-    HBox hBoxSumCardsPlayer;
-    Label labelSumCardsPlayer;
-    Label labelSumCardsPlayerNumber;
+    private HBox hBoxSumCardsPlayer;
+    private Label labelSumCardsPlayer;
+    private Label labelSumCardsPlayerNumber;
 
     public Label getLabelSumCardsPlayerNumber() {
         return labelSumCardsPlayerNumber;
     }
 
-    HBox hBoxPlayerSplitCards;
+    private HBox hBoxPlayerSplitCards;
 
 
-    HBox hBoxBetAmounts;
+    private HBox hBoxBetAmounts;
 
     public HBox gethBoxBetAmounts() {
         return hBoxBetAmounts;
     }
 
-    Button buttonBet5;
-    Button buttonBet10;
-    Button buttonBet20;
-    Button buttonBet50;
-    Button buttonBetClear;
-    Button buttonExit;
-    Button buttonBet;
-    Label labelPlayerName;
+    private Button buttonBet5;
+    private Button buttonBet10;
+    private Button buttonBet20;
+    private Button buttonBet50;
+    private Button buttonBetClear;
+    private Button buttonExit;
+    private Button buttonBet;
+    private Label labelPlayerName;
 
 
     public Label getLabelPlayerName() {

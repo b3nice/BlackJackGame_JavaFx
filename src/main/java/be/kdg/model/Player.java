@@ -162,6 +162,22 @@ public class Player {
         this.secondStatus = secondStatus;
     }
 
+    private int indexImageSplit1 = 1;
+    public int getIndexImageSplit1() {
+        return indexImageSplit1;
+    }
+    public void setIndexImageSplit1(int indexImageSplit1) {
+        this.indexImageSplit1 = indexImageSplit1;
+    }
+
+    private int indexImageSplit2 = 1;
+    public int getIndexImageSplit2() {
+        return indexImageSplit2;
+    }
+    public void setIndexImageSplit2(int indexImageSplit2) {
+        this.indexImageSplit2 = indexImageSplit2;
+    }
+
     public void resetPlayer() {
         this.playerPoints = 0;
         this.playerPoints2 = 0;
@@ -174,6 +190,8 @@ public class Player {
         this.status = 1;
         this.secondStatus = 1;
         this.betConfirm = false;
+        this.indexImageSplit1 = 1;
+        this.indexImageSplit2 = 1;
     }
 
     @Override
