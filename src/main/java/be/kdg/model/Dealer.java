@@ -13,6 +13,10 @@ public class Dealer {
         this.dealerCards.clear();
     }
 
+    /**
+     * Deals the cards to the player and the dealer
+     * @param player current player
+     */
     public void dealCards(Player player) {
         setDeck(new Deck());
         dealerCards.clear();
@@ -54,6 +58,10 @@ public class Dealer {
         deck.takeTopCard();
     }
 
+    /**
+     * Adds a card to the player's second hand
+     * @param player current player
+     */
     public void addCardPlayerHand2(Player player) {
         aceChecker(deck.getDeckCards().get(0), player.getPlayerPoints2());
         ArrayList<Card> cards = player.getPlayerCards2();

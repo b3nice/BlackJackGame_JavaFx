@@ -21,6 +21,11 @@ public class BlackJackNamePresenter {
     private int selectedValueComboBox;
     private final LeaderBoardPresenter leaderboard;
 
+    /**
+     * Constructor for the BlackJackNamePresenter
+     * @param view The view of the BlackJackNamePresenter
+     * @param primaryStage The stage of the BlackJackNamePresenter
+     */
     public BlackJackNamePresenter(BlackJackNameView view, Stage primaryStage) {
         this.view = view;
         model = new BlackJackModel();
@@ -30,6 +35,9 @@ public class BlackJackNamePresenter {
         this.addEventHandlers();
     }
 
+    /**
+     * Method to add event handlers to the view
+     */
     private void addEventHandlers() {
 
         view.getButtonNext().setOnAction(actionEvent -> {
@@ -73,6 +81,9 @@ public class BlackJackNamePresenter {
 
     }
 
+    /**
+     * Method to check the balance of the players and set the balance of the players.
+     */
     public void checkPlayerBalance(){
         String fileName = "src/main/resources/playerLog.txt";
         int lineCount = 0;

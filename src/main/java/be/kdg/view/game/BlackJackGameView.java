@@ -53,6 +53,10 @@ public class BlackJackGameView extends GridPane {
     private Button buttonBet;
     private Label labelPlayerName;
     Region[] spacersCenter;
+    /**
+     * This class is used to create the view of the game.
+     * It contains all the nodes and methods to style them.
+     */
 
     public BlackJackGameView(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -62,6 +66,9 @@ public class BlackJackGameView extends GridPane {
         this.imageFixing();
     }
 
+    /**
+     * This method is used to initialise all the nodes.
+     */
     private void initialiseNodes() {
         labelAlert = new Label(":)");
         imageViewMakerAndEditor = new ImageViewMakerAndEditor();
@@ -104,6 +111,9 @@ public class BlackJackGameView extends GridPane {
         hBoxBetAmounts.getChildren().addAll(buttonBet5, buttonBet10, buttonBet20, buttonBet50, buttonBetClear, buttonBet);
     }
 
+    /**
+     * This method is used to layout all the nodes.
+     */
     private void layoutNodes() {
         this.setOnMouseClicked(event -> this.requestFocus());
 
@@ -158,7 +168,9 @@ public class BlackJackGameView extends GridPane {
         hBoxPlayerSplitCards.setAlignment(Pos.CENTER);
         hBoxBetAmounts.setAlignment(Pos.CENTER);
     }
-
+    /**
+     * This method is used to style all the nodes.
+     */
     public void styleNodes(){
         this.setStyle("-fx-background-image: url('BlackJackTable.png'); -fx-background-repeat: no-repeat; -fx-background-position: center; -fx-background-size: cover;");
 
@@ -214,6 +226,9 @@ public class BlackJackGameView extends GridPane {
         fontSize.bind(primaryStage.widthProperty().multiply(0.015));
     }
 
+    /**
+     * This method is used to set the size of the ImageViews.
+     */
     public void imageFixing() {
         spacersCenter = new Region[imageViewMakerAndEditor.getImageViewDealerCards().length + 3];
 
@@ -267,6 +282,12 @@ public class BlackJackGameView extends GridPane {
         swapImageS(factor, factor1);
     }
 
+    /**
+     * This method is used to swap the size of the ImageViews.
+     * @param factor the factor to divide the width of the screen with.
+     * @param factor1 the factor to divide the height of the screen with.
+     */
+
     public void swapImageS(double factor, double factor1) {
         for (ImageView imageView : imageViewMakerAndEditor.getImageViewPlayerCards()) {
             imageView.fitWidthProperty().bind(this.widthProperty().divide(factor));
@@ -278,6 +299,9 @@ public class BlackJackGameView extends GridPane {
         }
     }
 
+    /**
+     * This method is used to make the labels fade out.
+     */
     public void fadeLabels() {
         PauseTransition pause = new PauseTransition(Duration.seconds(2));
 
@@ -288,6 +312,12 @@ public class BlackJackGameView extends GridPane {
         SequentialTransition sequence = new SequentialTransition(pause, fade);
         sequence.play();
     }
+
+    /**
+     * This method is used to set the text of the labelAlert to red.
+     * @param labelAlert the label to set the text of.
+     * @param text the text to set the labelAlert to.
+     */
     public void setLabelAlertRed(Label labelAlert, String text) {
         labelAlert.setText(text);
         labelAlert.setStyle("-fx-text-fill: red;");
@@ -300,6 +330,10 @@ public class BlackJackGameView extends GridPane {
         fadeLabels();
         this.labelAlert = labelAlert;
     }
+
+    /**
+     * Here are all the setters and getters we use in de presenter to get or set the values of the view.
+     */
     public ImageViewMakerAndEditor getImageViewMakerAndEditor() {
         return imageViewMakerAndEditor;
     }

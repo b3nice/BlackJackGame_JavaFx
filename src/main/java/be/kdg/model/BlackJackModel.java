@@ -16,12 +16,24 @@ public class BlackJackModel {
         setTable(table);
     }
 
-    public int checkStatusWinOrLoss(int winOrLossValue, Player player) {
-        return game.checkStatusWinOrLoss(winOrLossValue, player);
 
-    }
     public void makePlayers(String name, int money, int playerNumber) {
             players.add(new Player(name, money, playerNumber));
+    }
+    public void youWonFirstHand(Player player) {
+        game.youWonFirstHand(player);
+    }
+    public void youWonSecondHand(Player player) {
+        game.youWonSecondHand(player);
+    }
+    public void youLostFirstHand(Player player) {
+        game.youLostFirstHand(player);
+    }
+    public void youLostSecondHand(Player player) {
+        game.youLostSecondHand(player);
+    }
+    public void youDraw(Player player) {
+        game.youDraw(player);
     }
     public void makeNewTable() {
         this.table = new Table(dealer);

@@ -16,12 +16,14 @@ public class Main extends Application {
         Application.launch(args);
     }
 
+    /** Start the application */
     public void start(Stage primaryStage) {
         primaryStage.setTitle("BlackJack21");
 
         BlackJackStartView view = new BlackJackStartView(primaryStage);
         BlackJackStartPresenter presenter = new BlackJackStartPresenter(view, primaryStage);
 
+        //Set the style of the window
         Scene scene = new Scene(view);
         scene.getStylesheets().add("/Styles.css");
 
@@ -34,6 +36,7 @@ public class Main extends Application {
 
         primaryStage.show();
 
+        //Set the window to full screen
         Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
         double taskbarHeight = screenBounds.getHeight() - Screen.getPrimary().getVisualBounds().getMaxY();
 
@@ -45,6 +48,7 @@ public class Main extends Application {
         primaryStage.setMinWidth(primaryStage.getMaxWidth());
         primaryStage.setMinHeight(primaryStage.getMaxHeight());
 
+        //Set the aspect ratio of the window
         final double ASPECT_RATIO = 16.0 / 9.0;
         primaryStage.widthProperty().addListener((observableValue, oldWidth, newWidth) -> primaryStage.setHeight(newWidth.doubleValue() / ASPECT_RATIO));
         primaryStage.heightProperty().addListener((observableValue, oldHeight, newHeight) -> primaryStage.setWidth(newHeight.doubleValue() * ASPECT_RATIO));

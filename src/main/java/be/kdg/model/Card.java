@@ -18,7 +18,6 @@ public class Card {
         return imagePath;
     }
 
-
     public int getNumber() {
         return number;
     }

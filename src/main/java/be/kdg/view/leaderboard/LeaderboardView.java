@@ -16,6 +16,9 @@ public class LeaderboardView extends GridPane {
         this.layoutNodes();
     }
 
+    /**
+     * initialise all nodes
+     */
     private void initialiseNodes(){
         labelLeaderboard = new Label("TOP PLAYERS");
         labelPlayerList = new Label(" ");
@@ -26,6 +29,9 @@ public class LeaderboardView extends GridPane {
         this.getStyleClass().add("backGround_leaderboard");
     }
 
+    /**
+     * layout all nodes
+     */
     private void layoutNodes(){
         this.add(labelLeaderboard,0,0);
         this.add(labelPlayerList,0,1);
@@ -36,6 +42,9 @@ public class LeaderboardView extends GridPane {
         GridPane.setValignment(labelPlayerList, VPos.CENTER);
     }
 
+    /**
+     * @return labelPlayerList
+     */
     public Label getLabelPlayerList() {
         return labelPlayerList;
     }

@@ -22,9 +22,6 @@ public class BlackJackStartView extends GridPane {
     private Button buttonStartGame;
     private final Stage primaryStage;
 
-    public Button getButtonStartGame() {
-        return buttonStartGame;
-    }
 
     public BlackJackStartView(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -32,6 +29,9 @@ public class BlackJackStartView extends GridPane {
         this.layoutNodes();
     }
 
+    /**
+     * Here we initialise the nodes and do a bit of styling. No extra
+     **/
     private void initialiseNodes(){
         labelWelcome = new Label("Welcome to Blackjack");
         buttonStartGame = new Button("Start");
@@ -48,7 +48,11 @@ public class BlackJackStartView extends GridPane {
         this.getStyleClass().add("backGround_start");
     }
 
+    /**
+     * Here we layout the nodes in the gridpane.
+     **/
     private void layoutNodes(){
+        //This is to section the gridpane in 5x5.
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setPercentWidth(20);
         ColumnConstraints col2 = new ColumnConstraints();
@@ -88,8 +92,9 @@ public class BlackJackStartView extends GridPane {
 
         BorderPane.setAlignment(labelWelcome, Pos.BOTTOM_CENTER);
         BorderPane.setAlignment(buttonStartGame, Pos.CENTER);
-
-        //this.setGridLinesVisible(true);
+    }
+    public Button getButtonStartGame() {
+        return buttonStartGame;
     }
 }
 

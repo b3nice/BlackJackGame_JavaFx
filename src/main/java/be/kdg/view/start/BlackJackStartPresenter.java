@@ -11,6 +11,11 @@ public class BlackJackStartPresenter {
     private final Stage primaryStage;
     private final LeaderBoardPresenter leaderboard;
 
+    /**
+     * Here we initialise the presenter and add the eventhandlers.
+     * @param view this is the view we use to set the root of the scene.
+     * @param primaryStage this is the stage we use to set the root of the scene.
+     */
     public BlackJackStartPresenter(BlackJackStartView view, Stage primaryStage) {
         this.view = view;
         this.primaryStage = primaryStage;
@@ -18,6 +23,9 @@ public class BlackJackStartPresenter {
         this.addEventHandlers();
     }
 
+    /**
+     * Here we add the eventhandlers to the buttons.
+     */
     private void addEventHandlers(){
         view.getButtonStartGame().setOnAction(actionEvent -> {
             BlackJackNameView viewName = new BlackJackNameView(primaryStage);

@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public class Deck {
-    private final ArrayList<Card> deckCards = new ArrayList<>();
-
+    private final ArrayList<Card> deckCards;
+    /**
+     * Constructor initialise the deck with 52 cards
+     */
     public Deck() {
+        deckCards = new ArrayList<>();
+
         Suit Hearts = Suit.HEARTS;
         Suit Spades = Suit.SPADES;
         Suit Clubs = Suit.CLUBS;

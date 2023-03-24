@@ -9,8 +9,10 @@ public class ImageViewMakerAndEditor {
     private final ImageView[] imageViewPlayerCards;
     private final ImageView[] imageViewPlayerSplitCards;
 
-
-
+    /**
+     * This class is used to create the imageviews for the cards.
+     * It also contains methods to set the images of the imageviews.
+     */
     public ImageViewMakerAndEditor() {
         imageViewDealerCards = new ImageView[6];
         imageViewPlayerCards = new ImageView[6];

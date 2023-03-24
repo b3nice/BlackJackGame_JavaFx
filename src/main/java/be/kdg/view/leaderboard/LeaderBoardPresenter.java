@@ -15,11 +15,17 @@ public class LeaderBoardPresenter {
     private final ArrayList<Player> arrayListPlayers;
     private final LeaderboardView leaderboardView;
 
+    /**
+     * Constructor
+     */
     public LeaderBoardPresenter() {
         this.arrayListPlayers = new ArrayList<>();
         this.leaderboardView = new LeaderboardView();
     }
 
+    /**
+     * Show leaderboard
+     */
     public void showLeaderBoard(){
         calculateLeaderBoard();
         Stage stage = new Stage();
@@ -30,6 +36,7 @@ public class LeaderBoardPresenter {
         stage.getIcons().add(iconImage);
         stage.initModality(Modality.APPLICATION_MODAL);
 
+        // Create leaderboard text
         StringBuilder leaderboardText = new StringBuilder();
         leaderboardText.append("[#]|Name\t Balance|\n");
         int index = 1;
@@ -47,6 +54,9 @@ public class LeaderBoardPresenter {
         stage.show();
     }
 
+    /**
+     * Calculate leaderboard
+     */
     public void calculateLeaderBoard(){
         String fileName = "src/main/resources/player.txt";
         String lineFileTxt;

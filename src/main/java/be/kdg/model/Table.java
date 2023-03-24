@@ -10,6 +10,10 @@ public class Table {
         this.dealer = dealer;
     }
 
+    /**
+     * This method makes the second hand for the player when he decides to split.
+     * @param player current player
+     */
     public void splitOption(Player player) {
         if (player.getSplitValidation().equals("y")) {
             player.setBet2(player.getBet());
@@ -22,28 +26,25 @@ public class Table {
             cards2.add(0, player.getSecondCardPlayer());
             player.setPlayerCards2(cards2);
 
-
-            System.out.println("You split, your second deck is: " + player.getPlayerCards2());
             updatePoints(player);
         }
     }
+
+
     public void hitStandDoubleOrSplit(Player player) {
         updatePoints(player);
-
         int hand1 = 1;
-
         checkHitStandOrDouble(hand1, player);
         player.setAnwser(" ");
     }
+
     public void splitGame(Player player) {
         int hand1 = 1;
         int hand2 = 2;
 
         if (player.getStatHolder() == 2) {
-            System.out.println("Do you want to Hit, Stand or Double for your first deck: ");
             checkHitStandOrDouble(hand1, player);
         } else {
-            System.out.println("Do you want to Hit, Stand or Double for your second deck: ");
             switch (player.getAnwser()) {
                 case "Hit" -> {
                     hit(hand2, player);
@@ -51,7 +52,6 @@ public class Table {
                 }
                 case "Stand" -> {
                     updatePoints(player);
-                    System.out.println("you stand");
                     player.setSecondStatus(2);
                 }
                 case "Double" -> {
@@ -62,6 +62,11 @@ public class Table {
         }
         updatePoints(player);
     }
+
+    /**
+     * This method determens if the player has either hit, stand or double.
+     * @param player current player
+     */
     public void checkHitStandOrDouble(int hand1, Player player) {
         switch (player.getAnwser()) {
             case "Hit" -> {
@@ -70,7 +75,6 @@ public class Table {
             }
             case "Stand" -> {
                 updatePoints(player);
-                System.out.println("you stand");
                 player.setStatus(2);
             }
             case "Double" -> {
@@ -79,6 +83,11 @@ public class Table {
             }
         }
     }
+
+    /**
+     * This methods checks if the player has won lost or drawed.
+     * @param player current player
+     */
     public void winOrLoss(Player player) {
         updatePoints(player);
         if (player.getSplitValidation().equals("y")) {
@@ -129,6 +138,11 @@ public class Table {
         }
     }
 
+    /**
+     * This method checks the total point value of the players cards.
+     * @param cardsOfX the cards of the player
+     * @return the total point value of the players cards
+     */
     public int calculateTotalPoints(ArrayList<Card> cardsOfX) {
         int points = 0;
         for (Card card : cardsOfX) {
@@ -138,7 +152,6 @@ public class Table {
     }
     public void hit(int hand, Player player) {
         updatePoints(player);
-        System.out.println("you hit");
 
         if (hand == 1) {
             dealer.addCardPlayerHand(player);
@@ -153,7 +166,6 @@ public class Table {
     }
     public void doubleBet(int hand, Player player) {
         updatePoints(player);
-        System.out.println("you double");
 
         if (hand == 1) {
             dealer.addCardPlayerHand(player);

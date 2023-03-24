@@ -33,6 +33,9 @@ public class BlackJackNameView extends GridPane {
         this.resizeNodes();
     }
 
+    /**
+     * Here we initialise the nodes and do a bit of styling. No extra
+     **/
     private void initialiseNodes() {
         vBoxTextFields = new VBox();
         ObservableList<String> items = FXCollections.observableArrayList(
@@ -61,10 +64,14 @@ public class BlackJackNameView extends GridPane {
         this.getStyleClass().add("backGround_name");
     }
 
+    /**
+     * Here we layout the nodes in the gridpane.
+     **/
     private void layoutNodes() {
+        //This is to switch the focus to the gridpane when clicked.
         this.setOnMouseClicked(event -> this.requestFocus());
 
-
+        //This is to section the gridpane in 5x5.
         ColumnConstraints col1 = new ColumnConstraints();
         col1.setPercentWidth(20);
         ColumnConstraints col2 = new ColumnConstraints();
@@ -114,6 +121,9 @@ public class BlackJackNameView extends GridPane {
 
     }
 
+    /**
+     * Here we resize the nodes when the window is resized.
+     **/
     public void resizeNodes(){
         comboBox.setMinSize(primaryStage.widthProperty().doubleValue() * 0.1, primaryStage.widthProperty().doubleValue() * 0.03);
         for (TextField textField : textFields) {
@@ -135,7 +145,9 @@ public class BlackJackNameView extends GridPane {
         }
     }
 
-
+    /**
+     * Here we get the nodes.
+     **/
     public ComboBox<String> getComboBox() {
         return comboBox;
     }
