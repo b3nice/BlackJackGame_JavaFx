@@ -9,13 +9,17 @@ public class BlackJackModel {
     private final ArrayList<Player> players;
 
     public BlackJackModel() {
-        players = new ArrayList<Player>();
+        players = new ArrayList<>();
         game = new Game();
         dealer = new Dealer();
         table = new Table(dealer);
         setTable(table);
     }
 
+    public int checkStatusWinOrLoss(int winOrLossValue, Player player) {
+        return game.checkStatusWinOrLoss(winOrLossValue, player);
+
+    }
     public void makePlayers(String name, int money, int playerNumber) {
             players.add(new Player(name, money, playerNumber));
     }
@@ -40,30 +44,12 @@ public class BlackJackModel {
     public void winOrLoss(Player player) {
         table.winOrLoss(player);
     }
-    public void youWonFirstHand(Player player) {
-        game.youWonFirstHand(player);
-    }
-    public void youWonSecondHand(Player player) {
-        game.youWonSecondHand(player);
-    }
-    public void youLostFirstHand(Player player) {
-        game.youLostFirstHand(player);
-    }
-    public void youLostSecondHand(Player player) {
-        game.youLostSecondHand(player);
-    }
-    public void youDraw(Player player) {
-        game.youDraw(player);
-    }
-
     public void splitGame(Player player) {
         table.splitGame(player);
     }
-
     public ArrayList<Card> getDealerCards() {
         return this.dealer.getDealerCards();
     }
-
     public int getDealerPoints() {
         return this.dealer.getDealerPoints();
     }
@@ -73,5 +59,4 @@ public class BlackJackModel {
     public ArrayList<Player> getPlayers() {
         return players;
     }
-
 }

@@ -1,8 +1,9 @@
-package be.kdg.view.Leaderboard;
+package be.kdg.view.leaderboard;
 
 
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 
@@ -18,7 +19,7 @@ public class LeaderboardView extends GridPane {
     private void initialiseNodes(){
         labelLeaderboard = new Label("TOP PLAYERS");
         labelPlayerList = new Label(" ");
-        labelLeaderboard.getStyleClass().add("label_leaderboard");
+        labelLeaderboard.getStyleClass().add("label_leaderboard_title");
         labelPlayerList.getStyleClass().add("label_leaderboard");
         labelPlayerList.setWrapText(true);
 
@@ -30,7 +31,9 @@ public class LeaderboardView extends GridPane {
         this.add(labelPlayerList,0,1);
         this.setAlignment(Pos.TOP_CENTER);
         GridPane.setHalignment(labelLeaderboard, HPos.CENTER);
+        GridPane.setValignment(labelLeaderboard, VPos.CENTER);
         GridPane.setHalignment(labelPlayerList, HPos.CENTER);
+        GridPane.setValignment(labelPlayerList, VPos.CENTER);
     }
 
     public Label getLabelPlayerList() {

@@ -5,29 +5,11 @@ import javafx.scene.image.ImageView;
 
 public class ImageViewMakerAndEditor {
 
-    ImageView[] imageViewDealerCards;
-    ImageView[] imageViewPlayerCards;
-    ImageView[] imageViewPlayerSplitCards;
+    private final ImageView[] imageViewDealerCards;
+    private final ImageView[] imageViewPlayerCards;
+    private final ImageView[] imageViewPlayerSplitCards;
 
-    public ImageView[] getImageViewDealerCards() {
-        return imageViewDealerCards;
-    }
-    public ImageView[] getImageViewPlayerCards() {
-        return imageViewPlayerCards;
-    }
-    public ImageView[] getImageViewPlayerSplitCards() {
-        return imageViewPlayerSplitCards;
-    }
 
-    public void setImageViewDealerCards(ImageView[] imageViewDealerCards) {
-        this.imageViewDealerCards = imageViewDealerCards;
-    }
-    public void setImageViewPlayerCards(ImageView[] imageViewPlayerCards) {
-        this.imageViewPlayerCards = imageViewPlayerCards;
-    }
-    public void setImageViewPlayerSplitCards(ImageView[] imageViewPlayerSplitCards) {
-        this.imageViewPlayerSplitCards = imageViewPlayerSplitCards;
-    }
 
     public ImageViewMakerAndEditor() {
         imageViewDealerCards = new ImageView[6];
@@ -47,17 +29,13 @@ public class ImageViewMakerAndEditor {
     public void setImagePlayer(int index, Image image) {imageViewPlayerCards[index].setImage(image);}
     public void setImagePlayerSplit(int index, Image image) {imageViewPlayerSplitCards[index].setImage(image);}
     public void setImageDealer(int index, Image image) {imageViewDealerCards[index].setImage(image);}
-
-    public Image getImagePlayer(int index) {
-        return imageViewPlayerCards[index].getImage();
+    public ImageView[] getImageViewDealerCards() {
+        return imageViewDealerCards;
     }
-    public Image getImagePlayerSplit(int index) {
-        return imageViewPlayerSplitCards[index].getImage();
+    public ImageView[] getImageViewPlayerCards() {
+        return imageViewPlayerCards;
     }
-    public Image getImageDealer(int index) {
-        return imageViewDealerCards[index].getImage();
+    public ImageView[] getImageViewPlayerSplitCards() {
+        return imageViewPlayerSplitCards;
     }
-
 }
-
-

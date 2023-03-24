@@ -2,7 +2,7 @@ package be.kdg.view.name;
 
 import be.kdg.model.BlackJackModel;
 import be.kdg.model.Player;
-import be.kdg.view.Leaderboard.LeaderBoardPresenter;
+import be.kdg.view.leaderboard.LeaderBoardPresenter;
 import be.kdg.view.game.BlackJackGamePresenter;
 import be.kdg.view.game.BlackJackGameView;
 import javafx.scene.control.Alert;
@@ -109,9 +109,6 @@ public class BlackJackNamePresenter {
                     }
                 }
             }
-        }
-        for (Player player: model.getPlayers()) {
-            System.out.println(player.getName() + " " + player.getBalance());
         }
     }
 }

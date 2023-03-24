@@ -29,21 +29,30 @@ public class Main extends Application {
 
         primaryStage.sizeToScene();
 
-        final double ASPECT_RATIO = 16.0 / 9.0;
-        primaryStage.widthProperty().addListener((observableValue, oldWidth, newWidth) -> primaryStage.setHeight(newWidth.doubleValue() / ASPECT_RATIO));
-        primaryStage.heightProperty().addListener((observableValue, oldHeight, newHeight) -> primaryStage.setWidth(newHeight.doubleValue() * ASPECT_RATIO));
-
         Image iconImage = new Image("/Club_cards.jpg");
         primaryStage.getIcons().add(iconImage);
 
         primaryStage.show();
 
+        Rectangle2D screenBounds = Screen.getPrimary().getVisualBounds();
+        double taskbarHeight = screenBounds.getHeight() - Screen.getPrimary().getVisualBounds().getMaxY();
+
+        primaryStage.setMaxWidth(screenBounds.getWidth());
+        primaryStage.setMaxHeight(screenBounds.getHeight() - taskbarHeight);
+
+        primaryStage.setMaximized(true);
+
+        primaryStage.setMinWidth(primaryStage.getMaxWidth());
+        primaryStage.setMinHeight(primaryStage.getMaxHeight());
+
+        final double ASPECT_RATIO = 16.0 / 9.0;
+        primaryStage.widthProperty().addListener((observableValue, oldWidth, newWidth) -> primaryStage.setHeight(newWidth.doubleValue() / ASPECT_RATIO));
+        primaryStage.heightProperty().addListener((observableValue, oldHeight, newHeight) -> primaryStage.setWidth(newHeight.doubleValue() * ASPECT_RATIO));
         primaryStage.setMinWidth(1280);
         primaryStage.setMinHeight(720);
 
         Rectangle2D bounds = Screen.getPrimary().getVisualBounds();
         primaryStage.setX((bounds.getWidth() - primaryStage.getWidth()) / 2);
         primaryStage.setY((bounds.getHeight() - primaryStage.getHeight()) / 2);
-
     }
 }

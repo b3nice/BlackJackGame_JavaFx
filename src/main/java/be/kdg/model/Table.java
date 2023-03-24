@@ -128,6 +128,7 @@ public class Table {
             }
         }
     }
+
     public int calculateTotalPoints(ArrayList<Card> cardsOfX) {
         int points = 0;
         for (Card card : cardsOfX) {

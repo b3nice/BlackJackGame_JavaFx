@@ -3,7 +3,7 @@ package be.kdg.view.game;
 import be.kdg.model.BlackJackModel;
 import be.kdg.model.Card;
 import be.kdg.model.Player;
-import be.kdg.view.Leaderboard.LeaderBoardPresenter;
+import be.kdg.view.leaderboard.LeaderBoardPresenter;
 import be.kdg.view.start.BlackJackStartPresenter;
 import be.kdg.view.start.BlackJackStartView;
 import javafx.animation.KeyFrame;
@@ -237,7 +237,7 @@ public class BlackJackGamePresenter {
             }
         }
 
-        int playerIndex = 0;
+        int playerIndex;
         for (Player player : model.getPlayers()) {
             if (player.getPlayerNumber() == model.getPlayers().size() - 1)
             {
@@ -287,13 +287,14 @@ public class BlackJackGamePresenter {
                             if (player.getSplitValidation().equals("y")) {
                                 checkStatusWinOrLossSplit(player.getPlayerNumber());
                             } else {
-                                checkStatusWinOrLoss(player.getWinOrLossValue(), player);
+                                checkStatusWinOrLoss(player);
                             }
                     })
             );
             timeline.play();
         }
     }
+
 
     public void swapPlayerDecksBack() {
         view.getChildren().remove(view.gethBoxPlayerCards());
@@ -306,44 +307,26 @@ public class BlackJackGamePresenter {
     public void checkStatusWinOrLossSplit(int playerIndex) {
         if (model.getPlayers().get(playerIndex).getWinOrLossValue() != 0 && model.getPlayers().get(playerIndex).getWinOrLossValue2() != 0) {
             Timeline timeline = new Timeline(
-                    new KeyFrame(Duration.seconds(1), event -> checkStatusWinOrLoss(model.getPlayers().get(playerIndex).getWinOrLossValue(), model.getPlayers().get(playerIndex))),
+                    new KeyFrame(Duration.seconds(1), event -> checkStatusWinOrLoss(model.getPlayers().get(playerIndex))),
                     new KeyFrame(Duration.seconds(5), event -> {
                         swapPlayerDecks(model.getPlayers().get(playerIndex));
                         model.getPlayers().get(playerIndex).setStatHolder(1);
                         updateView(model.getPlayers().get(playerIndex));
-                        checkStatusWinOrLoss(model.getPlayers().get(playerIndex).getWinOrLossValue2(), model.getPlayers().get(playerIndex));
+                        checkStatusWinOrLoss(model.getPlayers().get(playerIndex));
                     })
             );
 
             timeline.play();
         }
     }
-
-    public void checkStatusWinOrLoss(int winOrLossValue, Player player) {
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            if (winOrLossValue == 1) {
-                if (getIsFirstHand(player)) {
-                    model.youWonFirstHand(player);
-                } else {
-                    model.youWonSecondHand(player);
-                }
-                player.setStatHolder(2);
-                youHaveWon(player);
-            } else if (winOrLossValue == 2) {
-                if (getIsFirstHand(player)) {
-                    model.youLostFirstHand(player);
-                } else {
-                    model.youLostSecondHand(player);
-                }
-                player.setStatHolder(2);
-                youHaveLost(player);
-            } else if (winOrLossValue == 3) {
-                player.setStatHolder(2);
-                model.youDraw(player);
-                youHaveDrawn(player);
-            }
-        }));
-        timeline.play();
+    public void checkStatusWinOrLoss(Player player){
+        if (model.checkStatusWinOrLoss(player.getWinOrLossValue(), player) == 1) {
+            youHaveWon(player);
+        } else if (model.checkStatusWinOrLoss(player.getWinOrLossValue(), player) == 2) {
+            youHaveLost(player);
+        } else if (model.checkStatusWinOrLoss(player.getWinOrLossValue(), player) == 3) {
+            youHaveDrawn(player);
+        }
     }
 
     public void disableOrEnableBetButtons() {

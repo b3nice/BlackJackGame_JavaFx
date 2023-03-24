@@ -72,7 +72,6 @@ public class BlackJackStartView extends GridPane {
         RowConstraints row5 = new RowConstraints();
         row5.setPercentHeight(20);
         this.getRowConstraints().addAll(row1, row2, row3, row4, row5);
-
         this.setOnMouseClicked(event -> this.requestFocus());
 
 

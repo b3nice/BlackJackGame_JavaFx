@@ -1,4 +1,4 @@
-package be.kdg.view.Leaderboard;
+package be.kdg.view.leaderboard;
 
 import be.kdg.model.Player;
 import javafx.scene.Scene;
@@ -30,14 +30,16 @@ public class LeaderBoardPresenter {
         stage.getIcons().add(iconImage);
         stage.initModality(Modality.APPLICATION_MODAL);
 
-        String leaderboardText = "";
+        StringBuilder leaderboardText = new StringBuilder();
+        leaderboardText.append("[#]|Name\t Balance|\n");
         int index = 1;
         for (Player player: arrayListPlayers) {
-            leaderboardText += "["+ index + "] " + player.getName() + " : " + player.getBalance() + "\n";
+            int space = 20 - player.getName().length();
+            leaderboardText.append(String.format("[" + index + "] " + player.getName() + "% " + space + "d" + "\n", player.getBalance()));
             index++;
         }
 
-        leaderboardView.getLabelPlayerList().setText(leaderboardText);
+        leaderboardView.getLabelPlayerList().setText(leaderboardText.toString());
         stage.setResizable(false);
         stage.setScene(scene);
         stage.setWidth(300);

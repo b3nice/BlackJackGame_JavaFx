@@ -3,32 +3,38 @@
     -fx-text-fill: white;
     -fx-padding: 10px;
 }
+.label_leaderboard_title {
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-padding: 10px, 0px, 0px, 0px;
+    -fx-font-weight: bold;
+    -fx-font-family: monospace;
+}
 .label_leaderboard {
     -fx-font-size: 16px;
     -fx-text-fill: white;
-    -fx-padding: 0px;
+    -fx-padding: 0px, 0px, 0px, 0px;
+    -fx-font-family: monospace;
 }
 .label_alert {
     -fx-font-size: 13px;
     -fx-text-fill: white;
     -fx-padding: 10px;
 }
-
 .button {
     -fx-font-size: 20px;
 }
-
 .textField {
     -fx-padding: 10px;
     -fx-pref-width: 200;
     -fx-max-width: 200;
 }
-
 .backGround_start {
     -fx-background-image: url('BackGround_BlackJack.jpg');
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-background-size: cover;
+
 }
 .backGround_name {
     -fx-background-image: url('BackGround_BlackJack_Name.jpg');
@@ -48,7 +54,6 @@
     -fx-background-position: center;
     -fx-background-size: cover;
 }
-
 .borderOutline {
     -fx-border-color: black;
     -fx-border-width: 1;
