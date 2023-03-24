@@ -24,28 +24,17 @@ public class BlackJackNameView extends GridPane {
     ComboBox<String> comboBox;
     VBox vBoxTextFields;
 
-    public ComboBox<String> getComboBox() {
-        return comboBox;
-    }
-
-    public TextField[] getTextFields() {
-        return textFields;
-    }
-
-    public Button getButtonNext() {
-        return buttonNext;
-    }
 
 
     public BlackJackNameView(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.initialiseNodes();
         this.layoutNodes();
+        this.resizeNodes();
     }
 
     private void initialiseNodes() {
         vBoxTextFields = new VBox();
-
         ObservableList<String> items = FXCollections.observableArrayList(
                 "1 Player",
                 "2 Players",
@@ -53,13 +42,10 @@ public class BlackJackNameView extends GridPane {
                 "4 Players",
                 "5 Players"
         );
-
         comboBox = new ComboBox<String>(items);
         comboBox.setValue("1 Player");
-
         textFields = new TextField[5];
         String promptText = "Enter your username here";
-
         for (int i = 0; i < textFields.length; i++) {
             textFields[i] = new TextField();
             textFields[i].setPromptText(promptText);
@@ -70,31 +56,8 @@ public class BlackJackNameView extends GridPane {
             }
 
         }
-
         buttonNext = new Button("Next");
         buttonNext.getStyleClass().add("button");
-
-
-
-        comboBox.setMinSize(primaryStage.widthProperty().doubleValue() * 0.1, primaryStage.widthProperty().doubleValue() * 0.03);
-        for (TextField textField : textFields) {
-            textField.setFont(Font.font(primaryStage.widthProperty().doubleValue() * 0.015));
-            textField.setMinSize(primaryStage.widthProperty().doubleValue() * 0.25, primaryStage.widthProperty().doubleValue() * 0.04);
-        }
-
-        primaryStage.widthProperty().addListener((observable, oldValue, newValue) -> {
-            comboBox.setMinSize(newValue.doubleValue() * 0.1, newValue.doubleValue() * 0.03);
-            buttonNext.setFont(Font.font(newValue.doubleValue() * 0.03));
-            buttonNext.setMinSize(newValue.doubleValue() * 0.1, newValue.doubleValue() * 0.03);
-        });
-
-        for (TextField textField : textFields) {
-            primaryStage.widthProperty().addListener((observable, oldValue, newValue) -> {
-                textField.setFont(Font.font(newValue.doubleValue() * 0.015));
-                textField.setMinSize(newValue.doubleValue() * 0.25, newValue.doubleValue() * 0.04);
-            });
-        }
-
         this.getStyleClass().add("backGround_name");
     }
 
@@ -148,6 +111,38 @@ public class BlackJackNameView extends GridPane {
 
         Platform.runLater(() -> buttonNext.requestFocus());
         this.setFocusTraversable(false);
-        //this.setGridLinesVisible(true);
+
+    }
+
+    public void resizeNodes(){
+        comboBox.setMinSize(primaryStage.widthProperty().doubleValue() * 0.1, primaryStage.widthProperty().doubleValue() * 0.03);
+        for (TextField textField : textFields) {
+            textField.setFont(Font.font(primaryStage.widthProperty().doubleValue() * 0.015));
+            textField.setMinSize(primaryStage.widthProperty().doubleValue() * 0.25, primaryStage.widthProperty().doubleValue() * 0.04);
+        }
+
+        primaryStage.widthProperty().addListener((observable, oldValue, newValue) -> {
+            comboBox.setMinSize(newValue.doubleValue() * 0.1, newValue.doubleValue() * 0.03);
+            buttonNext.setFont(Font.font(newValue.doubleValue() * 0.03));
+            buttonNext.setMinSize(newValue.doubleValue() * 0.1, newValue.doubleValue() * 0.03);
+        });
+
+        for (TextField textField : textFields) {
+            primaryStage.widthProperty().addListener((observable, oldValue, newValue) -> {
+                textField.setFont(Font.font(newValue.doubleValue() * 0.015));
+                textField.setMinSize(newValue.doubleValue() * 0.25, newValue.doubleValue() * 0.04);
+            });
+        }
+    }
+
+
+    public ComboBox<String> getComboBox() {
+        return comboBox;
+    }
+    public TextField[] getTextFields() {
+        return textFields;
+    }
+    public Button getButtonNext() {
+        return buttonNext;
     }
 }

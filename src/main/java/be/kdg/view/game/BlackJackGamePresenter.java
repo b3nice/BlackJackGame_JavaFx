@@ -5,60 +5,49 @@ import be.kdg.model.Card;
 import be.kdg.model.Player;
 import be.kdg.view.start.BlackJackStartPresenter;
 import be.kdg.view.start.BlackJackStartView;
-import javafx.animation.PauseTransition;
-import javafx.application.Platform;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.io.*;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public class BlackJackGamePresenter {
     private final BlackJackModel model;
     private final BlackJackGameView view;
     private final ImageViewMakerAndEditor imageViewMakerAndEditor;
     private final Stage primaryStage;
-    private final ArrayList<Player> players;
-    private int indexPlayerHolder;
+    private int playerNumber;
     private Player player;
 
-    public BlackJackGamePresenter(BlackJackGameView view, BlackJackModel model, ImageViewMakerAndEditor imageViewMakerAndEditor, Stage primaryStage, ArrayList<Player> players) {
+    public BlackJackGamePresenter(BlackJackGameView view, BlackJackModel model, ImageViewMakerAndEditor imageViewMakerAndEditor, Stage primaryStage) {
         this.model = model;
         this.view = view;
         this.imageViewMakerAndEditor = imageViewMakerAndEditor;
         this.primaryStage = primaryStage;
-        this.players = players;
-        indexPlayerHolder = 0;
+        this.playerNumber = 0;
         model.makeNewTable();
         view.gethBoxH_S_D_S().setDisable(true);
         addEventHandlers();
-        player = players.get(indexPlayerHolder);
+        player = model.getPlayers().get(playerNumber);
         updateView(player);
     }
 
-
     private void addEventHandlers() {
         view.getButtonExit().setOnAction(actionEvent -> {
-            for (Player player : players) {
-                String fileName = "src/main/resources/player.txt";
-                try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {
-                    bw.write(player.toString());
-                    bw.newLine();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            writeAwayPlayers();
+            writeAwayLog();
+
+            showLeaderBoard();
+
             BlackJackStartView viewStart = new BlackJackStartView(primaryStage);
             BlackJackStartPresenter presenterGame = new BlackJackStartPresenter(viewStart, primaryStage);
             view.getScene().setRoot(viewStart);
         });
-
 
         view.getButtonBet5().setOnAction(actionEvent -> {
             player.setBet(player.getBet() + 5);
@@ -84,20 +73,20 @@ public class BlackJackGamePresenter {
         });
         view.getButtonBet().setOnAction(actionEvent -> {
             if (player.getBet() == 0) {
-                String textAlert = "You cannot bet nothing, please bet an amount.";
+                String textAlert = "Bet a value greater than 0.";
                 view.setLabelAlertRed(view.getLabelAlert(), textAlert);
             } else {
                 player.setBetConfirm(true);
                 goNextPlayer();
             }
             int playersReady = 0;
-            for (Player player : players) {
+            for (Player player : model.getPlayers()) {
                 if (player.isBetConfirm()) {
                     playersReady++;
                 }
             }
-            if (playersReady == players.size()) {
-                for (Player player : players) {
+            if (playersReady == model.getPlayers().size()) {
+                for (Player player : model.getPlayers()) {
                     model.startGame(player);
                 }
                 model.dealDealerCards(player);
@@ -132,15 +121,17 @@ public class BlackJackGamePresenter {
                 } else {
                     player.setSecondStatus(2);
                 }
-
                 model.winOrLoss(player);
                 swapCardsByWinOrLossValue(model.calculateWinOrLossForSplit(player), player);
+                if (!getIsFirstHand(player)) {
+                    swapPlayerDecks(player);
+                }
             } else {
                 model.hitStandDoubleOrSplit(player);
-
                 model.winOrLoss(player);
                 view.getLabelSumCardsPlayerNumber().setText(String.valueOf(player.getPlayerPoints()));
             }
+            disableOrEnableBetButtons();
             allPlayersHavePlayed();
             playerIsFinished();
 
@@ -178,24 +169,17 @@ public class BlackJackGamePresenter {
             view.getButtonSplit().setDisable(true);
         });
         primaryStage.setOnCloseRequest(event -> {
-            for (Player player : players) {
-                String fileName = "src/main/resources/player.txt";
-                try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {
-                    bw.write(player.toString());
-                    bw.newLine();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+            writeAwayPlayers();
+            writeAwayLog();
         });
 
     }
 
     public void goNextPlayer() {
-        if (indexPlayerHolder < players.size() - 1) {
-            System.out.println(players.size());
-            indexPlayerHolder++;
-            player = players.get(indexPlayerHolder);
+        if (playerNumber < model.getPlayers().size() - 1) {
+            System.out.println(model.getPlayers().size());
+            playerNumber++;
+            player = model.getPlayers().get(playerNumber);
 
             disableOrEnableBetButtons();
             if (!player.getPlayerCards().isEmpty()) {
@@ -208,10 +192,10 @@ public class BlackJackGamePresenter {
     }
 
     public void goPreviousPlayer() {
-        if (indexPlayerHolder > 0) {
-            System.out.println(players.size());
-            indexPlayerHolder--;
-            player = players.get(indexPlayerHolder);
+        if (playerNumber > 0) {
+            System.out.println(model.getPlayers().size());
+            playerNumber--;
+            player = model.getPlayers().get(playerNumber);
 
             disableOrEnableBetButtons();
             if (!player.getPlayerCards().isEmpty()) {
@@ -227,13 +211,17 @@ public class BlackJackGamePresenter {
                 goPreviousPlayer();
             }
         } else if (player.getWinOrLossValue() != 0) {
-            goPreviousPlayer();
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.seconds(1), event -> goPreviousPlayer())
+            );
+            timeline.play();
+
         }
     }
 
     public void allPlayersHavePlayed() {
         int counter = 0;
-        for (Player player : players) {
+        for (Player player : model.getPlayers()) {
             if (player.getSplitValidation().equals("y")) {
                 if (player.getWinOrLossValue() != 0 && player.getWinOrLossValue2() != 0) {
                     counter++;
@@ -243,112 +231,163 @@ public class BlackJackGamePresenter {
             }
         }
 
-        if (counter == players.size()) {
+        if (counter == model.getPlayers().size()) {
             showDealerCards();
             disableButtons();
-            for (Player player : players) {
-                showAllPlayers(player);
-            }
-            Timer timer1 = new Timer();
-            timer1.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    Platform.runLater(() -> {
-                        restartGame();
-                    });
-                }
-            }, 30000);
+            showAllPlayers();
+            int duration = model.getPlayers().size() * 12;
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.seconds(duration), event -> restartGame())
+            );
+            timeline.play();
         }
     }
 
-    public void showAllPlayers(Player player) {
-        showCurrentPlayer(player);
-        updateView(player);
-        if (player.getSplitValidation().equals("y")) {
-            checkStatusWinOrLossSplit(player.getPlayerNumber());
-        } else {
-            checkStatusWinOrLoss(player.getWinOrLossValue(),player);
-        }
+    public void showAllPlayers() {
+        Timeline timeline = new Timeline(
+                new KeyFrame(Duration.seconds(0), event -> {
+                    if (model.getPlayers().size() > 0) {
+                        showCurrentPlayer(model.getPlayers().get(0));
+                        swapPlayerDecks(model.getPlayers().get(0));
+                        swapPlayerDecksBack();
+                        updateView(model.getPlayers().get(0));
+                        if (model.getPlayers().get(0).getSplitValidation().equals("y")) {
+                            checkStatusWinOrLossSplit(model.getPlayers().get(0).getPlayerNumber());
+                        } else {
+                            checkStatusWinOrLoss(model.getPlayers().get(0).getWinOrLossValue(), model.getPlayers().get(0));
+                        }
+                    }
+                }),
+                new KeyFrame(Duration.seconds(12), event -> {
+                    if (model.getPlayers().size() > 1) {
+                        showCurrentPlayer(model.getPlayers().get(1));
+                        swapPlayerDecks(model.getPlayers().get(1));
+                        swapPlayerDecksBack();
+                        updateView(model.getPlayers().get(1));
+                        if (model.getPlayers().get(1).getSplitValidation().equals("y")) {
+                            checkStatusWinOrLossSplit(model.getPlayers().get(1).getPlayerNumber());
+                        } else {
+                            checkStatusWinOrLoss(model.getPlayers().get(1).getWinOrLossValue(), model.getPlayers().get(1));
+                        }
+                    }
+                }),
+                new KeyFrame(Duration.seconds(27), event -> {
+                    if (model.getPlayers().size() > 2) {
+                        showCurrentPlayer(model.getPlayers().get(2));
+                        swapPlayerDecks(model.getPlayers().get(2));
+                        swapPlayerDecksBack();
+                        updateView(model.getPlayers().get(2));
+                        if (model.getPlayers().get(2).getSplitValidation().equals("y")) {
+                            checkStatusWinOrLossSplit(model.getPlayers().get(2).getPlayerNumber());
+                        } else {
+                            checkStatusWinOrLoss(model.getPlayers().get(2).getWinOrLossValue(), model.getPlayers().get(2));
+                        }
+                    }
+                }),
+                new KeyFrame(Duration.seconds(42), event -> {
+                    if (model.getPlayers().size() > 3) {
+                        showCurrentPlayer(model.getPlayers().get(3));
+                        swapPlayerDecks(model.getPlayers().get(3));
+                        swapPlayerDecksBack();
+                        updateView(model.getPlayers().get(3));
+                        if (model.getPlayers().get(3).getSplitValidation().equals("y")) {
+                            checkStatusWinOrLossSplit(model.getPlayers().get(3).getPlayerNumber());
+                        } else {
+                            checkStatusWinOrLoss(model.getPlayers().get(3).getWinOrLossValue(), model.getPlayers().get(3));
+                        }
+                    }
+                }),
+                new KeyFrame(Duration.seconds(57), event -> {
+                    if (model.getPlayers().size() > 4) {
+                        showCurrentPlayer(model.getPlayers().get(4));
+                        swapPlayerDecks(model.getPlayers().get(4));
+                        swapPlayerDecksBack();
+                        updateView(model.getPlayers().get(4));
+                        if (model.getPlayers().get(4).getSplitValidation().equals("y")) {
+                            checkStatusWinOrLossSplit(model.getPlayers().get(4).getPlayerNumber());
+                        } else {
+                            checkStatusWinOrLoss(model.getPlayers().get(4).getWinOrLossValue(), model.getPlayers().get(4));
+                        }
+                    }
+                })
+        );
+        timeline.play();
+    }
+
+    public void swapPlayerDecksBack() {
+        view.getChildren().remove(view.gethBoxPlayerCards());
+        view.getChildren().remove(view.gethBoxPlayerSplitCards());
+        view.add(view.gethBoxPlayerSplitCards(), 2, 4);
+        view.add(view.gethBoxPlayerCards(), 1, 4);
+        view.swapImageSizesBack();
     }
 
     public void checkStatusWinOrLossSplit(int playerIndex) {
-        if (players.get(playerIndex).getWinOrLossValue() != 0 && players.get(playerIndex).getWinOrLossValue2() != 0) {
-            Timer timer = new Timer();
-            timer.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    Platform.runLater(() -> {
-                        checkStatusWinOrLoss(players.get(playerIndex).getWinOrLossValue(), players.get(playerIndex));
-                    });
-                }
-            }, 3000);
+        if (model.getPlayers().get(playerIndex).getWinOrLossValue() != 0 && model.getPlayers().get(playerIndex).getWinOrLossValue2() != 0) {
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.seconds(1), event -> checkStatusWinOrLoss(model.getPlayers().get(playerIndex).getWinOrLossValue(), model.getPlayers().get(playerIndex))),
+                    new KeyFrame(Duration.seconds(5), event -> {
+                        swapPlayerDecks(model.getPlayers().get(playerIndex));
+                        model.getPlayers().get(playerIndex).setStatHolder(1);
+                        updateView(model.getPlayers().get(playerIndex));
+                        checkStatusWinOrLoss(model.getPlayers().get(playerIndex).getWinOrLossValue2(), model.getPlayers().get(playerIndex));
+                    })
+            );
 
-
-            Timer timer1 = new Timer();
-            timer1.schedule(new TimerTask() {
-                @Override
-                public void run() {
-                    Platform.runLater(() -> {
-                        swapPlayerDecks(players.get(playerIndex));
-                        players.get(playerIndex).setStatHolder(1);
-                        updateView(players.get(playerIndex));
-                        checkStatusWinOrLoss(players.get(playerIndex).getWinOrLossValue2(), players.get(playerIndex));
-                    });
-                }
-            }, 6000);
-
+            timeline.play();
         }
     }
 
     public void checkStatusWinOrLoss(int winOrLossValue, Player player) {
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Platform.runLater(() -> {
-                    if (winOrLossValue == 1) {
-                        if (getIsFirstHand(player)) {
-                            model.youWonFirstHand(player);
-                        } else {
-                            model.youWonSecondHand(player);
-                        }
-                        player.setStatHolder(2);
-                        youHaveWon(player);
-                    } else if (winOrLossValue == 2) {
-                        if (getIsFirstHand(player)) {
-                            model.youLostFirstHand(player);
-                        } else {
-                            model.youLostSecondHand(player);
-                        }
-                        player.setStatHolder(2);
-                        youHaveLost(player);
-                    } else if (winOrLossValue == 3) {
-                        player.setStatHolder(2);
-                        model.youDraw(player);
-                        youHaveDrawn(player);
-                    }
-                });
+        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(2), event -> {
+            if (winOrLossValue == 1) {
+                if (getIsFirstHand(player)) {
+                    model.youWonFirstHand(player);
+                } else {
+                    model.youWonSecondHand(player);
+                }
+                player.setStatHolder(2);
+                youHaveWon(player);
+            } else if (winOrLossValue == 2) {
+                if (getIsFirstHand(player)) {
+                    model.youLostFirstHand(player);
+                } else {
+                    model.youLostSecondHand(player);
+                }
+                player.setStatHolder(2);
+                youHaveLost(player);
+            } else if (winOrLossValue == 3) {
+                player.setStatHolder(2);
+                model.youDraw(player);
+                youHaveDrawn(player);
             }
-        }, 1000);
+        }));
+        timeline.play();
     }
 
     public void disableOrEnableBetButtons() {
         if (player.isBetConfirm()) {
             view.gethBoxH_S_D_S().setDisable(true);
             view.gethBoxBetAmounts().setDisable(true);
-            view.getButtonExit().setDisable(true);
         } else {
             view.gethBoxH_S_D_S().setDisable(true);
             view.gethBoxBetAmounts().setDisable(false);
-            view.getButtonExit().setDisable(true);
         }
         if (!player.getPlayerCards().isEmpty()) {
             view.gethBoxH_S_D_S().setDisable(false);
             view.gethBoxBetAmounts().setDisable(true);
-            view.getButtonExit().setDisable(true);
         }
         if (!player.getPlayerCards().isEmpty()) {
             view.getButtonSplit().setDisable(player.getPlayerCards().get(0).getNumber() != player.getPlayerCards().get(1).getNumber());
+        }
+        if (player.getSplitValidation().equals("y")) {
+            if (player.getWinOrLossValue() != 0 && player.getWinOrLossValue2() != 0) {
+                view.gethBoxH_S_D_S().setDisable(true);
+                view.gethBoxBetAmounts().setDisable(true);
+            }
+        } else if (player.getWinOrLossValue() != 0) {
+            view.gethBoxH_S_D_S().setDisable(true);
+            view.gethBoxBetAmounts().setDisable(true);
         }
     }
 
@@ -428,6 +467,7 @@ public class BlackJackGamePresenter {
                 player.setIndexImageSplit2(player.getIndexImageSplit2() + 1);
             }
 
+            swapPlayerDecks(player);
             updateView(player);
             model.winOrLoss(player);
         } else {
@@ -439,10 +479,14 @@ public class BlackJackGamePresenter {
                 indexImage++;
                 updateView(player);
             }
-
+            Timeline timeline = new Timeline(
+                    new KeyFrame(Duration.seconds(1), event -> model.winOrLoss(player))
+            );
+            timeline.play();
             model.winOrLoss(player);
             updateView(player);
         }
+        disableOrEnableBetButtons();
         allPlayersHavePlayed();
         playerIsFinished();
     }
@@ -510,13 +554,13 @@ public class BlackJackGamePresenter {
     }
 
     public void youHaveDrawn(Player player) {
-        String textAlert = "You have drawn, -_- .This is your new balance:" + player.getBalance();
+        String textAlert = "You have a drawn, -_- .This is your new balance:" + player.getBalance();
         disableButtons();
         view.setLabelAlertRed(view.getLabelAlert(), textAlert);
     }
 
     public void restartGame() {
-        for (Player player : players) {
+        for (Player player : model.getPlayers()) {
             player.resetPlayer();
         }
         refreshView();
@@ -524,7 +568,7 @@ public class BlackJackGamePresenter {
 
     public void refreshView() {
         BlackJackGameView viewGame = new BlackJackGameView(primaryStage);
-        BlackJackGamePresenter presenterGame = new BlackJackGamePresenter(viewGame, model, viewGame.getImageViewMakerAndEditor(), primaryStage, players);
+        BlackJackGamePresenter presenterGame = new BlackJackGamePresenter(viewGame, model, viewGame.getImageViewMakerAndEditor(), primaryStage);
         view.getScene().setRoot(viewGame);
         model.makeNewTable();
     }
@@ -540,6 +584,85 @@ public class BlackJackGamePresenter {
         return player.getStatHolder() == 2;
     }
 
+    public void calculateLeaderBoard(){
+        String fileName = "src/main/resources/player.txt";
+        ArrayList<Player> arrayListPlayers = new ArrayList<>();
+        String lineFileTxt;
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+            while ((lineFileTxt = br.readLine()) != null) {
+                arrayListPlayers.add(new Player(lineFileTxt.substring(0, lineFileTxt.indexOf(',')), Integer.parseInt(lineFileTxt.substring(lineFileTxt.indexOf(',') + 1)),0));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        arrayListPlayers.sort(new Comparator<Player>() {
+            @Override
+            public int compare(Player player1, Player player2) {
+                return player2.getBalance() - player1.getBalance();
+            }
+        });
+
+        System.out.println(arrayListPlayers);
+
+    }
+
+    public void showLeaderBoard(){
+        calculateLeaderBoard();
+
+    }
+
+
+    public void writeAwayLog() {
+        for (Player player : model.getPlayers()) {
+            if (player.getBet() != 0) {
+                player.setBalance(player.getBalance() - player.getBet() - player.getBet2());
+            }
+            String fileName = "src/main/resources/playerLog.txt";
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(fileName, true))) {
+                bw.write(player + ";LOG: " + LocalDateTime.now());
+                bw.newLine();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void writeAwayPlayers() {
+        String fileName = "src/main/resources/player.txt";
+        for (Player player : model.getPlayers()) {
+            File file = new File(fileName);
+            List<String> lines = new ArrayList<>();
+            try (Scanner scanner = new Scanner(file)) {
+                while (scanner.hasNextLine()) {
+                    lines.add(scanner.nextLine());
+                }
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            boolean found = false;
+            for (int i = 0; i < lines.size(); i++) {
+                if (lines.get(i).startsWith(player.getName())) {
+                    lines.set(i, player.toString());
+                    found = true;
+                    break;
+                }
+            }
+            if (!found) {
+                lines.add(player.toString());
+            }
+
+            try (BufferedWriter bw = new BufferedWriter(new FileWriter(file))) {
+                for (String line : lines) {
+                    bw.write(line);
+                    bw.newLine();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void updateView(Player player) {
         view.getLabelPlayerName().setText(player.getName());
         view.getLabelBalanceNumber().setText(String.valueOf(player.getBalance()));
@@ -547,11 +670,5 @@ public class BlackJackGamePresenter {
 
         int textValue = player.getStatHolder() == 2 ? player.getPlayerPoints() : player.getPlayerPoints2();
         view.getLabelSumCardsPlayerNumber().setText(String.valueOf(textValue));
-    }
-
-    public void pause(double seconds, Runnable onFinished) {
-        PauseTransition pause = new PauseTransition(Duration.seconds(seconds));
-        pause.setOnFinished(event -> onFinished.run());
-        pause.play();
     }
 }

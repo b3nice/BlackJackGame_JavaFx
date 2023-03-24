@@ -1,6 +1,5 @@
 package be.kdg.model;
 
-
 public class Game {
 
     public void youLostFirstHand(Player player){

@@ -4,8 +4,6 @@ import be.kdg.model.BlackJackModel;
 import be.kdg.model.Player;
 import be.kdg.view.game.BlackJackGamePresenter;
 import be.kdg.view.game.BlackJackGameView;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
@@ -20,52 +18,46 @@ public class BlackJackNamePresenter {
     private final BlackJackNameView view;
     private final Stage primaryStage;
     private int selectedValueComboBox;
-    private final ArrayList<Player> players;
 
     public BlackJackNamePresenter(BlackJackNameView view, Stage primaryStage) {
         this.view = view;
-        players = new ArrayList<Player>();
         model = new BlackJackModel();
         this.primaryStage = primaryStage;
         this.selectedValueComboBox = 1;
         this.addEventHandlers();
-        this.updateView();
     }
 
     private void addEventHandlers() {
 
-        view.getButtonNext().setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                ArrayList<String> nameInFields = new ArrayList<String>();
-                int counterNameValues = 0;
+        view.getButtonNext().setOnAction(actionEvent -> {
+            ArrayList<String> nameInFields = new ArrayList<>();
+            int counterNameValues = 0;
 
-                for(int i = 0; selectedValueComboBox > i; i++){
-                    nameInFields.add(view.getTextFields()[i].getText());
+            for(int i = 0; selectedValueComboBox > i; i++){
+                nameInFields.add(view.getTextFields()[i].getText());
+            }
+
+            for (String nameInArray:nameInFields) {
+                if (!nameInArray.isEmpty()){
+                    counterNameValues++;
                 }
-
+            }
+            int playerIndex = 0;
+            if (counterNameValues != nameInFields.size()){
+                Alert alert = new Alert(Alert.AlertType.WARNING, "Please enter your username in the textfield.");
+                alert.showAndWait();
+            } else {
                 for (String nameInArray:nameInFields) {
-                    if (!nameInArray.isEmpty()){
-                        counterNameValues++;
-                    }
+                    model.makePlayers(nameInArray, 1000, playerIndex);
+                    playerIndex++;
                 }
-                int playerIndex = 0;
-                if (counterNameValues != nameInFields.size()){
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Please enter your username in the textfield.");
-                    alert.showAndWait();
-                } else {
-                    for (String nameInArray:nameInFields) {
-                        players.add(new Player(nameInArray, 200,playerIndex));
-                        playerIndex++;
-                    }
 
-                    checkPlayerBalance();
+                checkPlayerBalance();
 
-                    BlackJackGameView viewGame = new BlackJackGameView(primaryStage);
-                    BlackJackGamePresenter presenterGame = new BlackJackGamePresenter(viewGame,model,viewGame.getImageViewMakerAndEditor(), primaryStage, players);
+                BlackJackGameView viewGame = new BlackJackGameView(primaryStage);
+                BlackJackGamePresenter presenterGame = new BlackJackGamePresenter(viewGame,model,viewGame.getImageViewMakerAndEditor(), primaryStage);
 
-                    view.getScene().setRoot(viewGame);
-                }
+                view.getScene().setRoot(viewGame);
             }
         });
         view.comboBox.setOnAction(e -> {
@@ -78,7 +70,7 @@ public class BlackJackNamePresenter {
     }
 
     public void checkPlayerBalance(){
-        String fileName = "src/main/resources/player.txt";
+        String fileName = "src/main/resources/playerLog.txt";
         int lineCount = 0;
         ArrayList<String> arrayListNames = new ArrayList<>();
 
@@ -94,29 +86,28 @@ public class BlackJackNamePresenter {
         }
 
         int indexInArrayList = 0;
-        if (lineCount >= 0){
+        if (lineCount > 0){
             for (int i = 0; i <= lineCount; i++) {
                 String valueArrayList = arrayListNames.get(indexInArrayList);
                 indexInArrayList++;
-                int spaceIndex = valueArrayList.indexOf(',');
+                char charComma = ',';
+                char charSemikolon = ';';
+                int commaIndex = valueArrayList.indexOf(charComma);
+                int spaceIndex = valueArrayList.indexOf(charSemikolon);
                 ArrayList<String> names = new ArrayList<>();
-                names.add(valueArrayList.substring(0, spaceIndex));
-                for (Player player : players) {
+                names.add(valueArrayList.substring(0, commaIndex));
+                for (Player player : model.getPlayers()) {
                     for (String name : names) {
                         if (name.equals(player.getName())) {
-                            String balance = valueArrayList.substring(spaceIndex + 1);
+                            String balance = valueArrayList.substring(commaIndex + 1, spaceIndex);
                             player.setBalance(Integer.parseInt(balance));
                         }
                     }
                 }
             }
         }
-        for (Player player:players) {
+        for (Player player: model.getPlayers()) {
             System.out.println(player.getName() + " " + player.getBalance());
         }
-    }
-
-    private void updateView() {
-
     }
 }

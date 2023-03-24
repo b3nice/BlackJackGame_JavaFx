@@ -5,50 +5,41 @@ import java.util.ArrayList;
 public class BlackJackModel {
     private final Game game;
     private Table table;
+    private final Dealer dealer;
     private final ArrayList<Player> players;
 
     public BlackJackModel() {
         players = new ArrayList<Player>();
         game = new Game();
-        table = new Table();
+        dealer = new Dealer();
+        table = new Table(dealer);
+        setTable(table);
     }
 
+    public void makePlayers(String name, int money, int playerNumber) {
+            players.add(new Player(name, money, playerNumber));
+    }
     public void makeNewTable() {
-        this.table = new Table();
+        this.table = new Table(dealer);
     }
-
     public int calculateWinOrLossForSplit(Player player) {
         return table.calculateWinOrLossForSplit(player);
     }
-
-
     public void startGame(Player player) {
-        table.dealCards(player);
+        dealer.dealCards(player);
     }
     public void dealDealerCards(Player player){
-        this.table.dealDealerCards(player);
+        dealer.dealDealerCards(player);
     }
-
-    public ArrayList<Card> getDealerCards() {
-        return this.table.getDealerCards();
-    }
-
-    public int getDealerPoints() {
-        return this.table.getDealerPoints();
-    }
-
     public void splitOption(Player player) {
         table.splitOption(player);
     }
-
     public void hitStandDoubleOrSplit(Player player) {
         table.hitStandDoubleOrSplit(player);
     }
-
     public void winOrLoss(Player player) {
         table.winOrLoss(player);
     }
-
     public void youWonFirstHand(Player player) {
         game.youWonFirstHand(player);
     }
@@ -66,7 +57,21 @@ public class BlackJackModel {
     }
 
     public void splitGame(Player player) {
-        this.table.splitGame(player);
+        table.splitGame(player);
+    }
+
+    public ArrayList<Card> getDealerCards() {
+        return this.dealer.getDealerCards();
+    }
+
+    public int getDealerPoints() {
+        return this.dealer.getDealerPoints();
+    }
+    public void setTable(Table table) {
+        this.dealer.setTable(table);
+    }
+    public ArrayList<Player> getPlayers() {
+        return players;
     }
 
 }
