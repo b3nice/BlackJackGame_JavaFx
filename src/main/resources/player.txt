@@ -1,0 +1,9 @@
+qzd,80
+qsd,80
+zd,1000
+aze,650
+hussein,850
+dylan,950
+milan,950
+qsdf,1020
+wxc,930

@@ -2,6 +2,7 @@ package be.kdg.view.name;
 
 import be.kdg.model.BlackJackModel;
 import be.kdg.model.Player;
+import be.kdg.view.Leaderboard.LeaderBoardPresenter;
 import be.kdg.view.game.BlackJackGamePresenter;
 import be.kdg.view.game.BlackJackGameView;
 import javafx.scene.control.Alert;
@@ -18,12 +19,14 @@ public class BlackJackNamePresenter {
     private final BlackJackNameView view;
     private final Stage primaryStage;
     private int selectedValueComboBox;
+    private final LeaderBoardPresenter leaderboard;
 
     public BlackJackNamePresenter(BlackJackNameView view, Stage primaryStage) {
         this.view = view;
         model = new BlackJackModel();
         this.primaryStage = primaryStage;
         this.selectedValueComboBox = 1;
+        this.leaderboard = new LeaderBoardPresenter();
         this.addEventHandlers();
     }
 
@@ -60,12 +63,13 @@ public class BlackJackNamePresenter {
                 view.getScene().setRoot(viewGame);
             }
         });
-        view.comboBox.setOnAction(e -> {
+        view.getComboBox().setOnAction(e -> {
             selectedValueComboBox = Integer.parseInt(view.getComboBox().getValue().split(" ")[0]);
             for (int i = 0; i < view.getTextFields().length; i++) {
                 view.getTextFields()[i].setVisible(i < selectedValueComboBox);
             }
         });
+        primaryStage.setOnCloseRequest(event -> leaderboard.showLeaderBoard());
 
     }
 

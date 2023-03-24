@@ -18,11 +18,11 @@ import javafx.stage.Stage;
 
 public class BlackJackNameView extends GridPane {
 
-    Stage primaryStage;
-    TextField[] textFields;
-    Button buttonNext;
-    ComboBox<String> comboBox;
-    VBox vBoxTextFields;
+    private final Stage primaryStage;
+    private TextField[] textFields;
+    private Button buttonNext;
+    private ComboBox<String> comboBox;
+    private VBox vBoxTextFields;
 
 
 

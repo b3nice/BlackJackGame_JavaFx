@@ -24,6 +24,7 @@ public class Player {
     private int secondStatus;
     private int indexImageSplit1;
     private int indexImageSplit2;
+    private int waitTimeEndGame;
 
     public Player(String name, int balance, int playerNumber) {
         this.name = name;
@@ -47,6 +48,7 @@ public class Player {
         this.splitValidation = "";
         this.firstCardPlayer = null;
         this.secondCardPlayer = null;
+        this.waitTimeEndGame = 0;
     }
     public void resetPlayer() {
         this.playerPoints = 0;
@@ -67,6 +69,7 @@ public class Player {
         this.splitValidation = "";
         this.firstCardPlayer = null;
         this.secondCardPlayer = null;
+        this.waitTimeEndGame = 0;
     }
 
     @Override
@@ -232,5 +235,13 @@ public class Player {
 
     public void setIndexImageSplit2(int indexImageSplit2) {
         this.indexImageSplit2 = indexImageSplit2;
+    }
+
+    public int getWaitTimeEndGame() {
+        return waitTimeEndGame;
+    }
+
+    public void setWaitTimeEndGame(int waitTimeEndGame) {
+        this.waitTimeEndGame = waitTimeEndGame;
     }
 }

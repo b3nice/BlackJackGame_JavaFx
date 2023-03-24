@@ -18,9 +18,9 @@ import javafx.stage.Stage;
 
 public class BlackJackStartView extends GridPane {
 
-    Label labelWelcome;
-    Button buttonStartGame;
-    Stage primaryStage;
+    private Label labelWelcome;
+    private Button buttonStartGame;
+    private final Stage primaryStage;
 
     public Button getButtonStartGame() {
         return buttonStartGame;

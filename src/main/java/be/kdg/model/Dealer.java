@@ -4,14 +4,17 @@ import java.util.ArrayList;
 public class Dealer {
     private int dealerPoints;
     private final ArrayList<Card> dealerCards = new ArrayList<>();
-    private final Deck deck;
+    private Deck deck;
     private Table table;
 
     public Dealer() {
+        this.dealerPoints = 0;
         this.deck = new Deck();
+        this.dealerCards.clear();
     }
 
     public void dealCards(Player player) {
+        setDeck(new Deck());
         dealerCards.clear();
         player.setSplitValidation("n");
 
@@ -112,5 +115,9 @@ public class Dealer {
 
     public void setTable(Table table) {
         this.table = table;
+    }
+
+    public void setDeck(Deck deck) {
+        this.deck = deck;
     }
 }

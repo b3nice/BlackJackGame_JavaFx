@@ -3,6 +3,11 @@
     -fx-text-fill: white;
     -fx-padding: 10px;
 }
+.label_leaderboard {
+    -fx-font-size: 16px;
+    -fx-text-fill: white;
+    -fx-padding: 0px;
+}
 .label_alert {
     -fx-font-size: 13px;
     -fx-text-fill: white;
@@ -33,6 +38,12 @@
 }
 .backGround_game {
     -fx-background-image: url('BackGround_BlackJack.jpg');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: cover;
+}
+.backGround_leaderboard {
+    -fx-background-image: url('BackGroundLeaderBoard.jpg');
     -fx-background-repeat: no-repeat;
     -fx-background-position: center;
     -fx-background-size: cover;
